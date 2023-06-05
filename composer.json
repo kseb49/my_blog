@@ -1,0 +1,7 @@
+{
+    "name": "sebastien_aubrespy/my_blog",
+    "description": "my personnal blog",
+    "require": {
+        "twig/twig": "^3.0"
+    }
+}
