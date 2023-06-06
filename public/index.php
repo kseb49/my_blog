@@ -7,12 +7,6 @@ $loader = new \Twig\Loader\FilesystemLoader(ROOT.'/views');
 $twig = new \Twig\Environment($loader, [
     'cache' => false,
 ]);
-// if(REQUEST == '/')
-// {
-// echo $twig->render('/accueil.html.twig');
-// }
-// else{
-//    echo '404';
-// }
 $router = new Router();
 $router->lead('GET','/','accueil');
+// $router->lead('POST','formulaire','accueil');
