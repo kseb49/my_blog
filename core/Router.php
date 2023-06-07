@@ -30,10 +30,14 @@ class Router {
     {
         $this->request = parse_url($request);
         if(array_key_exists('query',$this->request)){
-           $this->url_parameters = $this->request['query'];
+          $this->setGet($this->request['query']);
         }
     }
    
+    private function setGet(string $parameters){
+        $this->url_parameters = $this->request['query'];
+        dump(preg_split('#\?=.*#',$this->url_parameters));
+    }
 
     /**
      * Undocumented function
