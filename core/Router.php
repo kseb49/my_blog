@@ -1,5 +1,6 @@
 <?php
-// namespace core;
+namespace core;
+
 
 class Router {
 
@@ -9,16 +10,30 @@ class Router {
      */
     protected $url_parameters = [];
 
-    /**
-     *
-     * @var string
-     */
-    protected string $url;
+    protected $post_parameters = [];
 
-    public function __construct()
+    /**
+     * User request
+     *
+     * @var array
+     */
+    protected array $request;
+
+    /**
+     * routes list
+     *
+     * @var array
+     */
+    protected $url = [];
+
+    public function __construct(string $request)
     {
-        $this->url = preg_replace('#\?.*#','',$_SERVER ["REQUEST_URI"]);
+        $this->request = parse_url($request);
+        if(array_key_exists('query',$this->request)){
+           $this->url_parameters = $this->request['query'];
+        }
     }
+   
 
     /**
      * Undocumented function
@@ -28,61 +43,53 @@ class Router {
      * @param string $path
      * @return void
      */
-    public function lead(string $method,string $request,string $path){
+    public function register(string $url,string $action){
 
-            if($request == $this->url){
-                require 
-            }
-
-
-
-
-        try{
-            if($method == 'GET' && !empty($_GET)){
-             $this->grab_params();
-           }
-            if($method == 'POST'){
-            if(isset($_POST) && !empty($_POST)){
-                echo 'hello';
-                die();
-            }
-            throw new Exception('Parametres non reçues');
-           }
-            // $this->url = preg_replace('#\?.*#','',$_SERVER ["REQUEST_URI"]);
-
-        }
-        catch(Exception $e){
-                die($e->getMessage());
-        }
+            $this->url[$url] = $action;
+    //         if(isset($_GET) && !empty($_GET)){
+    //          $this->grab_params()->lead();
+    //        }
+    //         if(isset($_POST) && !empty($_POST)){
+    //             echo 'hello';
+    //             die();
+    //         }
     }
-
     /**
      * Undocumented function
      *
      * @return void
      */
-    private function grab_params(){
-        $params =$_SERVER['QUERY_STRING'];
-                $params =preg_split('#[\?\&]+#',$params);
-                $gets=[];
-                $keys=[];
-                foreach($params as $values){
-                    $gets[]= explode('=',$values);
-                    }
-                foreach($gets as $values){
-                    foreach($values as $key => $lines){
-                        if($key == 0){
-                            $keys[] = $lines;
-                        }
-                        else{
-                            $parameters[] = $lines;
-                        }
-                    }
-            } 
-            $this->url_parameters = $parameters = array_combine($keys,$parameters);
-            return $this;
+    // private function grab_params(){
+    //     $params =$_SERVER['QUERY_STRING'];
+    //             $params =preg_split('#[\?\&]+#',$params);
+    //             $gets=[];
+    //             $keys=[];
+    //             foreach($params as $values){
+    //                 $gets[]= explode('=',$values);
+    //                 }
+    //             foreach($gets as $values){
+    //                 foreach($values as $key => $lines){
+    //                     if($key == 0){
+    //                         $keys[] = $lines;
+    //                     }
+    //                     else{
+    //                         $parameters[] = $lines;
+    //                     }
+    //                 }
+    //         } 
+    //         $this->url_parameters = $parameters = array_combine($keys,$parameters);
+    //         return $this;
 
+    // }
+
+    public function lead(){
+        if(array_key_exists($this->request['path'],$this->url)){
+            $render =  explode('/',$this->url[$this->request['path']]);
+            $controller = '\controllers\\'.$render[0];
+            $action = $render[1];
+            $display = new $controller;
+            $display->$action();
+        }
+        throw new \Exception('404');
     }
 }
-
-

@@ -3,5 +3,17 @@
     "description": "my personnal blog",
     "require": {
         "twig/twig": "^3.0"
-    }
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^6.3"
+    },
+    
+        "autoload": {
+            "psr-4": 
+            {
+                "core\\": "core/",
+                "controllers\\":"controllers/"
+            }
+        }
+    
 }

@@ -1,12 +1,15 @@
 <?php
 define('ROOT',dirname(__DIR__));
-define('REQUEST',$_SERVER['REQUEST_URI']);
-require (ROOT.'/core/Router.php');
 require(ROOT.'/vendor/autoload.php');
-$loader = new \Twig\Loader\FilesystemLoader(ROOT.'/views');
-$twig = new \Twig\Environment($loader, [
-    'cache' => false,
-]);
-$router = new Router();
-$router->lead('GET','/','accueil');
-// $router->lead('POST','formulaire','accueil');
+use \core\Router;
+try{
+$router = new Router($_SERVER['REQUEST_URI']);
+$router->register('/','HomeController/index');
+$router->register('/blog','BlogController/index');
+$router->register('/admin','AccessController/login');
+$router->lead();
+}
+catch(Exception $e){
+    $e->getMessage();
+}
+
