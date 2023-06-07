@@ -1,6 +1,7 @@
 <?php
 namespace core;
 
+
 abstract class Controller
 {
     private $loader;

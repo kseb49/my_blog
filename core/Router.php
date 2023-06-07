@@ -11,34 +11,29 @@ class Router {
     protected $url_parameters = [];
 
     protected $post_parameters = [];
-
+    
     /**
      * User request
      *
      * @var array
      */
     protected array $request;
-
+    
     /**
      * routes list
      *
      * @var array
      */
     protected $url = [];
-
+    
     public function __construct(string $request)
     {
         $this->request = parse_url($request);
         if(array_key_exists('query',$this->request)){
-          $this->setGet($this->request['query']);
+            $this->setGet($this->request['query']);
         }
     }
-   
-    private function setGet(string $parameters){
-        $this->url_parameters = $this->request['query'];
-        dump(preg_split('#\?=.*#',$this->url_parameters));
-    }
-
+    
     /**
      * Undocumented function
      *
@@ -47,44 +42,31 @@ class Router {
      * @param string $path
      * @return void
      */
-    public function register(string $url,string $action){
+    public function register(string $url,string $action,?string $method = 'GET'){
 
+            if($method === 'POST'){
+                $this->setPosts($_POST);
+            }
             $this->url[$url] = $action;
-    //         if(isset($_GET) && !empty($_GET)){
-    //          $this->grab_params()->lead();
-    //        }
-    //         if(isset($_POST) && !empty($_POST)){
-    //             echo 'hello';
-    //             die();
-    //         }
+    
     }
-    /**
-     * Undocumented function
-     *
-     * @return void
-     */
-    // private function grab_params(){
-    //     $params =$_SERVER['QUERY_STRING'];
-    //             $params =preg_split('#[\?\&]+#',$params);
-    //             $gets=[];
-    //             $keys=[];
-    //             foreach($params as $values){
-    //                 $gets[]= explode('=',$values);
-    //                 }
-    //             foreach($gets as $values){
-    //                 foreach($values as $key => $lines){
-    //                     if($key == 0){
-    //                         $keys[] = $lines;
-    //                     }
-    //                     else{
-    //                         $parameters[] = $lines;
-    //                     }
-    //                 }
-    //         } 
-    //         $this->url_parameters = $parameters = array_combine($keys,$parameters);
-    //         return $this;
+    
+    private function setGet(string $parameters){
+        $names = [];
+        $parameters = preg_split('#[=\&]+#',$parameters);
+        foreach($parameters as $key => $values){
+            if($key===0 || $key%2 === 0){
+                $names[] = $values;
+            }
+            else{
+                $this->url_parameters[] = $values;
+            }
+        } $this->url_parameters = array_combine($names,$this->url_parameters); 
+    }
 
-    // }
+    private function setPosts(array $post_parameters){
+        $this->post_parameters [] = $post_parameters;
+    }
 
     public function lead(){
         if(array_key_exists($this->request['path'],$this->url)){
