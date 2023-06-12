@@ -6,7 +6,8 @@ try{
 $router = new Router($_SERVER['REQUEST_URI']);
 $router->get('/','HomeController/index');
 $router->get('/blog','BlogController/index');
-$router->get('/admin','AccessController/login','?');
+$router->get('/blog/:{id}','BlogController/single');
+// $router->get('/commentaire','CommentController/edit');
 $router->post('/process','FormController/process');
 $router->lead();
 }
