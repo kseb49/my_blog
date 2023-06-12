@@ -14,24 +14,30 @@ class Route extends Router
         $this->request = $request;
         $this->url= $url;
     }
-
+/**
+ * Look for a match in the registered routes
+ *
+ * @return boolean
+ */
     protected function search():bool{
-      
+        /**
+         * seeks for a query with a given pattern
+         */
         if(preg_match('#^/(\w+)/(.+)$#',$this->request['path'])){
+        // if(preg_match('#^/\w+[/\w+\-*]+#u',$this->request['path'])){
             foreach($this->url[$_SERVER['REQUEST_METHOD']] as $key => $value){
                  if(preg_match('#^'.$key.'$#',$this->request['path'],$matches)){
-                   array_shift($matches);
-                   $matches  ['call'] = [explode('/',$value)];
-                   $this->route = $matches;
+                   array_shift($matches);dd($matches,$value);
+                   $this->route = explode('/',$value);
+                   $this->params = $matches;
                    return true;
             }}
          }
 
         if(array_key_exists($this->request['path'],$this->url[$_SERVER['REQUEST_METHOD']])){
             $render= $this->url[$_SERVER['REQUEST_METHOD']][$this->request['path']];
-            $render =  explode('/',$render);
-
-            $this->route = $render;
+            // $render =  explode('/',$render);
+            $this->route = explode('/',$render);
             return true;
     }
     throw new Exception('pas de route correspondante');

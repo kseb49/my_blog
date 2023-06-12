@@ -35,8 +35,8 @@ protected $url = [];
  */
     public function get(string $url,string $action){
             
-            if(preg_match('#:{(\w+)}$#',$url)){
-                $url= preg_replace("#:{(\w+)}$#",'([^/]+)',$url);
+            if(preg_match('#:{(\w+)}#',$url)){
+                $url= preg_replace("#:{(\w+)}#",'([^/]+)',$url);
             }
             $this->url['GET'][$url] = $action;
             return;
@@ -61,21 +61,17 @@ protected $url = [];
     public function lead(){
         $route = new Route($this->request,$this->url);
         if($route->search()){
-            if()
             $controller = '\controllers\\'.$route->route[0];
-            $action = $route[1];
+            $action = $route->route[1];
             $display = new $controller;
-            $display->$action();
+            if(!empty($route->params)){
+                $display->$action($route->params);
+            }
+            else{
+                $display->$action();
+            }
+            
         };
-        // if(array_key_exists($this->request['path'],$this->url[$_SERVER['REQUEST_METHOD']])){
-        //     // $render =  explode('/',$this->url[$_SERVER['REQUEST_METHOD']][$this->request['path']]);
-        //     // $controller = '\controllers\\'.$render[0];
-        //     // $action = $render[1];
-        //     // $display = new $controller;
-        //     // $params = $this->request['params'] ?? null;
-        //     // $display->$action();
-        // }
-        
             throw new Exception('404');
        
              
