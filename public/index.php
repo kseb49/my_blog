@@ -1,15 +1,17 @@
 <?php
 define('ROOT',dirname(__DIR__));
-define('REQUEST',$_SERVER['REQUEST_URI']);
 require(ROOT.'/vendor/autoload.php');
-$loader = new \Twig\Loader\FilesystemLoader(ROOT.'/views');
-$twig = new \Twig\Environment($loader, [
-    'cache' => false,
-]);
-if(REQUEST == '/')
-{
-echo $twig->render('/accueil.html.twig');
+use \core\Router;
+try{
+$router = new Router($_SERVER['REQUEST_URI']);
+$router->get('/','HomeController/index');
+$router->get('/blog','BlogController/index');
+$router->get('/blog/:{id}','BlogController/single');
+// $router->get('/commentaire','CommentController/edit');
+$router->post('/process','FormController/process');
+$router->lead();
 }
-else{
-   echo '404';
+catch(Exception $e){
+   echo $e->getMessage();
 }
+
