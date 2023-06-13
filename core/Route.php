@@ -3,8 +3,6 @@ namespace core;
 
 use Exception;
 
-
-
 class Route extends Router
 {
     public array $route = [];
@@ -14,11 +12,11 @@ class Route extends Router
         $this->request = $request;
         $this->url= $url;
     }
-/**
- * Look for a match in the registered routes
- *
- * @return boolean
- */
+    /**
+     * Look for a match in the registered routes list
+     *
+     * @return boolean
+     */
     protected function search():bool{
         /**
          * seeks for a query with a given pattern
@@ -27,21 +25,19 @@ class Route extends Router
         // if(preg_match('#^/\w+[/\w+\-*]+#u',$this->request['path'])){
             foreach($this->url[$_SERVER['REQUEST_METHOD']] as $key => $value){
                  if(preg_match('#^'.$key.'$#',$this->request['path'],$matches)){
-                   array_shift($matches);dd($matches,$value);
-                   $this->route = explode('/',$value);
+                   array_shift($matches);
+                   $this->route = $value;
                    $this->params = $matches;
                    return true;
             }}
-         }
-
+        }
         if(array_key_exists($this->request['path'],$this->url[$_SERVER['REQUEST_METHOD']])){
-            $render= $this->url[$_SERVER['REQUEST_METHOD']][$this->request['path']];
-            // $render =  explode('/',$render);
-            $this->route = explode('/',$render);
+            $this->route = $this->url[$_SERVER['REQUEST_METHOD']][$this->request['path']];
             return true;
-    }
-    throw new Exception('pas de route correspondante');
-    }
+        }
+        throw new Exception('pas de route correspondante');
+        }
+        
     // private static function getParams():array{
 
     //     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST) && !empty($_POST)){
