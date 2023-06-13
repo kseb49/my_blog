@@ -49,7 +49,7 @@ class Router {
     public function post(string $url,array $path){
             
             $this->url['POST'][$url] = $path;
-}
+    }
     /**
      * Undocumented function
      *
