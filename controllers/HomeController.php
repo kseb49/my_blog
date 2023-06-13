@@ -8,6 +8,6 @@ class HomeController extends Controller
 {
     public function index(){
         
-        $this->twig->display('accueil.html.twig');
+        $this->twig->display('base.html.twig');
     }
 }
