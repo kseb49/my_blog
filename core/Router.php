@@ -51,11 +51,11 @@ class Router {
             $this->url['POST'][$url] = $path;
     }
     /**
-     * Undocumented function
+     * Call the controller which  matches the query
      *
      * @return void
      */
-    public function lead(){
+    public function find(){
         $route = new Route($this->request,$this->url);
         if($route->search()){
             $controller = '\controllers\\'.$route->route[0];

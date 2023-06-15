@@ -22,7 +22,6 @@ class Route extends Router
          * seeks for a query with a given pattern
          */
         if(preg_match('#^/(\w+)/(.+)$#',$this->request['path'])){
-        // if(preg_match('#^/\w+[/\w+\-*]+#u',$this->request['path'])){
             foreach($this->url[$_SERVER['REQUEST_METHOD']] as $key => $value){
                  if(preg_match('#^'.$key.'$#',$this->request['path'],$matches)){
                    array_shift($matches);
@@ -37,27 +36,4 @@ class Route extends Router
         }
         throw new Exception('pas de route correspondante');
         }
-        
-    // private static function getParams():array{
-
-    //     if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST) && !empty($_POST)){
-    //         return $_POST;
-    //     }
-    //     elseif( $_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET) && !empty($_GET)){
-    //        return $_GET;
-    //     }
-    //     else{
-    //         throw new Exception('Parameters expected');
-    //     }
-        
-    // }
-
-
-
-
-
 }
-
-
-
-

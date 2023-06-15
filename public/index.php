@@ -12,7 +12,7 @@ try{
    $router->get('/blog/:{cat}/:{id}',['BlogController','group']);
    $router->get('/commentaire',['CommentController','edit']);
    $router->post('/process',['FormController','process']);
-   $router->lead();
+   $router->find();
 }
 catch(Exception $e){
    echo $e->getMessage();
