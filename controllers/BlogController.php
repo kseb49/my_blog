@@ -1,13 +1,19 @@
 <?php 
 namespace controllers;
 
+use Exception;
+use PDOException;
 use \core\Controller;
+use models\BlogModel;
 
 class BlogController extends Controller{
 
     public function index(){
-       $this->twig->display('blog.twig');
+      $datas = new BlogModel($this->connect());
+      $datas = $datas->index();
+      $this->twig->display('blog.twig',['datas' => $datas]);
     }
+
     public function single(array $params){
       $this->twig->display('post.twig');
     }
