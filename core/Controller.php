@@ -4,6 +4,7 @@ namespace core;
 use core\Db;
 use PDO;
 use PDOException;
+use Twig\Extra\Intl\IntlExtension;
 
 abstract class Controller
 {
@@ -18,6 +19,7 @@ abstract class Controller
         $this->twig = new \Twig\Environment($this->loader, [
         'cache' => false,
         ]);
+        $this->twig->addExtension(new IntlExtension());
         $this->initialize = Db::requestDb();
     }
 
