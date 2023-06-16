@@ -2,7 +2,42 @@
 {% block title %}Blog{% endblock %}
 {% use 'templates/blog-header.twig' %}
 {% block content %} 
-<section class="page-section portfolio" id="portfolio">
+<div class="container">
+<div class="card-group">
+{% for key,data in datas %}
+  <div class="card p-1">
+    <img class="card-img-top" src="assets/img/{{data.img}}" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">{{data.title}}</h5>
+      <p class="card-text">{{data.chapo}}</p>
+      <p class="card-text"><small class="text-muted">
+      {% if data.last_updated %} Last updated {{data.last_updated}}
+      {% else %}
+      Crée le {{data.created_at |format_datetime('full','none') }}
+      {% endif %}
+      </small></p>
+    </div>
+  </div>
+{% endfor %}
+  {# <div class="card">
+    <img class="card-img-top" src="assets/img/portfolio/cabin.png" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+    </div>
+  </div>
+  <div class="card">
+    <img class="card-img-top" src="assets/img/portfolio/cabin.png" alt="Card image cap">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+    </div>
+  </div> #}
+</div>
+</div>
+{# <section class="page-section portfolio" id="portfolio">
             <div class="container">
                 <!-- Portfolio Section Heading-->
                 <h2 class="page-section-heading text-center text-uppercase text-secondary mb-2">Articles</h2>
@@ -24,7 +59,7 @@
                             <img class="img-fluid" src="assets/img/portfolio/cabin.png" alt="..." />
                         </div>
                     </div> 
-                    {% endfor %}
+                    {% endfor %} #}
                     <!-- Portfolio Item 2-->
                     {# <div class="col-md-6 col-lg-4 mb-5">
                         <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal2">
@@ -70,10 +105,10 @@
                             <img class="img-fluid" src="assets/img/portfolio/submarine.png" alt="..." />
                         </div>
                     </div>#}
-                </div>  
+                {# </div>  
                 
             </div>
-        </section>
+        </section> #}
         {% endblock %}
         {% use 'templates/modals.twig' %}
         {% block script %}
