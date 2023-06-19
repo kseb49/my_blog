@@ -3,25 +3,27 @@
 {% use 'templates/blog-header.twig' %}
 {% block content %} 
 <div class="container">
-{% for val in datas| batch (3) %}
+{% for val in datas| batch (2) %}
     <div class="card-group">
     {% for data in val %}
-        <div class="card p-1">
+        <div class="card p-2 mb-3">
             <img class="card-img-top entete" src="assets/img/{{data.img}}" alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title">{{data.title}}</h5>
-                <p class="card-text">{{data.chapo}}</p>
-                <div class="card-footer"><small class="text-muted">
-                {% if data.last_updated %} Last updated {{data.last_updated}}
-                {% else %}
-                Crée le {{data.created_at |format_datetime('full','none') }}
-                {% endif %}
-                </small></div>
+                <p class="card-text">{{data.chapo}}... <a href="blog/{{data.id}}" class="card-link">voir tout</a></p>
+                <div class="card-footer">
+                    <small class="text-muted">
+                    {% if data.last_updated %} Last updated {{data.last_updated}} par @{{data.f_name}} {{data.l_name}}
+                    {% else %}
+                    Crée le {{data.created_at |format_datetime('full','none') }} par @{{data.f_name}} {{data.l_name}}
+                    {% endif %}
+                    </small>
+                </div>
             </div>
         </div>
         {% endfor %}
     </div>
-{% endfor %} 
+{% endfor %} </div>
   {# <div class="card">
     <img class="card-img-top" src="assets/img/portfolio/cabin.png" alt="Card image cap">
     <div class="card-body">
@@ -39,7 +41,7 @@
     </div>
   </div> #}
 
-</div>
+
 {# <section class="page-section portfolio" id="portfolio">
             <div class="container">
                 <!-- Portfolio Section Heading-->

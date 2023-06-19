@@ -15,6 +15,8 @@ class BlogController extends Controller{
     }
 
     public function single(array $params){
-      $this->twig->display('post.twig');
+      $datas = new BlogModel($this->connect());
+      $datas = $datas->single($params[0]);
+      $this->twig->display('post.twig',['datas' => $datas]);
     }
 }

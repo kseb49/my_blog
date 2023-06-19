@@ -16,10 +16,22 @@ class BlogModel
 
     public function index():array{
 
-        if($request = $this->db->query('SELECT * FROM posts')->fetchAll()){
-            return $request;
+        if($request = $this->db->query('SELECT * FROM posts inner join users u on u.id = posts.users_id')->fetchAll()){
+           return $request;
         }
         throw new Exception("Aucun article n'a été trouvé :( ");
     }
     
+    public function single(string $id):array{
+
+        $request = $this->db->prepare('SELECT * FROM posts where id = ?');
+        $request->execute([$id]);
+        if($resp = $request->fetchAll()){
+            return $resp;
+        }
+        throw new Exception("Aucun article n'a été trouvé :( ");
+    }
 }
+         
+
+    
