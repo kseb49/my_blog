@@ -13,9 +13,9 @@
                 <p class="card-text">{{data.chapo}}... <a href="blog/{{data.id}}" class="card-link">voir tout</a></p>
                 <div class="card-footer">
                     <small class="text-muted">
-                    {% if data.last_updated %} Last updated {{data.last_updated}} par @{{data.f_name}} {{data.l_name}}
+                    {% if data.last_updated %} Last updated {{data.last_updated}} par @{{data.pseudo}}
                     {% else %}
-                    Crée le {{data.created_at |format_datetime('full','none') }} par @{{data.f_name}} {{data.l_name}}
+                    Crée le {{data.created_at |format_datetime('full','none') }} par @{{data.pseudo}}
                     {% endif %}
                     </small>
                 </div>

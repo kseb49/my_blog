@@ -13,10 +13,14 @@ class BlogModel
     public function __construct(PDO $db){
         $this->db = $db;
     }
-
+    /**
+     * Get all the posts and their authors
+     *
+     * @return array
+     */
     public function index():array{
 
-        if($request = $this->db->query('SELECT * FROM posts inner join users u on u.id = posts.users_id')->fetchAll()){
+        if($request = $this->db->query('SELECT *, p.id FROM posts p inner join users u on u.id = p.users_id')->fetchAll()){
            return $request;
         }
         throw new Exception("Aucun article n'a été trouvé :( ");
@@ -24,12 +28,12 @@ class BlogModel
     
     public function single(string $id):array{
 
-        $request = $this->db->prepare('SELECT * FROM posts where id = ?');
+        $request = $this->db->prepare('SELECT * FROM posts p where p.id = ?');
         $request->execute([$id]);
         if($resp = $request->fetchAll()){
             return $resp;
         }
-        throw new Exception("Aucun article n'a été trouvé :( ");
+        throw new Exception("Cet article n'existe pas :(");
     }
 }
          
