@@ -1,42 +1,62 @@
 {% extends 'templates/base.twig' %}
 {% block title %}User registration {% endblock %}
+{%  block header %}<!-- Masthead-->
+        <!-- Navigation-->
+        <header class="masthead bg-primary text-white text-center">
+            <div class="container d-flex align-items-center flex-column">
+                <!-- Masthead Avatar Image-->
+                {# <i class="fa-solid fa-user-secret fa-2xl"></i> #}
+                <!-- Masthead Heading-->
+                <div class="divider-custom divider-light">
+                    {# <div class="divider-custom-line"></div> #}
+                    <div class="divider-custom-icon"><i class="fa-solid fa-id-card fa-2xl"></i></div>
+                    {# <div class="divider-custom-line"></div> #}
+                </div>
+                <h1 class="masthead-heading text-uppercase mb-0">S'inscrire</h1>
+                <!-- Icon Divider-->
+                <!-- Masthead Subheading-->
+                {# <p class="masthead-subheading font-weight-light mb-0">Développeur web - PHP / Symfony - Wordpress</p> #}
+            </div>
+        </header>
+        {% endblock %}
 {% block content %}
-<div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="basic-addon1">Prénom</span>
-  </div>
-  <input type="text" class="form-control" placeholder="Prénom" aria-label="Username" aria-describedby="basic-addon1">
-</div>
-
-<div class="input-group mb-3">
-  <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
-  <div class="input-group-append">
-    <span class="input-group-text" id="basic-addon2">@example.com</span>
-  </div>
-</div>
-
-<label for="basic-url">Your vanity URL</label>
-<div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="basic-addon3">https://example.com/users/</span>
-  </div>
-  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
-</div>
-
-<div class="input-group mb-3">
-  <div class="input-group-prepend">
-    <span class="input-group-text">$</span>
-  </div>
-  <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-  <div class="input-group-append">
-    <span class="input-group-text">.00</span>
-  </div>
-</div>
-
-<div class="input-group">
-  <div class="input-group-prepend">
-    <span class="input-group-text">With textarea</span>
-  </div>
-  <textarea class="form-control" aria-label="With textarea"></textarea>
+<div class="container">
+ <form id="contactForm" method="post" action="process">
+                    <!-- Name input-->
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="f_name" type="text" placeholder="Enter your name..." name ="f_name" required/>
+                        <label for="f_name">Prénom</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="l_name" type="text" placeholder="Enter your name..." name ="l_name" required/>
+                        <label for="l_name">Nom</label>
+                    </div>
+                    <!-- Email address input-->
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="email" type="email" placeholder="name@example.com" name ="email"required>
+                        <label for="email">Email</label>
+                    </div>
+                    <!-- Message input-->
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" name = "message" required></textarea>
+                        <label for="message">Message</label>
+                    </div>
+                    <!-- Submit success message-->
+                    <!---->
+                    <!-- This is what your users will see when the form-->
+                    <!-- has successfully submitted-->
+                    <div class="d-none" id="submitSuccessMessage">
+                        <div class="text-center mb-3">
+                            <div class="fw-bolder">Form submission successful!</div>
+                        </div>
+                    </div>
+                    <!-- Submit error message-->
+                    <!---->
+                    <!-- This is what your users will see when there is-->
+                    <!-- an error submitting the form-->
+                    <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                    <!-- Submit Button-->
+                    <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Send</button>
+                </form>
 </div>
 {% endblock %}
