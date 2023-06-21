@@ -1,7 +1,10 @@
 <?php
 define('ROOT',dirname(__DIR__));
 require(ROOT.'/vendor/autoload.php');
+
+
 use \core\Router;
+
 try{
    $router = new Router($_SERVER['REQUEST_URI']);
    $router->get('/',['HomeController','index']);
@@ -10,7 +13,8 @@ try{
    $router->get('/blog/:{cat}/:{id}',['BlogController','group']);
    $router->get('/commentaire',['CommentController','edit']);
    $router->post('/process',['FormController','process']);
-   $router->lead();
+   $router->find();
+
 }
 catch(Exception $e){
    echo $e->getMessage();
