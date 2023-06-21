@@ -2,7 +2,8 @@
     "name": "sebastien_aubrespy/my_blog",
     "description": "my personnal blog",
     "require": {
-        "twig/twig": "^3.0"
+        "twig/twig": "^3.0",
+        "twig/intl-extra": "^3.6"
     },
     "require-dev": {
         "symfony/var-dumper": "^6.3"
@@ -12,7 +13,8 @@
             "psr-4": 
             {
                 "core\\": "core/",
-                "controllers\\":"controllers/"
+                "controllers\\":"controllers/",
+                "models\\":"models/"
             }
         }
     
