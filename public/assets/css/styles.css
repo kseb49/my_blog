@@ -4282,6 +4282,9 @@ textarea.form-control-lg {
   width: 100%;
 }
 
+.entete{
+  height:100%;
+}
 .card-img,
 .card-img-top {
   border-top-left-radius: var(--bs-card-inner-border-radius);
@@ -4303,7 +4306,7 @@ textarea.form-control-lg {
     flex-flow: row wrap;
   }
   .card-group > .card {
-    flex: 1 0 0%;
+    flex: 0 0 50%;
     margin-bottom: 0;
   }
   .card-group > .card + .card {
@@ -11048,4 +11051,7 @@ html {
 
 .copyright {
   background-color: #1a252f;
+}
+.comment_link{
+  color : grey;
 }
