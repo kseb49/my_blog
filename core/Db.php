@@ -1,9 +1,9 @@
 <?php 
 namespace core;
 
-use Exception;
+
 use PDO;
-use PDOException;
+
 
 class Db {
 
@@ -23,6 +23,11 @@ class Db {
         }
     }
 
+    /**
+     * create a instance of Db - SINGLETON
+     *
+     * @return void
+     */
     public static function requestDb(){
         if(is_null(self::$instance)){
             self::$instance = new self();
@@ -30,14 +35,19 @@ class Db {
         return self::$instance;
     }
 
+    /**
+     * establish the connection
+     *
+     * @return PDO
+     */
     public function connect():PDO{
            
-            $db = new PDO($this->dsn,$this->user,$this->password,
-            [
-                PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC,
-                PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION
-            ]);
-             return $db;
+        $db = new PDO($this->dsn,$this->user,$this->password,
+        [
+            PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC,
+            PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION
+        ]);
+            return $db;
     }
 
 
