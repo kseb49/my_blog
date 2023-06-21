@@ -2,17 +2,13 @@
 
 namespace models;
 
-use PDO;
-use PDOStatement;
+
 use Exception;
+use core\Model;
 
-class BlogModel 
+
+class BlogModel extends Model
 {
-    private PDO $db;
-
-    public function __construct(PDO $db){
-        $this->db = $db;
-    }
     /**
      * Get all the posts and their authors
      *
@@ -20,7 +16,7 @@ class BlogModel
      */
     public function index():array{
 
-        if($request = $this->db->query('SELECT *, p.id FROM posts p inner join users u on u.id = p.users_id')->fetchAll()){
+        if($request = $this->connect()->query('SELECT *, p.id FROM posts p inner join users u on u.id = p.users_id')->fetchAll()){
            return $request;
         }
         throw new Exception("Aucun article n'a été trouvé :( ");
@@ -33,7 +29,7 @@ class BlogModel
      */
     public function single(string $id):array{
 
-        $request = $this->db->prepare('SELECT * FROM posts p where p.id = ?');
+        $request = $this->connect()->prepare('SELECT * FROM posts p where p.id = ?');
         $request->execute([$id]);
         if($resp = $request->fetchAll()){
             return $resp;
@@ -42,7 +38,7 @@ class BlogModel
     }
 
     public function home():array{
-        if($request = $this->db->query('SELECT * FROM posts order by created_at desc limit 3')->fetchAll()){
+        if($request = $this->connect()->query('SELECT * FROM posts order by created_at desc limit 3')->fetchAll()){
 
             return $request;
         }
