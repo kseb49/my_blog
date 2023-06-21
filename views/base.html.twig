@@ -173,24 +173,24 @@
                 <!-- To make this form functional, sign up at-->
                 <!-- https://startbootstrap.com/solution/contact-forms-->
                 <!-- to get an API token!-->
-                <form id="contactForm" method="post" action="#">
+                <form id="contactForm" method="post" action="process">
                     <!-- Name input-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="f_name" type="text" placeholder="Enter your name..." required/>
+                        <input class="form-control" id="f_name" type="text" placeholder="Enter your name..." name ="f_name" required/>
                         <label for="f_name">Prénom</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="l_name" type="text" placeholder="Enter your name..." required/>
+                        <input class="form-control" id="l_name" type="text" placeholder="Enter your name..." name ="l_name" required/>
                         <label for="l_name">Nom</label>
                     </div>
                     <!-- Email address input-->
                     <div class="form-floating mb-3">
-                        <input class="form-control" id="email" type="email" placeholder="name@example.com" required>
+                        <input class="form-control" id="email" type="email" placeholder="name@example.com" name ="email"required>
                         <label for="email">Email</label>
                     </div>
                     <!-- Message input-->
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" required></textarea>
+                        <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" name = "message" required></textarea>
                         <label for="message">Message</label>
                     </div>
                     <!-- Submit success message-->
