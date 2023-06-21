@@ -7,7 +7,7 @@ use core\Model;
 class CommentModel extends Model
 {
     /**
-     * Get all the comments bounded to a posts
+     * Get all the comments linked to a posts
      *
      * @param string $id
      * @return array
