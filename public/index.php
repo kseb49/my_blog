@@ -2,6 +2,7 @@
 define('ROOT',dirname(__DIR__));
 require(ROOT.'/vendor/autoload.php');
 
+
 use \core\Router;
 
 try{
@@ -13,6 +14,7 @@ try{
    $router->get('/commentaire',['CommentController','edit']);
    $router->post('/process',['FormController','process']);
    $router->find();
+
 }
 catch(Exception $e){
    echo $e->getMessage();
