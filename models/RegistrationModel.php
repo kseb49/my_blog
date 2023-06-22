@@ -25,7 +25,7 @@ class RegistrationModel extends Model
     }
 
     public function registerUser(){
-       $request = $this->connect->prepare('INSERT INTO users (f_name,l_name,email,password,pseudo,role,confirmation_date,send_link,token) values(:prenom,:nom,:email,:password,:pseudo,:role,:confirmation_date,NOW(),:token');
+       $request = $this->connect()->prepare('INSERT INTO users (f_name,l_name,email,password,pseudo,role,confirmation_date,send_link,token) values(:prenom,:nom,:email,:password,:pseudo,:role,:confirmation_date,NOW(),:token');
        $request->execute([
         ":prenom"=>$this->f_name,
         ":nom"=>$this->l_name,
@@ -33,9 +33,9 @@ class RegistrationModel extends Model
         ":password"=>password_hash($this->password,PASSWORD_DEFAULT),
         ":role"=>0,
         ":pseudo"=>$this->pseudo,
-        ":token"=>$this->pseudo,
+        ":token"=>$this->pseudo
 
-       ])
+       ]);
     }
         
     
