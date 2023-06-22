@@ -21,6 +21,7 @@
         {% endblock %}
 {% block content %}
 <div class="container">
+<aside class="mx-auto p-5 text-center font-weight-light" style="width: 565px;">Remplir le formulaire ci dessous pour créer un compte utilisateurs</aside>
  <form id="contactForm" method="post" action="process">
                     <!-- Name input-->
                     <div class="form-floating mb-3">
@@ -31,6 +32,10 @@
                         <input class="form-control" id="l_name" type="text" placeholder="Enter your name..." name ="l_name" required/>
                         <label for="l_name">Nom</label>
                     </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="pseudo" type="text" placeholder="Enter your pseudo" name ="l_name" required/>
+                        <label for="l_name">@Pseudo</label>
+                    </div>
                     <!-- Email address input-->
                     <div class="form-floating mb-3">
                         <input class="form-control" id="email" type="email" placeholder="name@example.com" name ="email"required>
@@ -38,8 +43,12 @@
                     </div>
                     <!-- Message input-->
                     <div class="form-floating mb-3">
-                        <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" name = "message" required></textarea>
-                        <label for="message">Message</label>
+                        <input class="form-control" id="password" type="password" placeholder="Mot de passe" name = "password" required></input>
+                        <label for="message">Mot de passe</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input class="form-control" id="password" type="password"  placeholder="Confirmer le mot de passe" name = "confirm_password" required></input>
+                        <label for="message">Confirmation du mot de passe</label>
                     </div>
                     <!-- Submit success message-->
                     <!---->
@@ -56,7 +65,7 @@
                     <!-- an error submitting the form-->
                     <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
                     <!-- Submit Button-->
-                    <button class="btn btn-primary btn-xl" id="submitButton" type="submit">Send</button>
+                    <a class="btn btn-primary btn-xl mb-5" href="/" id="submitButton" type="submit">S'inscrire</a>
                 </form>
 </div>
 {% endblock %}
