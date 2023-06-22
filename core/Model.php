@@ -2,8 +2,9 @@
 
 namespace core;
 
-use core\Db;
 use PDO;
+use core\Db;
+use Exception;
 
 abstract class Model
 {
@@ -23,5 +24,21 @@ abstract class Model
      */
     protected function connect():PDO {
         return $this->connection = $this->db->connect();
+    }
+
+    /**
+     * Load the datas posted in the Registration model
+     *
+     * @param array $datas
+     * @return void
+     */
+    public function loadDatas(array $datas){
+        foreach($datas as $key => $value){
+            if (!property_exists($this,$key)){
+                throw new Exception("Le champ {$key} est invalide");
+            }
+           $this->$key = $value;
+        }
+        return $this;
     }
 }
