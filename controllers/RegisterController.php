@@ -33,8 +33,10 @@ class RegisterController extends Controller
                 // } 
                 $this->datas = $_POST;
                 $register = new RegistrationModel();
-                $register->loadDatas($this->datas);
-                dd($register);
+                if($register->loadDatas($this->datas)->validate()){
+                   $register->registerUser();
+                };
+                
     
             }
             throw new Exception("Tous les champs doivent être remplis 33");
