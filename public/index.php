@@ -11,12 +11,12 @@ try{
    $router->get('/blog/:{id}',['BlogController','single']);
    $router->get('/blog/:{cat}/:{id}',['BlogController','group']);
    $router->get('/commentaire',['CommentController','edit']);
-   $router->get('/inscription',['RegController','form']);
-   $router->post('/process',['FormController','process']);
+   $router->get('/inscription',['RegisterController','form']);
+   $router->post('/process',['RegisterController','register']);
    $router->find();
 
 }
 catch(Exception $e){
-   echo $e->getMessage();
+  echo $e->getMessage();
 }
 
