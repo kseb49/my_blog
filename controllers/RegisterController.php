@@ -4,7 +4,7 @@ namespace controllers;
 
 use Exception;
 use core\Controller;
-use models\RegistrationModel;
+use models\RegistrationuserModel;
 
 class RegisterController extends Controller
 {
@@ -32,7 +32,7 @@ class RegisterController extends Controller
     
                 // } 
                 $this->datas = $_POST;
-                $register = new RegistrationModel();
+                $register = new RegistrationuserModel();
                 if($register->loadDatas($this->datas)->validate()){
                    $register->registerUser();
                 };
