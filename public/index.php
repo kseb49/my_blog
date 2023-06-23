@@ -13,6 +13,7 @@ try{
    $router->get('/commentaire',['CommentController','edit']);
    $router->get('/inscription',['RegisterController','form']);
    $router->post('/process',['RegisterController','register']);
+   $router->get('/process',['RegisterController','mailconfirmation']);
    $router->find();
 
 }
