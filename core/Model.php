@@ -18,11 +18,13 @@ abstract class Model
     protected const REQUEST_EMAIL ='is_email';
     protected const REQUEST_UNIQUE = "unique";
     protected const REQUEST_MATCHING = 'match';
+    public const TIMEZONE = "Europe/Paris";
 
 
     public function __construct()
     {
         $this->db = Db::requestDb();
+        date_default_timezone_set(self::TIMEZONE);
     }
 
     /**
@@ -34,15 +36,15 @@ abstract class Model
         return $this->connection = $this->db->connect();
     }
 
-    // abstract public function rules();
+    // public function rules(){}
 
     /**
-     * Load the datas posted in the Registration model
+     * Load the datas incoming from a form
      *
      * @param array $datas
      * @return void
      */
-    public function loadDatas(array $datas){
+    public function loadDatas(array $datas) {
         foreach($datas as $key => $value){
             if (!property_exists($this,$key)){
                 throw new Exception("Le champ {$key} est invalide");
@@ -52,7 +54,7 @@ abstract class Model
         return $this;
     }
 
-    public function validate():bool{
+    public function validate():bool {
         foreach ($this->rules() as $input_name => $data) {
             $value = $this->$input_name;
             foreach ($data as $rules) {
