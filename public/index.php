@@ -11,9 +11,10 @@ try{
    $router->get('/blog/:{id}',['BlogController','single']);
    $router->get('/blog/:{cat}/:{id}',['BlogController','group']);
    $router->get('/commentaire',['CommentController','edit']);
-   $router->get('/inscription',['RegisterController','form']);
-   $router->post('/process',['RegisterController','register']);
-   $router->get('/process',['RegisterController','mailconfirmation']);
+   $router->get('/inscription',['RegisterUserController','form']);
+   $router->post('/inscription',['RegisterUserController','register']);
+   $router->get('/validation-mail',['RegisterUserController','validateFromMail']);
+  //  $router->get('/inscription',['RegisterUserController','mailconfirmation']);
    $router->find();
 
 }
