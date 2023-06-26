@@ -1,5 +1,6 @@
 <?php
 define('ROOT',dirname(__DIR__));
+define('PARAMS',dirname(__DIR__).'/env.dev.json');
 require(ROOT.'/vendor/autoload.php');
 
 use \core\Router;
