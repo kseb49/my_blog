@@ -3,7 +3,8 @@
     "description": "my personnal blog",
     "require": {
         "twig/twig": "^3.0",
-        "twig/intl-extra": "^3.6"
+        "twig/intl-extra": "^3.6",
+        "phpmailer/phpmailer": "^6.8"
     },
     "require-dev": {
         "symfony/var-dumper": "^6.3"
