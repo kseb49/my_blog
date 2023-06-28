@@ -15,8 +15,8 @@ class Db {
 
     protected function __construct()
     {
-        if (file_exists(dirname(__DIR__)).'/env.dev.json'){
-            $datas = json_decode(file_get_contents(dirname(__DIR__).'/env.dev.json'));
+        if (file_exists(PARAMS)){
+            $datas = json_decode(file_get_contents(PARAMS));
             $this->dsn = 'mysql:dbname='.$datas->db->dbname.';host='.$datas->db->host;
             $this->user = $datas->db->user;
             $this->password = $datas->db->password;
