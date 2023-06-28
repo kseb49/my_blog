@@ -1,0 +1,40 @@
+{% extends "templates/base.twig" %}
+{% block title %}Dashboard{% endblock %}
+{%  block header %}<!-- Masthead-->
+        <!-- Navigation-->
+        <header class="masthead bg-primary text-white text-center">
+            <div class="container d-flex align-items-center flex-column">
+                <!-- Masthead Avatar Image-->
+                <img class="masthead-avatar mb-5" src="http://blog.test/assets/img/avataaars.svg" alt="..." />
+                <!-- Masthead Heading-->
+                <h1 class="masthead-heading text-uppercase mb-0">Start Bootstrap</h1>
+                <!-- Icon Divider-->
+                <div class="divider-custom divider-light">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-line"></div>
+                </div>
+                <!-- Masthead Subheading-->
+                <p class="masthead-subheading font-weight-light mb-0">Développeur web - PHP / Symfony - Wordpress</p>
+            </div>
+        </header>
+{% endblock %}
+{% block content %} 
+<div class="container">
+<h2>Dashboard</h2>
+
+<div class="container">
+{% if session.user %}
+    <p class="font-weight-bold">@{{ session.user.pseudo }}</p>
+{% endif %}
+</div>
+
+</div>
+{% endblock %}
+{% use 'templates/modals.twig' %}
+{% block script %}
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="http://blog.test/assets/js/scripts.js"></script>
+{% endblock %}
