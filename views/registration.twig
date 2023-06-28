@@ -21,53 +21,73 @@
         {% endblock %}
 {% block content %}
 <div class="container">
+<aside class="mx-auto p-5 text-center font-weight-light" style="width: 565px;">Se connecter</aside>
+    <form id="contactForm" method="post" action="/connexion">
+        <div class="form-floating mb-3">
+            <input class="form-control" id="pseudo" type="text" placeholder="Enter your name..." name ="pseudo"/>
+            <label for="pseudo">@pseudo</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" id="password" type="text" placeholder="Enter your name..." name ="password" />
+            <label for="password">Mot de passe</label>
+        </div>
+        <button class="btn btn-primary btn-xl mb-5" id="submitButton" type="submit">Se connecter</button>
+        </div>
+    </form>
+
+</div>
+
+
+<div class="container">
 <aside class="mx-auto p-5 text-center font-weight-light" style="width: 565px;">Remplir le formulaire ci dessous pour créer un compte utilisateurs</aside>
- <form id="contactForm" method="post" action="/inscription">
-                    <!-- Name input-->
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="f_name" type="text" placeholder="Enter your name..." name ="f_name"/>
-                        <label for="f_name">Prénom</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="l_name" type="text" placeholder="Enter your name..." name ="l_name" />
-                        <label for="l_name">Nom</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="pseudo" type="text" placeholder="Enter your pseudo" name ="pseudo" />
-                        <label for="l_name">@Pseudo</label>
-                    </div>
-                    <!-- Email address input-->
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="email" type="email" placeholder="name@example.com" name ="email">
-                        <label for="email">Email</label>
-                    </div>
-                    <!-- Message input-->
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="password" type="password" placeholder="Mot de passe" name = "password" ></input>
-                        <label for="message">Mot de passe</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="password" type="password"  placeholder="Confirmer le mot de passe" name = "confirm_password" ></input>
-                        <label for="message">Confirmation du mot de passe</label>
-                    </div>
-                    <!-- Submit success message-->
-                    <!---->
-                    <!-- This is what your users will see when the form-->
-                    <!-- has successfully submitted-->
-                    <div class="d-none" id="submitSuccessMessage">
-                        <div class="text-center mb-3">
-                            <div class="fw-bolder">Form submission successful!</div>
+    <form id="contactForm" method="post" action="/inscription">
+                        <!-- Name input-->
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="f_name" type="text" placeholder="Enter your name..." name ="f_name"/>
+                            <label for="f_name">Prénom</label>
                         </div>
-                    </div>
-                    <!-- Submit error message-->
-                    <!---->
-                    <!-- This is what your users will see when there is-->
-                    <!-- an error submitting the form-->
-                    {% for key in errors|keys %}
-                    <div><div class="text-center text-danger mb-3">{{key}}</div></div>
-                    {% endfor %}
-                    <!-- Submit Button-->
-                    <button class="btn btn-primary btn-xl mb-5" id="submitButton" type="submit">S'inscrire</button>
-                </form>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="l_name" type="text" placeholder="Enter your name..." name ="l_name" />
+                            <label for="l_name">Nom</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="pseudo" type="text" placeholder="Enter your pseudo" name ="pseudo" />
+                            <label for="l_name">@Pseudo</label>
+                        </div>
+                        <!-- Email address input-->
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="email" type="email" placeholder="name@example.com" name ="email">
+                            <label for="email">Email</label>
+                        </div>
+                        <!-- Message input-->
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="password" type="password" placeholder="Mot de passe" name = "password" ></input>
+                            <label for="message">Mot de passe</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="password" type="password"  placeholder="Confirmer le mot de passe" name = "confirm_password" ></input>
+                            <label for="message">Confirmation du mot de passe</label>
+                        </div>
+                        <!-- Submit success message-->
+                        <!---->
+                        <!-- This is what your users will see when the form-->
+                        <!-- has successfully submitted-->
+                        <div class="d-none" id="submitSuccessMessage">
+                            <div class="text-center mb-3">
+                                <div class="fw-bolder">Form submission successful!</div>
+                            </div>
+                        </div>
+                        <!-- Submit error message-->
+                        <!---->
+                        <!-- This is what your users will see when there is-->
+                        <!-- an error submitting the form-->
+                        {% for key in errors|keys %}
+                        <div><div class="text-center text-danger mb-3">{{key}}</div></div>
+                        {% endfor %}
+                        <!-- Submit Button-->
+                        <button class="btn btn-primary btn-xl mb-5" id="submitButton" type="submit">S'inscrire</button>
+                    </form>
+</div>
+
 </div>
 {% endblock %}
