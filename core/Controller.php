@@ -35,7 +35,9 @@ abstract class Controller
         if (!$location) {
             header("Location: " . BASE);
         }
-        header("Location: " . BASE . $location);
+        else{
+            header("Location: " . BASE . $location);
+        }
         die();
     }
 }
