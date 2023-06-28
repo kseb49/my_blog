@@ -37,6 +37,7 @@
                             <a href="#" class="btn btn-danger btn-sm">Supprimer</a>
                         </div>
                     </div> #}
+                    {% if session.user %}
                     <form class="container mb-5">
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1">Saisissez votre commentaire</label>
@@ -46,6 +47,9 @@
                          <button type="submit" class="btn btn-secondary btn-sm m-1">Envoyer</button>
                          </div>
                     </form>
+                    {% else %}
+                   <a href="/inscription"><p class="m-5">Pour commenter veuillez vous connecter </p></a>
+                    {% endif %}
                     <div class="container">
                     {% for comment in comments %}
                         <div class="card text-center">
@@ -55,9 +59,10 @@
                             <div class="card-body">
                              
                                  <p class="card-text">{{comment.comment}}</p>
-                            
+                                {% if session.user.id == comment.users_id %}
                                 <a href="#" class="btn btn-link btn-sm comment_link">Modifier</a>
                                 <a href="#" class="btn btn-danger btn-sm">Supprimer</a>
+                                {% endif %}
                             </div>
                             <div class="card-footer text-muted">
                                 {{comment._date|format_datetime('full','none')}}
