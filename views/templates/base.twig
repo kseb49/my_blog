@@ -31,14 +31,33 @@
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/blog">Blog</a></li>
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about">A propos</a></li>
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Contact</a></li>
+                            {% block connect %}
+                            {% if session.user is defined %}
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/deconnexion"><i class="fa-solid fa-arrow-right-from-bracket fa-xl"></i></a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/dashboard"><i class="fa-solid fa-gauge-high fa-xl" style="color: #35ac7e;"></i></a></li>
+                            {% else %}
                             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/inscription"><i class="fa-regular fa-user fa-lg"></i></a></li>
-                             
+                            {% endif %}
+                             {% endblock %}
+
+
                         </ul>
                     
                 </div>
             </nav>
         {% endblock %}
         {%  block header %}{% endblock %}
+        {# {%  block errors %}
+            {% if session.errors is defined %}
+        {% for key,error in session.errors  %}
+        <div  class="container p-5">
+        <div class="alert alert-danger" role="alert">
+        {{ key }} = {{ error }}
+        </div></div>
+        {% endfor %}
+        
+        {% endif %}
+        {% endblock %} #}
         {% block content %}{% endblock %}
         {% block form %}{% endblock %}
         {% block modals %}{% endblock %}
