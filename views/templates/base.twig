@@ -47,19 +47,18 @@
             </nav>
         {% endblock %}
         {%  block header %}{% endblock %}
-        {# {%  block errors %}
+        {%  block errors %}
             {% if session.errors is defined %}
-        {% for key,error in session.errors  %}
-        <div  class="container p-5">
-        <div class="alert alert-danger" role="alert">
-        {{ key }} = {{ error }}
-        </div></div>
-        {% endfor %}
-        
-        {% endif %}
-        {% endblock %} #}
+                {% for key,error in session.errors  %}
+                <div  class="container p-5">
+                <div class="alert alert-danger" role="alert">
+                {{ key }} = {{ error }}
+                </div></div>
+                {% endfor %}
+            {% endif %}
+        {% endblock %}
         {% block content %}{% endblock %}
-        {% block form %}{% endblock %}
+        {# {% block form %}{% endblock %} #}
         {% block modals %}{% endblock %}
         {% block footer %}
         <footer class="footer text-center">

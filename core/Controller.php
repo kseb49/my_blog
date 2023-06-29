@@ -2,16 +2,18 @@
 
 namespace core;
 
-
 use Twig\Extra\Intl\IntlExtension;
+
 
 abstract class Controller
 {
     private $loader;
     protected $twig;
+    
     protected $mail_id;
     protected $host;
     protected $password;
+    protected $from;
 
     public function __construct()
     {
@@ -27,6 +29,7 @@ abstract class Controller
             $this->mail_id = $datas->mail->user_name;
             $this->password = $datas->mail->password;
             $this->host = $datas->mail->host;
+            $this->from = $datas->mail->from;
         }
     }
 
@@ -39,5 +42,9 @@ abstract class Controller
             header("Location: " . BASE . $location);
         }
         die();
+    }
+
+    public function isUser() :bool {
+        return isset($_SESSION['user']);
     }
 }

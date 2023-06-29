@@ -69,32 +69,4 @@ abstract class ValidateModel extends Model
         }
         return true;
     }
-    
-    public function mail() {
-        $mail = new PHPMailer(true);
-        try{
-            // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-            $mail->isSMTP();                                            //Send using SMTP
-            $mail->Host       = 'smtp.gmail.com';                       //Set the SMTP server to send through
-            $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-            $mail->Username   = 'kseb49@gmail.com';                     //SMTP username
-            $mail->Password   = 'qtmwsgeaozonjzny';                     //SMTP password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-            $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-            $mail->setFrom('kseb49@gmail.com', 'Sébastien');
-            $mail->addReplyTo('kseb49@gmail.com', 'Admin blog');
-            $mail->addAddress($this->email, $this->f_name.' '.$this->l_name);
-            $mail->Subject = 'Confirmez votre Email';
-            $mail->isHTML(true);
-            $mail->Body = $this->message;
-            $mail->AltBody = 'Suivez ce lien pour valider votre compte : '.$this->link;
-            if(!$mail->send()) {
-                throw new Exception($mail->ErrorInfo);
-            }
-            return true;
-        }
-        catch(Exception $e) {
-            echo $e->getMessage();
-        }
-    }
 }

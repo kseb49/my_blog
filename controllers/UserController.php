@@ -13,22 +13,27 @@ class UserController extends Controller{
             $_SESSION['user'] = $user->user;
             $this->redirect("dashboard");
         }
-        // header("Location: ".BASE."inscription");
-        // die();
-        
+        $_SESSION['errors'] = ['login' => 'Identifiants incorrects'];
+        $this->redirect('inscription');
     }
-
-    public function dashboard(){
-        if(isset($_SESSION['user']) && !empty($_SESSION['user'])){
-            $this->twig->display('dashboard.html.twig');
-            die();
-        }
-       $this->redirect();
-    }
-
+    
     public function logOut(){
         unset($_SESSION['user']);
         $this->redirect();
     }
+
+    public function dashboard(){
+        if($this->isUser()){
+            $this->twig->display('dashboard.html.twig');
+        }
+       $this->redirect();
+    }
+
+    public function createPost(){
+        if($this->isUser()){
+            $this->twig->display('create-post.twig');
+        }
+    }
+
 }
 

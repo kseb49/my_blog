@@ -4,6 +4,7 @@ namespace controllers;
 
 use DateTime;
 use Exception;
+use utils\Mail;
 use core\Controller;
 use models\RegisterUserModel;
 
@@ -27,11 +28,19 @@ class RegisterUserController extends Controller
                 $register = new RegisterUserModel();
                 if($register->loadDatas($this->datas)->validate()){
                    if($register->registerUser()){
-                        if($register->mail()){
-                            $this->twig->display('registration.twig');
+                        $mail = new Mail();
+                        if($mail->mail($register->email,$register->f_name." ".$register->l_name,$register->message,'Recopier ce lien pour valider votre compte : '.$register->link)){
+                                $_SESSION['success'] = ['register' => 'Vous avez reçu un mail pour confirmer votre compte'];
+                                $this->redirect();
                         }
-                   };
-                };
+                        // if($register->mail()){
+                        //     $this->twig->display('registration.twig');
+                        // }
+                   }
+                   $this->redirect();
+                }
+                $_SESSION['errors'] = ['register' => 'Erreur interne'];
+                $this->redirect();
             }
             throw new Exception("Tous les champs doivent être remplis");
         }catch(Exception $e){

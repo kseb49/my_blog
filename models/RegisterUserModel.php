@@ -1,17 +1,16 @@
 <?php
   namespace models;
   
-  use Exception;
   use core\ValidateModel;
   
   class RegisterUserModel extends ValidateModel
   {
-    protected string $f_name;
-    protected string $l_name;
-    protected string $pseudo;
-    protected string $email;
-    protected string $password;
-    protected string $confirm_password;
+    public string $f_name;
+    public string $l_name;
+    public string $pseudo;
+    public string $email;
+    public string $password;
+    public string $confirm_password;
     public array $user;
     public string $link;
     public string $message;
@@ -206,7 +205,7 @@
         </html>';
         return true;
       }
-      throw new Exception("Erreur de traitement");
+     return false;
     }
     
     public function confirmMail(array $datas) : bool {
