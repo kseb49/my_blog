@@ -23,7 +23,9 @@ try{
 
    $router->post('/connexion',['UserController','logIn']);
    $router->get('/deconnexion',['UserController','logOut']);
+
    $router->get('/dashboard',['UserController','dashboard']);
+   $router->get('/creation',['UserController','createPost']);
 
    $router->find();
 
