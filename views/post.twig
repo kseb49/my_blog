@@ -4,8 +4,16 @@
         <section class="page-section portfolio mt-5" id="portfolio">
             <div class="container">
                 <h2 class="page-section-heading text-center text-uppercase text-secondary mb-5">{{data.title}}</h2>
-                <h3 class=" text-center text-secondary mb-5">{{data.chapo}}</h3>
-                <div class="row justify-content-center">
+                <h3 class=" text-center text-secondary mb-2">{{data.chapo}}</h3>
+                <div class="w-25 m-auto" style="background-color: #eee;">
+                
+                <span class="fw-bolder">{% if data.last_updated %} Modifié le {{data.last_updated}}
+                    {% else %}
+                    Crée le {{data.created_at |format_datetime('full','none') }}
+                    {% endif %} par  @{{data.pseudo}}</span>
+                 
+                </div>
+                <div class="row justify-content-center mt-2">
                     <div class="col-md-6 col-lg-4 mb-5">
                             <img class="img-fluid" src="http://blog.test/assets/img/{{data.img}}" alt="..." />
                     </div>
