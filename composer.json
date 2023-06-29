@@ -15,7 +15,8 @@
             {
                 "core\\": "core/",
                 "controllers\\":"controllers/",
-                "models\\":"models/"
+                "models\\":"models/",
+                "utils\\":"utils/"
             }
         }
     
