@@ -10,12 +10,22 @@ class UserController extends Controller{
     public function logIn(array $input) {
         $user = new UserModel();
         if($user->check($input)){
-            $_SESSION['user'] = $user->user;
-            $this->redirect("dashboard");
+            if ($user->user['confirmation_date'] === null){
+                $_SESSION['error']  = ['connexion' => "le compte n'est pas confirmé"];
+                return $this->twig->display('registration.twig');
+            }
+            if(password_verify($input['password'],$user->user['password'])) {
+                $_SESSION['user'] = $user->user;
+                $this->redirect('dashboard');
+            }
+            $_SESSION['error']  = ['connexion' => 'pseudo ou mot de passe incorrects'];
+            return $this->twig->display('registration.twig');
         }
-        $_SESSION['errors'] = ['login' => 'Identifiants incorrects'];
-        $this->redirect('inscription');
+        $_SESSION['error']  = ['connexion' => 'pseudo ou mot de passe incorrects'];
+        return $this->twig->display('return registration.twig');
     }
+    
+
     
     public function logOut(){
         unset($_SESSION['user']);
@@ -24,14 +34,14 @@ class UserController extends Controller{
 
     public function dashboard(){
         if($this->isUser()){
-            $this->twig->display('dashboard.html.twig');
+            return $this->twig->display('dashboard.html.twig');
         }
        $this->redirect();
     }
 
     public function createPost(){
         if($this->isUser()){
-            $this->twig->display('create-post.twig');
+            return $this->twig->display('create-post.twig');
         }
     }
 
