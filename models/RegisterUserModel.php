@@ -213,7 +213,6 @@
       $request->execute([$datas['id']]);
       $response = $request->fetch() ?? null;
       if(!$response) {
-        $_SESSION['errors'] = ['link' => 'Utilisateur inconnu'];
         return false;
       }
       $this->user = $response;

@@ -48,14 +48,16 @@
         {% endblock %}
         {%  block header %}{% endblock %}
         {%  block errors %}
-            {% if session.errors is defined %}
-                {% for key,error in session.errors  %}
+            {% if session.flash is defined %}    
+                {% for key,error in session.flash  %}
                 <div  class="container p-5">
                 <div class="alert alert-danger" role="alert">
-                {{ key }} = {{ error }}
+                {{ error }}
                 </div></div>
                 {% endfor %}
+            {{ unset('flash') }}
             {% endif %}
+             
         {% endblock %}
         {% block content %}{% endblock %}
         {# {% block form %}{% endblock %} #}

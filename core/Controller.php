@@ -2,6 +2,7 @@
 
 namespace core;
 
+use Twig\Extension\Session;
 use Twig\Extra\Intl\IntlExtension;
 
 
@@ -22,6 +23,7 @@ abstract class Controller
             'cache' => false,
         ]);
         $this->twig->addExtension(new IntlExtension());
+        $this->twig->addExtension(new Session());
         $this->twig->addGlobal('session', $_SESSION);
         if (file_exists(PARAMS)) {
             $datas = json_decode(file_get_contents(PARAMS));
@@ -33,13 +35,19 @@ abstract class Controller
         }
     }
 
+    /**
+     * Send a header Location
+     *
+     * @param string $location
+     * @return void
+     */
     public function redirect(string $location ="")
     {
         if (!$location) {
-            header("Location: " . BASE);
+            header("Location:".BASE);
         }
         else{
-            header("Location: " . BASE . $location);
+            header("Location:".BASE.$location);
         }
         die();
     }

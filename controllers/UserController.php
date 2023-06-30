@@ -11,18 +11,18 @@ class UserController extends Controller{
         $user = new UserModel();
         if($user->check($input)){
             if ($user->user['confirmation_date'] === null){
-                $_SESSION['error']  = ['connexion' => "le compte n'est pas confirmé"];
+                $_SESSION['flash']  = ['connexion' => "le compte n'est pas confirmé"];
                 return $this->twig->display('registration.twig');
             }
             if(password_verify($input['password'],$user->user['password'])) {
                 $_SESSION['user'] = $user->user;
                 $this->redirect('dashboard');
             }
-            $_SESSION['error']  = ['connexion' => 'pseudo ou mot de passe incorrects'];
+            $_SESSION['flash']  = ['connexion' => 'pseudo ou mot de passe incorrects'];
             return $this->twig->display('registration.twig');
         }
-        $_SESSION['error']  = ['connexion' => 'pseudo ou mot de passe incorrects'];
-        return $this->twig->display('return registration.twig');
+        $_SESSION['flash']  = ['connexion' => 'pseudo ou mot de passe incorrects'];
+        return $this->twig->display('registration.twig');
     }
     
 

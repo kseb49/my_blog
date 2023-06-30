@@ -30,7 +30,7 @@ class RegisterUserController extends Controller
                    if($register->registerUser()){
                         $mail = new Mail();
                         if($mail->mail($register->email,$register->f_name." ".$register->l_name,$register->message,'Recopier ce lien pour valider votre compte : '.$register->link)){
-                                $_SESSION['success'] = ['register' => 'Vous avez reçu un mail pour confirmer votre compte'];
+                                $_SESSION['flash'] = ['register' => 'Vous avez reçu un mail pour confirmer votre compte'];
                                 $this->redirect();
                         }
                         // if($register->mail()){
@@ -39,7 +39,7 @@ class RegisterUserController extends Controller
                    }
                    $this->redirect();
                 }
-                $_SESSION['errors'] = ['register' => 'Erreur interne'];
+                $_SESSION['flash'] = ['register' => 'Erreur interne'];
                 $this->redirect();
             }
             throw new Exception("Tous les champs doivent être remplis");
@@ -61,16 +61,16 @@ class RegisterUserController extends Controller
                         $_SESSION['user'] = $register->user;
                         $this->redirect('dashboard');
                     }
-                    $_SESSION['errors'] = ['link' => 'Update failed'];
+                    $_SESSION['flash'] = ['link' => 'Update failed'];
                     $this->redirect('inscription');
                 }
-                $_SESSION['errors'] = ['link' => 'Lien expiré'];
+                $_SESSION['flash'] = ['link' => 'Lien expiré'];
                 $this->redirect('dashboard');
             }
-            $_SESSION['errors'] = ['link' => 'Lien non valide'];
+            $_SESSION['flash'] = ['link' => 'Lien non valide'];
             $this->redirect('inscription');
         }
-        $_SESSION['errors'] = ['link' => 'Lien non valide - USER'];
+        $_SESSION['flash'] = ['link' => 'Lien non valide - USER'];
         $this->redirect('inscription');
     }
 }
