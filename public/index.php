@@ -2,8 +2,8 @@
 if (session_status() !== PHP_SESSION_ACTIVE) {
   session_start();
 }
-define('ROOT',dirname(__DIR__));
-define('PARAMS',dirname(__DIR__).'/env.dev.json');
+!defined('ROOT') ? define('ROOT',dirname(__DIR__)) : null;
+!defined('PARAMS') ? define('PARAMS',dirname(__DIR__).'/env.dev.json') : null;
 require(ROOT.'/vendor/autoload.php');
 
 use \core\Router;
@@ -25,7 +25,10 @@ try{
    $router->get('/deconnexion',['UserController','logOut']);
 
    $router->get('/dashboard',['UserController','dashboard']);
-   $router->get('/creation',['UserController','createPost']);
+   $router->get('/creation',['PostController','createPost']);
+   $router->get('/edition/:{id}',['PostController','postToEdit']);
+   $router->post('/post-edit',['PostController','postEdit']);
+   $router->get('/delete/:{id}/:{token}',['PostController','deletePost']);
 
    $router->find();
 
