@@ -3,8 +3,7 @@
 namespace core;
 
 use Exception;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\PHPMailer;
+
 
 abstract class ValidateModel extends Model
 {
@@ -26,8 +25,10 @@ abstract class ValidateModel extends Model
     */
     public function loadDatas(array $datas) {
         foreach($datas as $key => $value){
-            if (!property_exists($this,$key)){
-                throw new Exception("Le champ {$key} est invalide");
+            if(!str_contains($key,"#")){
+                if (!property_exists($this,$key)){
+                    throw new Exception("Le champ {$key} est invalide");
+                }
             }
             $this->$key = htmlspecialchars($value);
         }
