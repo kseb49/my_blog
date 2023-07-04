@@ -14,8 +14,8 @@ try{
    $router->get('/',['HomeController','index']);
    $router->get('/blog',['BlogController','index']);
    $router->get('/blog/:{id}',['BlogController','single']);
-   $router->get('/blog/:{cat}/:{id}',['BlogController','group']);
-   $router->get('/commentaire',['CommentController','edit']);
+  //  $router->get('/blog/:{cat}/:{id}',['BlogController','group']);
+   $router->get('/commentaire',['CommentController','create']);
 
    $router->get('/inscription',['RegisterUserController','form']);
    $router->post('/inscription',['RegisterUserController','register']);
@@ -25,7 +25,8 @@ try{
    $router->get('/deconnexion',['UserController','logOut']);
 
    $router->get('/dashboard',['UserController','dashboard']);
-   $router->get('/creation',['PostController','createPost']);
+   $router->get('/creation',['PostController','createPostForm']);
+   $router->post('/creation',['PostController','createPost']);
    $router->get('/edition/:{id}',['PostController','postToEdit']);
    $router->post('/post-edit',['PostController','postEdit']);
    $router->get('/delete/:{id}/:{token}',['PostController','deletePost']);
