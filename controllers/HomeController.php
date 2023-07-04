@@ -11,14 +11,6 @@ class HomeController extends Controller
 
         $posts = new BlogModel();
         $posts = $posts->home();
-        $this->twig->display('home.twig',['posts'=>$posts]);
-
-
-        
-       
-
-   
-
-
+        return $this->twig->display('home.twig',['posts'=>$posts]);
     }
 }
