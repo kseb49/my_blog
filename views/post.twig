@@ -4,8 +4,16 @@
         <section class="page-section portfolio mt-5" id="portfolio">
             <div class="container">
                 <h2 class="page-section-heading text-center text-uppercase text-secondary mb-5">{{data.title}}</h2>
-                <h3 class=" text-center text-secondary mb-5">{{data.chapo}}</h3>
-                <div class="row justify-content-center">
+                <h3 class=" text-center text-secondary mb-2">{{data.chapo}}</h3>
+                <div class="w-25 m-auto" style="background-color: #eee;">
+                
+                <span class="fw-bolder">{% if data.last_updated %} Modifié le {{data.last_updated}}
+                    {% else %}
+                    Crée le {{data.created_at |format_datetime('full','none') }}
+                    {% endif %} par  @{{data.pseudo}}</span>
+                 
+                </div>
+                <div class="row justify-content-center mt-2">
                     <div class="col-md-6 col-lg-4 mb-5">
                             <img class="img-fluid" src="http://blog.test/assets/img/{{data.img}}" alt="..." />
                     </div>
@@ -37,6 +45,7 @@
                             <a href="#" class="btn btn-danger btn-sm">Supprimer</a>
                         </div>
                     </div> #}
+                    {% if session.user %}
                     <form class="container mb-5">
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1">Saisissez votre commentaire</label>
@@ -46,6 +55,9 @@
                          <button type="submit" class="btn btn-secondary btn-sm m-1">Envoyer</button>
                          </div>
                     </form>
+                    {% else %}
+                   <a href="/inscription"><p class="m-5">Pour commenter veuillez vous connecter </p></a>
+                    {% endif %}
                     <div class="container">
                     {% for comment in comments %}
                         <div class="card text-center">
@@ -55,9 +67,10 @@
                             <div class="card-body">
                              
                                  <p class="card-text">{{comment.comment}}</p>
-                            
+                                {% if session.user.id == comment.users_id %}
                                 <a href="#" class="btn btn-link btn-sm comment_link">Modifier</a>
                                 <a href="#" class="btn btn-danger btn-sm">Supprimer</a>
+                                {% endif %}
                             </div>
                             <div class="card-footer text-muted">
                                 {{comment._date|format_datetime('full','none')}}

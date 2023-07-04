@@ -65,10 +65,16 @@ class Router {
                 $display->$action($route->params);
                 return;
             }
-            else{
-                $display->$action();
+            if(isset($_GET) && !empty($_GET)) {
+                $display->$action($_GET);
                 return;
             }
+            if(isset($_POST) && !empty($_POST)) {
+                $display->$action($_POST);
+                return;
+            }
+            $display->$action();
+            return;
         }
             throw new Exception('404');
     }

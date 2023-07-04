@@ -17,27 +17,50 @@
         <link href="http://blog.test/assets/css/styles.css" rel="stylesheet" />
     </head>
     <body id="page-top">
-    {% block nav %}<nav class="navbar navbar-expand-lg bg-secondary fixed-top" id="mainNav">
-            <div class="container">
-                <!-- lien vers cv -->
-                <a class="navbar-brand" href="#page-top">Sébastien AUBRESPY<img src="assets/img/dossier.png" alt="" class ="resume"></a>
-                <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    Menu
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/blog">Blog</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about">A propos</a></li>
-                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Contact</a></li>
-                    </ul>
+        {% block nav %}
+            <nav class="navbar navbar-expand-lg bg-secondary fixed-top" id="mainNav">
+                <div class="container">
+                    <!-- lien vers cv -->
+                    <a class="navbar-brand" href="#page-top">Sébastien AUBRESPY<img src="assets/img/dossier.png" alt="" class ="resume"></a>
+                    <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        Menu
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/blog">Blog</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#about">A propos</a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#contact">Contact</a></li>
+                            {% block connect %}
+                            {% if session.user is defined %}
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/deconnexion"><i class="fa-solid fa-arrow-right-from-bracket fa-xl"></i></a></li>
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/dashboard"><i class="fa-solid fa-gauge-high fa-xl" style="color: #35ac7e;"></i></a></li>
+                            {% else %}
+                            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="/inscription"><i class="fa-regular fa-user fa-lg"></i></a></li>
+                            {% endif %}
+                             {% endblock %}
+
+
+                        </ul>
+                    
                 </div>
-            </div>
-        </nav>
+            </nav>
         {% endblock %}
         {%  block header %}{% endblock %}
+        {%  block errors %}
+            {% if session.flash is defined %}    
+                {% for key,error in session.flash  %}
+                <div  class="container p-5">
+                <div class="alert alert-danger" role="alert">
+                {{ error }}
+                </div></div>
+                {% endfor %}
+            {{ unset('flash') }}
+            {% endif %}
+             
+        {% endblock %}
         {% block content %}{% endblock %}
-        {% block form %}{% endblock %}
+        {# {% block form %}{% endblock %} #}
         {% block modals %}{% endblock %}
         {% block footer %}
         <footer class="footer text-center">

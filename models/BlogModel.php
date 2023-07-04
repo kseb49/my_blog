@@ -10,7 +10,7 @@ use core\Model;
 class BlogModel extends Model
 {
     /**
-     * Get all the posts and their authors
+     * Get all the posts and their associated authors
      *
      * @return array
      */
@@ -22,14 +22,14 @@ class BlogModel extends Model
         throw new Exception("Aucun article n'a été trouvé :( ");
     }
     /**
-     * Undocumented function
+     * get a single post and its associated author
      *
      * @param string $id
      * @return array
      */
     public function single(string $id):array{
 
-        $request = $this->connect()->prepare('SELECT * FROM posts p where p.id = ?');
+        $request = $this->connect()->prepare('SELECT * FROM posts p join users u on u.id = p.users_id where p.id = ?');
         $request->execute([$id]);
         if($resp = $request->fetchAll()){
             return $resp;
@@ -37,6 +37,11 @@ class BlogModel extends Model
         throw new Exception("Cet article n'existe pas :(");
     }
 
+    /**
+     * Get the last three posts
+     *
+     * @return array
+     */
     public function home():array{
         if($request = $this->connect()->query('SELECT * FROM posts order by created_at desc limit 3')->fetchAll()){
 
