@@ -3,7 +3,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
   session_start();
 }
 !defined('ROOT') ? define('ROOT',dirname(__DIR__)) : null;
-!defined('PARAMS') ? define('PARAMS',dirname(__DIR__).'/env.dev.json') : null;
+!defined('PARAMS') ? define('PARAMS',preg_replace("#/#",DIRECTORY_SEPARATOR,dirname(__DIR__).'/env.dev.json')) : null;
 require(ROOT.'/vendor/autoload.php');
 
 use \core\Router;
