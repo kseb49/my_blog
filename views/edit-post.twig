@@ -1,0 +1,57 @@
+{% extends 'templates/base.twig' %}
+{% block title %}
+    {% if action == 'edit'%}
+        Modification d'un article
+    {% else %}
+        Création d'un article
+    {% endif %}
+{% endblock %}
+{%  block header %}
+        <header class="masthead bg-primary text-white text-center">
+            <div class="container d-flex align-items-center flex-column">
+                <div class="divider-custom divider-light">
+                    <div class="divider-custom-icon"><i class="fa-solid fa-pen-nib fa-2xl"></i></div>
+                </div>
+                <h1 class="masthead-heading text-uppercase mb-0">
+                {% if action == 'edit'%}
+                Modification d'un article
+                {% else %}
+                Création d'un article
+                {% endif %}
+                </h1>
+            </div>
+        </header>
+{% endblock %}
+{% block content %}
+{% if action == "edit" %}
+{% include 'templates/postedit.twig' %}
+{% else %}
+<div class="container">
+    <form id="contactForm" method="post" action="/creation" enctype="multipart/form-data">
+        {# <div class="form-floating mb-3">
+            <input class="form-control" id="pseudo" type="text" placeholder="Enter your name..." name ="pseudo" value = "{{ session.user.pseudo}}" />
+            <label for="pseudo">@pseudo</label>
+        </div> #}
+        <div class="form-floating mb-3">
+            <input class="form-control" id="pseudo" type="text" placeholder="Titre de l'article" name ="title"/>
+            <label for="title">Titre</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" id="chapo" type="text" placeholder="Chapô" name ="chapo"/>
+            <label for="chapo">Chapo</label>
+        </div>
+        <div class="form-floating mb-3">
+            <textarea class="form-control" id="content" type="text" placeholder="Article..." name ="content" wrap = "hard-wrap"></textarea>
+            <label for="content">Article</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+            <input class="form-control-file" id="img" type="file" name ="image"  accept="image/png, image/jpeg ,image/webp ,image/jpg "/>
+            <label for="img">Image d'illustration</label>
+        </div>
+        <input type="hidden" name = "#token" value ="{{ session.user.token }}"/>
+        <button class="btn btn-primary btn-xl mb-5" id="submitButton" type="submit">Modifier</button>
+    </form>
+</div>
+{% endif %}
+{% endblock %}

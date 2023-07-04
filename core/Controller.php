@@ -11,10 +11,13 @@ abstract class Controller
     private $loader;
     protected $twig;
     
-    protected $mail_id;
-    protected $host;
-    protected $password;
-    protected $from;
+    protected string $mail_id;
+    protected string $host;
+    protected string $password;
+    protected string $from;
+
+    protected array $type_auth;
+    protected string $size;
 
     public function __construct()
     {
@@ -27,11 +30,14 @@ abstract class Controller
         $this->twig->addGlobal('session', $_SESSION);
         if (file_exists(PARAMS)) {
             $datas = json_decode(file_get_contents(PARAMS));
-            define('BASE', $datas->base_url);
+            !defined('BASE') ? define('BASE', $datas->base_url) : null;
+            !defined('IMAGE') ? define('IMAGE', preg_replace("#/#",DIRECTORY_SEPARATOR,ROOT.$datas->image->location)) : null;
             $this->mail_id = $datas->mail->user_name;
             $this->password = $datas->mail->password;
             $this->host = $datas->mail->host;
             $this->from = $datas->mail->from;
+            $this->type_auth = $datas->image->type_auth;
+            $this->size = $datas->image->size;
         }
     }
 
@@ -55,4 +61,6 @@ abstract class Controller
     public function isUser() :bool {
         return isset($_SESSION['user']);
     }
+
+
 }

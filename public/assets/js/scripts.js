@@ -51,6 +51,14 @@ window.addEventListener('DOMContentLoaded', event => {
         });
     });
 
+// let del = document.getElementById("del-post")
+// console.log('del-post')
+// del.addEventListener('click',(e)=>{
+
+//     e.preventDefault()
+//     window.confirm('Etes vous sur de supprimer cet article')
+// })
+
 });
 
 // let cv = document.getElementsByClassName('resume')

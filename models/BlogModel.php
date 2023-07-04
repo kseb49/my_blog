@@ -16,8 +16,8 @@ class BlogModel extends Model
      */
     public function index():array{
 
-        if($request = $this->connect()->query('SELECT *, p.id FROM posts p inner join users u on u.id = p.users_id')->fetchAll()){
-           return $request;
+        if($response = $this->connect()->query('SELECT *, p.id FROM posts p inner join users u on u.id = p.users_id')->fetchAll()){
+           return $response;
         }
         throw new Exception("Aucun article n'a été trouvé :( ");
     }

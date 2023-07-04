@@ -30,7 +30,7 @@ class RegisterUserController extends Controller
                    if($register->registerUser()){
                         $mail = new Mail();
                         if($mail->mail($register->email,$register->f_name." ".$register->l_name,$register->message,'Recopier ce lien pour valider votre compte : '.$register->link)){
-                                $_SESSION['flash'] = ['register' => 'Vous avez reçu un mail pour confirmer votre compte'];
+                                $_SESSION['flash'] = ['success' => 'Vous avez reçu un mail pour confirmer votre compte'];
                                 $this->redirect();
                         }
                         // if($register->mail()){
@@ -59,18 +59,19 @@ class RegisterUserController extends Controller
                 if($diff->format("%H") <= 24) {
                     if($register->updateUser()) {
                         $_SESSION['user'] = $register->user;
+                        $_SESSION['user']['token'] = hash('md5',uniqid(true));
                         $this->redirect('dashboard');
                     }
-                    $_SESSION['flash'] = ['link' => 'Update failed'];
+                    $_SESSION['flash'] = ['danger' => 'Update failed'];
                     $this->redirect('inscription');
                 }
-                $_SESSION['flash'] = ['link' => 'Lien expiré'];
+                $_SESSION['flash'] = ['danger' => 'Lien expiré'];
                 $this->redirect('dashboard');
             }
-            $_SESSION['flash'] = ['link' => 'Lien non valide'];
+            $_SESSION['flash'] = ['danger' => 'Lien non valide'];
             $this->redirect('inscription');
         }
-        $_SESSION['flash'] = ['link' => 'Lien non valide - USER'];
+        $_SESSION['flash'] = ['danger' => 'Lien non valide - USER'];
         $this->redirect('inscription');
     }
 }

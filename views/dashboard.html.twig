@@ -1,5 +1,5 @@
 {% extends "templates/base.twig" %}
-{% block title %}Dashboard{% endblock %}
+{% block title %}Tableau de bord || {{ session.user.pseudo }}{% endblock %}
 {%  block header %}<!-- Masthead-->
         <!-- Navigation-->
         <header class="masthead bg-primary text-white text-center">
@@ -21,7 +21,7 @@
 {% endblock %}
 {% block content %} 
 <div class="container">
-    <h2>Dashboard</h2>
+    <h2>Tableau de bord</h2>
 
         <div class="container">
                 <div class="btn-group p-4" role="group" aria-label="Basic example">
@@ -32,15 +32,45 @@
         </div>
         </div>
         <div class="container">
-        {% if session.user %}
-            <p class="font-weight-bold">@{{ session.user.pseudo }}</p>
-            <p class="font-weight-bold"> {{ session.user.email }}</p>
-            <p class="font-weight-bold">{{ session.user.f_name }}</p>
-        {% endif %}
+            {% if session.user %}
+                <p class="font-weight-bold">@{{ session.user.pseudo }}</p>
+                <p class="font-weight-bold"> {{ session.user.email }}</p>
+                <p class="font-weight-bold">{{ session.user.f_name }}</p>
+                {# <p class="font-weight-bold">{{ session.user.token }}</p> #}
+            {% endif %}
         </div>
+             <section class="page-section portfolio" id="portfolio">
+                <div class="container">
+                    <!-- Portfolio Section Heading-->
+                    <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Vos articles en ligne</h2>
+                    <!-- Icon Divider-->
+                    <div class="divider-custom">
+                        <div class="divider-custom-line"></div>
+                        <div class="divider-custom-icon"><i class="fa-solid fa-table-cells-large"></i></div>
+                        <div class="divider-custom-line"></div>
+                    </div>
+                    <!-- Portfolio Grid Items-->
+               
+                <div class="row justify-content-center"> 
+                    {% for post in posts %}
+                        <!-- Portfolio Item 1-->
+                        <div class="col-md-6 col-lg-4 mb-5">
+                            <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal{{loop.index}}">
+                                <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                    <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
+                                </div>
+                                <img class="img-fluid" src= "assets/img/{{post.img}}" alt="..." />
+                            </div>  
+                        </div>
+                    {% endfor %}
+                </div> 
+            </div>
+         </section
+       
 
 </div>
 {% endblock %}
+{% use 'templates/modals.twig' %}
 {% block script %}
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>

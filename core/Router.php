@@ -18,7 +18,7 @@ class Router {
      *
      * @var array
      */
-    protected $url = [];
+    public $url = [];
         
         public function __construct(string $request)
         {
@@ -33,11 +33,11 @@ class Router {
      * @return void
      */
     public function get(string $url,array $path){
-            
         if(preg_match('#:{(\w+)}#',$url)){
             $url= preg_replace("#:{(\w+)}#",'([^/]+)',$url);
         }
         $this->url['GET'][$url] = $path;
+        return $this;
     }
     /**
     * Register a post route
@@ -49,7 +49,13 @@ class Router {
     public function post(string $url,array $path){
             
             $this->url['POST'][$url] = $path;
+            return $this;
     }
+    // public function auth(string $role){
+            
+    //     array_push($this->url[[array_key_last($this->url[$_SERVER['REQUEST_METHOD']])]],['auth'=>$role]);dd($this->url);
+    //         return $this;
+    // }
     /**
      * Call the controller which  matches the query
      *
@@ -61,7 +67,11 @@ class Router {
             $controller = '\controllers\\'.$route->route[0];
             $action = $route->route[1];
             $display = new $controller;
-            if(!empty($route->params)){
+            if(!empty($route->params)) {
+                if(count($route->params) === 1) {
+                    $display->$action($route->params[0]);
+                    return;
+                }
                 $display->$action($route->params);
                 return;
             }

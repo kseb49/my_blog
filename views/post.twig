@@ -7,7 +7,7 @@
                 <h3 class=" text-center text-secondary mb-2">{{data.chapo}}</h3>
                 <div class="w-25 m-auto" style="background-color: #eee;">
                 
-                <span class="fw-bolder">{% if data.last_updated %} Modifié le {{data.last_updated}}
+                <span class="fw-bolder">{% if data.last_updated %} Modifié le {{data.last_updated |format_datetime('full','none')}}
                     {% else %}
                     Crée le {{data.created_at |format_datetime('full','none') }}
                     {% endif %} par  @{{data.pseudo}}</span>
@@ -21,35 +21,11 @@
                     {{data.content|raw}}
                     </section>
                     {% endfor %}
-                     {# <div class="col-md-6 col-lg-6 mb-5">
-                        <div class="border m-1">
-                                <p class="text-center font-italic">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur fugiat iste labore ab sit mollitia! Et sunt labore sequi hic doloribus, cum dolorem in eveniet! </p>
-                                <div class="container mx-auto">
-                                    <button class="btn btn-light btn-sm">
-                                                Modifier
-                                    </button>
-                                    <button class="btn btn-danger btn-sm">
-                                                Supprimer
-                                    </button>
-                                </div>
-                        </div>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur fugiat iste labore ab sit mollitia! Et sunt labore sequi hic doloribus, cum dolorem in eveniet!</p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur fugiat iste labore ab sit mollitia! Et sunt labore sequi hic doloribus, cum dolorem in eveniet!</p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur fugiat iste labore ab sit mollitia! Et sunt labore sequi hic doloribus, cum dolorem in eveniet!</p>
-                    </div> #}
-                    {# <div class="card" style="width: 18rem;">
-                        <div class="card-body">
-                            <h5 class="card-title">@user</h5>
-                            <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Expedita, magni.um dolor sit amet consectetur a</p>
-                            <a href="#" class="btn btn-light btn-sm">Modifier</a>
-                            <a href="#" class="btn btn-danger btn-sm">Supprimer</a>
-                        </div>
-                    </div> #}
                     {% if session.user %}
-                    <form class="container mb-5">
+                    <form class="container mb-5" action="/commentaire" method="post">
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1">Saisissez votre commentaire</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name = "comment"></textarea>
                         </div>
                         <div class="form-group">
                          <button type="submit" class="btn btn-secondary btn-sm m-1">Envoyer</button>

@@ -19,9 +19,9 @@ class Route extends Router
      */
     protected function search():bool{
         /**
-         * seeks for a query with a given pattern
+         * seeks for a query with the given pattern ^/(\w+)/(.+)$ => /foo/bar , /foo/bar/foo 
          */
-        if(preg_match('#^/(\w+)/(.+)$#',$this->request['path'])){
+        if(preg_match('#^/(\w+)/(.+)$#',$this->request['path'])) {
             foreach($this->url[$_SERVER['REQUEST_METHOD']] as $key => $value){
                  if(preg_match('#^'.$key.'$#',$this->request['path'],$matches)){
                    array_shift($matches);

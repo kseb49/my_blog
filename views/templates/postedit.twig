@@ -1,0 +1,32 @@
+{% for post in post %}
+<div class="container">
+    <form id="contactForm" method="post" action="/post-edit" enctype="multipart/form-data">
+        {# <div class="form-floating mb-3">
+            <input class="form-control" id="pseudo" type="text" placeholder="Enter your name..." name ="pseudo" value = "{{ session.user.pseudo}}" />
+            <label for="pseudo">@pseudo</label>
+        </div> #}
+        <div class="form-floating mb-3">
+            <input class="form-control" id="pseudo" type="text" placeholder="Titre de l'article" name ="title" value = "{{ post.title}}"/>
+            <label for="title">Titre</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input class="form-control" id="chapo" type="text" placeholder="Chapô" name ="chapo" value = "{{ post.chapo }}"/>
+            <label for="chapo">Chapo</label>
+        </div>
+        <div class="form-floating mb-3">
+            <textarea class="form-control" id="content" type="text" placeholder="Article..." name ="content" wrap = "hard-wrap">{{ post.content }}</textarea>
+            <label for="content">Article</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+            <input class="form-control-file" id="img" type="file" name ="image"  accept="image/png, image/jpeg ,image/webp ,image/jpg "/>
+            <label for="img">Image d'illustration</label>
+            <img class="img-fluid rounded mt-5" src= "/assets/img/{{ post.img }}"/>
+        </div>
+        <input type="hidden" name = "#token" value ="{{ session.user.token}}"/>
+        <input type="hidden" name = "#id" value ="{{ post.id }}"/>
+        <input type="hidden" name = "#img" value ="{{ post.img }}"/>
+        <button class="btn btn-primary btn-xl mb-5" id="submitButton" type="submit">Modifier</button>
+    </form>
+</div>
+{% endfor %}
