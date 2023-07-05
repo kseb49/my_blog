@@ -15,7 +15,7 @@ try{
    $router->get('/blog',['BlogController','index']);
    $router->get('/blog/:{id}',['BlogController','single']);
   //  $router->get('/blog/:{cat}/:{id}',['BlogController','group']);
-   $router->get('/commentaire',['CommentController','create']);
+   $router->post('/commentaire',['CommentController','create']);
 
    $router->get('/inscription',['RegisterUserController','form']);
    $router->post('/inscription',['RegisterUserController','register']);

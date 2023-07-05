@@ -11055,3 +11055,7 @@ html {
 .comment_link{
   color : grey;
 }
+.img-mod{
+  width: 4rem;
+  height: 4rem !important ;
+}
