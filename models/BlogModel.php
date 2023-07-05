@@ -29,7 +29,7 @@ class BlogModel extends Model
      */
     public function single(string $id):array{
 
-        $request = $this->connect()->prepare('SELECT * FROM posts p join users u on u.id = p.users_id where p.id = ?');
+        $request = $this->connect()->prepare('SELECT *,p.id FROM posts p join users u on u.id = p.users_id where p.id = ?');
         $request->execute([$id]);
         if($resp = $request->fetchAll()){
             return $resp;
