@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Mail extends Controller
 {
 
-    public function mail(string $adress, ?string $name,string $message,?string $alt) {
+    public function mail(string $adress,string $subject="",string $name="",string $message,string $alt ="") {
         $mail = new PHPMailer(true);
         try{
             // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                   //Enable verbose debug output
@@ -23,7 +23,7 @@ class Mail extends Controller
             $mail->setFrom($this->from);
             $mail->addReplyTo($this->from);
             $mail->addAddress($adress, $name);
-            $mail->Subject = 'Confirmez votre Email';
+            $mail->Subject = $subject;
             $mail->isHTML(true);
             $mail->Body = $message;
             $mail->AltBody = $alt;
