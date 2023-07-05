@@ -29,7 +29,7 @@ class RegisterUserController extends Controller
                 if($register->loadDatas($this->datas)->validate()){
                    if($register->registerUser()){
                         $mail = new Mail();
-                        if($mail->mail($register->email,$register->f_name." ".$register->l_name,$register->message,'Recopier ce lien pour valider votre compte : '.$register->link)){
+                        if($mail->mail($register->email,"Confirmez votre compte",$register->f_name." ".$register->l_name,$register->message,'Recopier ce lien pour valider votre compte : '.$register->link)){
                                 $_SESSION['flash'] = ['success' => 'Vous avez reçu un mail pour confirmer votre compte'];
                                 $this->redirect();
                         }
