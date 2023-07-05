@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 class Mail extends Controller
 {
 
-    public function mail(string $adress,string $subject="",string $name="",string $message,string $alt ="") {
+    public function mail(string $adress,string $message,string $subject="",string $name="",string $alt ="") {
         $mail = new PHPMailer(true);
         try{
             // $mail->SMTPDebug = SMTP::DEBUG_SERVER;                   //Enable verbose debug output
