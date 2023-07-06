@@ -7,6 +7,7 @@ use core\Controller;
 use PHPMailer\PHPMailer\PHPMailer;
 
 class Mail extends Controller
+
 {
 
     public function mail(string $adress,string $message,string $subject="",string $name="",string $alt ="") {
@@ -19,7 +20,8 @@ class Mail extends Controller
             $mail->Username   = $this->mail_id;                     //SMTP username
             $mail->Password   = $this->password;                     //SMTP password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-            $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+            $mail->Port       = 465;      //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+            $mail->CharSet = "UTF-8";                       //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
             $mail->setFrom($this->from);
             $mail->addReplyTo($this->from);
             $mail->addAddress($adress, $name);
