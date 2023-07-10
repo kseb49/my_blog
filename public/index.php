@@ -7,6 +7,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 require(ROOT.'/vendor/autoload.php');
 
 use \core\Router;
+use utils\Flash;
 
 try{
    $router = new Router($_SERVER['REQUEST_URI']);
@@ -16,6 +17,9 @@ try{
    $router->get('/blog/:{id}',['BlogController','single']);
   //  $router->get('/blog/:{cat}/:{id}',['BlogController','group']);
    $router->post('/commentaire',['CommentController','create']);
+   $router->get('/to-moderate',['CommentController','commentsLists']);
+   $router->get('/accept/:{id}/:{token}/:{id}',['CommentController','accept']);
+   $router->get('/reject/:{id}/:{token}/:{id}',['CommentController','reject']);
 
    $router->get('/inscription',['RegisterUserController','form']);
    $router->post('/inscription',['RegisterUserController','register']);
@@ -35,6 +39,7 @@ try{
 
 }
 catch(Exception $e){
-  echo $e->getMessage();
+  Flash::flash('danger',$e);
+  header("Location: http://blog.test/");
 }
 
