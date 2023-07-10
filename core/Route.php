@@ -17,7 +17,7 @@ class Route extends Router
      *
      * @return boolean
      */
-    protected function search():bool{
+    protected function search():bool {
         /**
          * seeks for a query with the given pattern ^/(\w+)/(.+)$ => /foo/bar , /foo/bar/foo 
          */
@@ -34,6 +34,6 @@ class Route extends Router
             $this->route = $this->url[$_SERVER['REQUEST_METHOD']][$this->request['path']];
             return true;
         }
-        throw new Exception('pas de route correspondante');
+        throw new Exception($this->request['path'].'N\'est pas une route valide');
         }
 }

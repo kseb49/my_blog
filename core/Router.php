@@ -86,6 +86,6 @@ class Router {
             $display->$action();
             return;
         }
-            throw new Exception('404');
+            throw new Exception('Cette adresse est introuvable');
     }
 }

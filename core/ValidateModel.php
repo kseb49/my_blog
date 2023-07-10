@@ -30,7 +30,7 @@ abstract class ValidateModel extends Model
     */
     public function loadDatas(array $datas) {
         foreach($datas as $key => $value){
-            if(!str_contains($key,"#")) {//input name starting with # are excluded .Those could be hidden input just needed to security concern per exemple 
+            if(!str_contains($key,"#")) {//input name starting with # are excluded .Those could be hidden input (just needed to security concern) per exemple 
                 if (!property_exists($this,$key)) {
                     throw new Exception("Le champ {$key} est invalide");
                 }
