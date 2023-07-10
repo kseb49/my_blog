@@ -1,32 +1,38 @@
 {% extends "templates/base.twig" %}
 {% block content %}
+{% set id ="" %}
 {% for data in datas  %}
-        <section class="page-section portfolio mt-5" id="portfolio">
-            <div class="container">
-                <h2 class="page-section-heading text-center text-uppercase text-secondary mb-5">{{data.title}}</h2>
-                <h3 class=" text-center text-secondary mb-2">{{data.chapo}}</h3>
-                <div class="w-25 m-auto" style="background-color: #eee;">
-                
-                <span class="fw-bolder">{% if data.last_updated %} Modifié le {{data.last_updated |format_datetime('full','none')}}
-                    {% else %}
-                    Crée le {{data.created_at |format_datetime('full','none') }}
-                    {% endif %} par  @{{data.pseudo}}</span>
-                 
-                </div>
-                <div class="row justify-content-center mt-2">
-                    <div class="col-md-6 col-lg-4 mb-5">
-                            <img class="img-fluid" src="http://blog.test/assets/img/{{data.img}}" alt="..." />
-                    </div>
-                    <section class="page-section">
-                    {{data.content|raw}}
-                    </section>
-                    {% endfor %}
+{% set id = data.id %}
+<section class="page-section portfolio mt-5" id="portfolio">
+                  {{include('templates/errors.twig')}}
+    <div class="container">
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-5">{{data.title}}</h2>
+        <h3 class=" text-center text-secondary mb-2">{{data.chapo}}</h3>
+        <div class="w-25 m-auto" style="background-color: #eee;">
+        
+        <span class="fw-bolder">{% if data.last_updated %} Modifié le {{data.last_updated |format_datetime('full','none')}}
+            {% else %}
+            Crée le {{data.created_at |format_datetime('full','none') }}
+            {% endif %} par  @{{data.pseudo}}</span>
+            
+        </div>
+        <div class="row justify-content-center mt-2">
+            <div class="col-md-6 col-lg-4 mb-5">
+                    <img class="img-fluid" src="http://blog.test/assets/img/{{data.img}}" alt="..." />
+            </div>
+            <section class="page-section">
+            {{data.content|raw}}
+</section>
+{% endfor %}
+                    
                     {% if session.user %}
                     <form class="container mb-5" action="/commentaire" method="post">
                         <div class="form-group">
                             <label for="exampleFormControlTextarea1">Saisissez votre commentaire</label>
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name = "comment"></textarea>
                         </div>
+                        <input type="hidden" name ="#token" value="{{session.user.token}}">
+                        <input type="hidden" name ="post_id" value = "{{id}}">
                         <div class="form-group">
                          <button type="submit" class="btn btn-secondary btn-sm m-1">Envoyer</button>
                          </div>
@@ -35,15 +41,24 @@
                    <a href="/inscription"><p class="m-5">Pour commenter veuillez vous connecter </p></a>
                     {% endif %}
                     <div class="container">
+                    {% if comments %}
                     {% for comment in comments %}
                         <div class="card text-center">
                             <div class="card-header">
                                 @{{comment.pseudo}}
                             </div>
                             <div class="card-body">
-                             
-                                 <p class="card-text">{{comment.comment}}</p>
-                                {% if session.user.id == comment.users_id %}
+                                 <p class="card-text">
+                                 {% if comment.status == 0 %}
+                                 
+                                 <small class="text-muted">...Commentaire en attente de modération...</small>
+                                 <img src="http://blog.test/assets/img/man-thinking.png" class="img-mod m-auto"/>
+                               
+                                 {% else %}                          
+                                 {{comment.comment}}
+                                 {% endif %}
+                                 </p>
+                                {% if session.user.id == comment.users_id and comment.status == 1 %}
                                 <a href="#" class="btn btn-link btn-sm comment_link">Modifier</a>
                                 <a href="#" class="btn btn-danger btn-sm">Supprimer</a>
                                 {% endif %}
@@ -58,61 +73,10 @@
                             <div class="divider-custom-icon"><i class="fa-solid fa-terminal"></i></div>
                             <div class="divider-custom-line"></div>
                         </div>
-                        {% endfor %}
-                        {# <div class="card text-center">
-                            <div class="card-header">
-                                @user
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                <a href="#" class="btn btn-link btn-sm comment_link">Modifier</a>
-                                <a href="#" class="btn btn-danger btn-sm">Supprimer</a>
-                            </div>
-                            <div class="card-footer text-muted">
-                                date
-                            </div>
-                        </div>
-                        <div class="divider-custom">
-                            <div class="divider-custom-line"></div>
-                            <div class="divider-custom-icon"><i class="fa-solid fa-terminal"></i></div>
-                            <div class="divider-custom-line"></div>
-                        </div>
-                        <div class="card text-center">
-                            <div class="card-header">
-                                @user
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                <a href="#" class="btn btn-link btn-sm comment_link">Modifier</a>
-                                <a href="#" class="btn btn-danger btn-sm">Supprimer</a>
-                            </div>
-                            <div class="card-footer text-muted">
-                                date
-                            </div>
-                        </div>
-                        <div class="divider-custom">
-                            <div class="divider-custom-line"></div>
-                            <div class="divider-custom-icon"><i class="fa-solid fa-terminal"></i></div>
-                            <div class="divider-custom-line"></div>
-                        </div>
-                        <div class="card text-center">
-                            <div class="card-header">
-                                @user
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                <a href="#" class="btn btn-link btn-sm comment_link">Modifier</a>
-                                <a href="#" class="btn btn-danger btn-sm">Supprimer</a>
-                            </div>
-                            <div class="card-footer text-muted">
-                                date
-                            </div>
-                        </div>
-                        <div class="divider-custom">
-                            <div class="divider-custom-line"></div>
-                            <div class="divider-custom-icon"><i class="fa-solid fa-terminal"></i></div>
-                            <div class="divider-custom-line"></div>
-                        </div> #}
+                    {% endfor %}
+                    {% else %}
+                    <p>Aucun commentaires</p>
+                    {% endif %}  
                     </div>
 
         </section>

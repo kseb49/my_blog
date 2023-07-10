@@ -1,0 +1,56 @@
+{% extends 'templates/base.twig' %}
+{% block title %}
+   Commentaires à modérer
+{% endblock %}
+{%  block header %}
+        <header class="masthead bg-primary text-white text-center">
+            <div class="container d-flex align-items-center flex-column">
+                <div class="divider-custom divider-light">
+                    <div class="divider-custom-icon"><i class="fa-solid fa-pen-nib fa-2xl"></i></div>
+                </div>
+                <h1 class="masthead-heading text-uppercase mb-0">
+               Modération
+                </h1>
+            </div>
+        </header>
+{% endblock %}
+{% block content %}
+<div class="container mt-5">
+{{include('templates/errors.twig')}}
+                    {% for comment in pend_comments %}
+                        <div class="card text-center">
+                            <div class="card-header">
+                                @{{comment.pseudo}}
+                            </div>
+                            <div class="card-body">
+                                 <p class="card-text">
+                                
+                                 {{comment.comment}}
+                                
+                                 </p>
+                                
+                                <a href="/accept/{{comment.idcom}}/{{session.user.token}}/{{comment.id}}" class="btn btn-success btn-sm">Accepter</a>
+                                <a href="/reject/{{comment.idcom}}/{{session.user.token}}/{{comment.id}}" class="btn btn-danger btn-sm">Supprimer</a>
+                                
+                            </div>
+                            <div class="card-footer text-muted">
+                                {{comment._date|format_datetime('full','none')}} - Article {{ comment.posts_id}}
+                            </div>
+                        </div>
+                        
+                        <div class="divider-custom">
+                            <div class="divider-custom-line"></div>
+                            <div class="divider-custom-icon"><i class="fa-solid fa-terminal"></i></div>
+                            <div class="divider-custom-line"></div>
+                        </div>
+                    {% endfor %}
+                        
+                    </div>
+
+{% endblock %}
+
+
+
+
+
+

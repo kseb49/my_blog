@@ -1,0 +1,27 @@
+<mjml>
+  <mj-head>
+    <mj-attributes>
+      <mj-class name="mjclass" color="#274472" font-size="20px" font-style="underline" />
+      <mj-class name="comment" color="#41729F" font-size="15px" font-style="italic" />
+      <mj-class name="author" color="#2c3e50" font-size="18px" />
+    </mj-attributes>
+    <mj-title>Blog de Sébastien AUBRESPY</mj-title>
+  </mj-head>
+  <mj-body>
+    <mj-section>
+      <mj-column>
+        <mj-text mj-class="mjclass">Votre commentaire est en ligne</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+        <mj-text mj-class="comment">"This article helped me understand the benefits of early returns."</mj-text>
+      </mj-column>
+    </mj-section>
+    <mj-section>
+      <mj-column>
+<mj-button background-color="#274472" border-radius="10px" href="http://blog.test/">Voir mon commmentaire</mj-button>      </mj-column>
+    </mj-section>
+
+  </mj-body>
+</mjml>

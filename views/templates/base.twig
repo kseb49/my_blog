@@ -48,20 +48,8 @@
             </nav>
         {% endblock %}
         {%  block header %}{% endblock %}
-        {%  block errors %}
-            {% if session.flash is defined %}    
-                {% for key,message in session.flash  %}
-                <div  class="container p-5">
-                    <div class="alert alert-{{key}}" role="alert">
-                    {{ message }}
-                    </div>
-                </div>
-                {% endfor %}
-                {{ unset('flash') }}
-            {% endif %}
-        {% endblock %}
         {% block content %}{% endblock %}
-        {# {% block form %}{% endblock %} #}
+        {% block form %}{% endblock %}
         {% block modals %}{% endblock %}
         {% block footer %}
         <footer class="footer text-center">

@@ -1,0 +1,12 @@
+ {%  block errors %}
+            {% if session.flash is defined %}    
+                {% for key,message in session.flash  %}
+                <div  class="container p-5">
+                    <div class="alert alert-{{key}}" role="alert">
+                    {{ message }}
+                    </div>
+                </div>
+                {% endfor %}
+                {{ unset('flash') }}
+            {% endif %}
+        {% endblock %}

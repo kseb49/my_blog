@@ -20,17 +20,26 @@
         </header>
 {% endblock %}
 {% block content %} 
-<div class="container">
-    <h2>Tableau de bord</h2>
+    <div class="container">
+        <h2>Tableau de bord</h2>
+        {{include('templates/errors.twig')}}
+        <div class="btn-group p-4" role="group" aria-label="Basic example">
+            <a type="button" class="btn btn-primary" href="/creation">Articles</a>
+                {% if pend_comments %}
+                <a type="button" class="btn btn-warning" href="/to-moderate">A modérer
+                <span class="badge badge-light">
+                {% for comment in pend_comments %} 
+                {% if loop.last %} 
+                {{loop.length}} 
+                {% endif %}
+                {% endfor %}
+                </span>
+                </a>
+                {% endif %}
+            <button type="button" class="btn btn-primary">Right</button>
+        </div>
+    
 
-        <div class="container">
-                <div class="btn-group p-4" role="group" aria-label="Basic example">
-                <a type="button" class="btn btn-primary" href="/creation">Articles</a>
-                <button type="button" class="btn btn-primary">Infos</button>
-                <button type="button" class="btn btn-primary">Right</button>
-            </div>
-        </div>
-        </div>
         <div class="container">
             {% if session.user %}
                 <p class="font-weight-bold">@{{ session.user.pseudo }}</p>
@@ -39,8 +48,8 @@
                 {# <p class="font-weight-bold">{{ session.user.token }}</p> #}
             {% endif %}
         </div>
-             <section class="page-section portfolio" id="portfolio">
-                <div class="container">
+        <section class="page-section portfolio" id="portfolio">
+            <div class="container">
                     <!-- Portfolio Section Heading-->
                     <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Vos articles en ligne</h2>
                     <!-- Icon Divider-->
@@ -65,10 +74,8 @@
                     {% endfor %}
                 </div> 
             </div>
-         </section
-       
-
-</div>
+         </section>
+    </div>
 {% endblock %}
 {% use 'templates/modals.twig' %}
 {% block script %}
