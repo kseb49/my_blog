@@ -7,6 +7,7 @@ use Twig\Extra\Intl\IntlExtension;
 
 
 abstract class Controller
+
 {
     private $loader;
     protected $twig;
@@ -15,6 +16,7 @@ abstract class Controller
     protected string $host;
     protected string $password;
     protected string $from;
+    protected string $admin;
 
     protected array $type_auth;
     protected string $size;
@@ -32,10 +34,13 @@ abstract class Controller
             $datas = json_decode(file_get_contents(PARAMS));
             !defined('BASE') ? define('BASE', $datas->base_url) : null;
             !defined('IMAGE') ? define('IMAGE', preg_replace("#/#",DIRECTORY_SEPARATOR,ROOT.$datas->image->location)) : null;
+            !defined('ADMIN') ? define('ADMIN', 1) : null;
+            !defined('REF') ? define('REF', 'referer') : null;
             $this->mail_id = $datas->mail->user_name;
             $this->password = $datas->mail->password;
             $this->host = $datas->mail->host;
             $this->from = $datas->mail->from;
+            $this->admin = $datas->mail->admin;
             $this->type_auth = $datas->image->type_auth;
             $this->size = $datas->image->size;
         }
@@ -47,20 +52,28 @@ abstract class Controller
      * @param string $location
      * @return void
      */
-    public function redirect(string $location ="")
-    {
+    public function redirect(string $location="") :void {
+
         if (!$location) {
             header("Location:".BASE);
         }
-        else{
+        elseif($location == REF) {
+            header("Location:".$_SERVER['HTTP_REFERER']);
+        }
+        else {
             header("Location:".BASE.$location);
         }
         die();
     }
 
-    public function isUser() :bool {
-        return isset($_SESSION['user']);
+    public function isUser(int $role = 0) :bool {
+        if(isset($_SESSION['user'])) {
+            if(!$role) {
+                return true;
+            }
+            return $_SESSION['user']['role'] == $role;
+        }
+        return false;
+               
     }
-
-
 }
