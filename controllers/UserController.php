@@ -2,8 +2,11 @@
 
 namespace controllers;
 
+use utils\Flash;
 use core\Controller;
+use models\PostModel;
 use models\UserModel;
+use models\CommentModel;
 
 class UserController extends Controller{
     
@@ -21,10 +24,10 @@ class UserController extends Controller{
                 $this->redirect('dashboard');
             }
             $_SESSION['flash']  = ['danger' => 'pseudo ou mot de passe incorrects'];
-            return $this->twig->display('registration.twig');
+            $this->redirect('referer');
         }
         $_SESSION['flash']  = ['danger' => 'pseudo ou mot de passe incorrects'];
-        return $this->twig->display('registration.twig');
+        $this->redirect('referer');
     }
     
 
@@ -34,16 +37,31 @@ class UserController extends Controller{
         $this->redirect();
     }
 
-    public function dashboard(){
-        if($this->isUser()){
-            $user = new UserModel();
-            if($user->fetch()){
-                $post = $user->user_post;
-                 return $this->twig->display('dashboard.html.twig',['posts'=>$post]);
+    public function dashboard() {
+        $user = new PostModel();
+        if($this->isUser()) {
+            if($this->isUser(ADMIN)) {
+                if($user->allPosts()) {
+                    $all = $user->post;
+                    $comment = new CommentModel();
+                    if($comment->pendingComments()){
+                        return $this->twig->display('dashboard.html.twig',["pend_comments"=>$comment->comments,"posts"=>$all]);
+                    }
+                    return $this->twig->display('dashboard.html.twig',["posts"=>$all]);
+                }
+                return $this->twig->display('dashboard.html.twig');
             }
+            if(!$user->fetch() && empty($user->post)) {
+                return $this->twig->display('dashboard.html.twig');
+            }
+            $post = $user->post;
+            return $this->twig->display('dashboard.html.twig',['posts'=>$post]);
         }
-       $this->redirect();
+        Flash::flash('danger','Connectez vous');
+        $this->redirect('inscription');
     }
-
 }
+
+
+
 
