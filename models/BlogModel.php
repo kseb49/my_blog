@@ -27,7 +27,7 @@ class BlogModel extends Model
      * @param string $id
      * @return array
      */
-    public function single(string $id):array{
+    public function single(string $id) :array {
 
         $request = $this->connect()->prepare('SELECT *,p.id FROM posts p join users u on u.id = p.users_id where p.id = ?');
         $request->execute([$id]);

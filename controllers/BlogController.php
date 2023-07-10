@@ -4,6 +4,7 @@ namespace controllers;
 use \core\Controller;
 use models\BlogModel;
 use models\CommentModel;
+use utils\Flash;
 
 class BlogController extends Controller{
 
@@ -13,11 +14,17 @@ class BlogController extends Controller{
       return $this->twig->display('blog.twig',['datas' => $datas]);
     }
 
-    public function single(string $params){
+    /**
+     * Get a single post
+     *
+     * @param string $id
+     * @return void
+     */
+    public function single(string $id){
       $datas = new BlogModel();
-      $datas = $datas->single($params);
+      $datas = $datas->single($id);
       $comments = new Commentmodel();
-      $comments = $comments->fetch($params);
-      return $this->twig->display('post.twig',['datas' => $datas,'comments'=>$comments]);
-    }
+      $comments->fetch($id);
+      return $this->twig->display('post.twig',['datas' => $datas,'comments'=> $comments->comments]);
+  }
 }
