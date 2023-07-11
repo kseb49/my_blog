@@ -50,17 +50,15 @@ class UserController extends Controller{
                  $post = $user->post;
                  return $this->twig->display('dashboard.html.twig',['posts'=>$post]);
              }
-                if($user->allPosts()) {
+                    $user->allPosts();
                     $all = $user->post;
                     $comment = new CommentModel();
-                    if($comment->pendingComments()){
-                        return $this->twig->display('dashboard.html.twig',["pend_comments"=>$comment->comments,"posts"=>$all]);
+                    $comment->all();
+                    $comment->pendingComments();
+                        return $this->twig->display('dashboard.html.twig',["pend_comments"=>$comment->pending_comments,"posts"=>$all,"comments"=>$comment->comments]);
                     }
-                    return $this->twig->display('dashboard.html.twig',["posts"=>$all]);
                 }
-                return $this->twig->display('dashboard.html.twig');
-    }
-}
+    
 
 
 

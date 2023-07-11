@@ -2,10 +2,12 @@
 
 namespace controllers;
 
+use core\Auth;
 use utils\Pik;
 use utils\Flash;
 use core\Controller;
 use models\PostModel;
+use models\UserModel;
 
 class PostController extends Controller
 
@@ -13,8 +15,14 @@ class PostController extends Controller
     protected array $datas;
 
     public function createPostForm(){
-            return $this->twig->display('edit-post.twig');
+        if(Auth::getRole(ADMIN)){
+            $users = new UserModel();
+            $users->users();
+            return $this->twig->display('edit-post.twig',['users'=>$users->user]);
         }
+        return $this->twig->display('edit-post.twig');
+        }
+
 
     /**
      * Create a new Post
@@ -56,9 +64,14 @@ class PostController extends Controller
      * @param string $id
      * @return void
      */
-    public function postToEdit(string $id){
+    public function postToEdit(string $id) {
             $post = new PostModel();
             if($post->postToEdit($id)){
+                if(Auth::getRole(ADMIN)){
+                    $users = new UserModel();
+                    $users->users();
+                    return $this->twig->display('edit-post.twig',["post"=>$post->post,"action"=>"edit","users"=> $users->user]);
+                }
                 return $this->twig->display('edit-post.twig',["post"=>$post->post,"action"=>"edit"]);
             }
             Flash::flash('danger',"Impossible de modifier cet  article");

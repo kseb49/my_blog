@@ -36,10 +36,17 @@
                 </span>
                 </a>
                 {% endif %}
-            <button type="button" class="btn btn-primary">Right</button>
+                {% if session.user.role == 1 %}
+            <a type="button" class="btn btn-primary" href="/allcomments"> Commentaires
+                <span class="badge badge-light">
+                {% for com in comments %} 
+                {% if loop.last %} 
+                {{loop.length}} 
+                {% endif %}
+                {% endfor %}
+                </span>
+                </a>  {% endif %}
         </div>
-    
-
         <div class="container">
             {% if session.user %}
                 <p class="font-weight-bold">@{{ session.user.pseudo }}</p>
@@ -51,7 +58,7 @@
         <section class="page-section portfolio" id="portfolio">
             <div class="container">
                     <!-- Portfolio Section Heading-->
-                    <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Vos articles en ligne</h2>
+                    <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">{% if session.user.role == 1 %}Tous les articles{% else %} Vos articles en ligne {% endif %}</h2>
                     <!-- Icon Divider-->
                     <div class="divider-custom">
                         <div class="divider-custom-line"></div>
@@ -64,7 +71,7 @@
                     {% for post in posts %}
                         <!-- Portfolio Item 1-->
                         <div class="col-md-6 col-lg-4 mb-5">
-                            <div class="portfolio-item mx-auto" data-bs-toggle="modal" data-bs-target="#portfolioModal{{loop.index}}">
+                            <div {% if post.users_id == session.user.id and session.user.role == 1 %} class="border border-success portfolio-item mx-auto" {% else %}  class="portfolio-item mx-auto" {% endif %} data-bs-toggle="modal" data-bs-target="#portfolioModal{{loop.index}}">
                                 <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                     <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                                 </div>

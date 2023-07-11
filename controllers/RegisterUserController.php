@@ -38,7 +38,7 @@ class RegisterUserController extends Controller
                    }
                    $this->redirect();
                 }
-                $_SESSION['flash'] = ['register' => 'Erreur interne'];
+                Flash::flash('danger','Erreur interne');
                 $this->redirect();
             }
             throw new Exception("Tous les champs doivent être remplis");

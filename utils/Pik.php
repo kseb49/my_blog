@@ -30,7 +30,7 @@ use core\Controller;
 			 if($this->_image['size'] > $this->size){
 				return UPLOAD_ERR_FORM_SIZE;
 			 }
-			 $name = preg_replace("#[()¨^°*‘«»<>\"°`\#{\}[\]<>|/@=~\\+*%\$€?:&\#;,]+#","",str_replace(' ','_',strtolower(trim(htmlspecialchars($this->_image['name'])))));
+			 $name = preg_replace("#[()¨^°*‘«»<>\"°`\#{\}[\]<>|/@=~\\+*%\$€?:&\#;,éè]+#","",str_replace(' ','_',strtolower(trim(htmlspecialchars($this->_image['name'])))));
 			 strlen($name)<=40 ? $this->_name = $name : $this->_name = substr($name,-40);
 			 return true;
 		 }

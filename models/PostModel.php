@@ -11,6 +11,7 @@ class PostModel extends ValidateModel {
     public string $title;
     public string $chapo;
     public string $content;
+    public ?string $author = null;
 
     public array $post;
 
@@ -19,6 +20,7 @@ class PostModel extends ValidateModel {
             'title'=>[self::REQUEST_REQUIRED,[self::REQUEST_MIN,10],[self::REQUEST_MAX,100]],
             'chapo'=>[self::REQUEST_REQUIRED,[self::REQUEST_MIN,15],[self::REQUEST_MAX,200]],
             'content'=>[self::REQUEST_REQUIRED,[self::REQUEST_MIN,150],[self::REQUEST_MAX,5000]],
+            'author'=>[],
           ];
     }
 
@@ -28,7 +30,7 @@ class PostModel extends ValidateModel {
             ":title" => $this->title,
             ":chapo" => $this->chapo,
             ":content" => $this->content,
-            ":users_id" => $_SESSION['user']['id'],
+            ":users_id" => $this->author ?? $_SESSION['user']['id'],
             ":img" => $img
             ])) {
                 
@@ -69,7 +71,7 @@ class PostModel extends ValidateModel {
 
 
     public function allPosts() :bool {
-    $request = $this->connect()->query('SELECT * FROM posts ');
+    $request = $this->connect()->query('SELECT * FROM posts');
     if($this->post = $request->fetchAll()){
         return true;
     }
@@ -77,14 +79,13 @@ class PostModel extends ValidateModel {
     }
 
     public function postEdit(array $datas,?string $img_name = null) :bool {
-        $request = $this->connect()->prepare('UPDATE posts set title = :title, chapo = :chapo,content = :content ,last_updated = NOW(),img = :img where id = :id');
+        $request = $this->connect()->prepare('UPDATE posts set title = :title, chapo = :chapo,content = :content ,users_id = :users_id,last_updated = NOW(),img = :img where id = :id');
         if($request->execute([
             ":title" => $datas['title'],
             ":chapo" => $datas['chapo'],
             ":content" => $datas['content'],
-            // ":last_u" =>date('Y-m-d H:i:s',time()),
+            ":users_id" =>$this->author ?? $_SESSION['user']['id'],
             ":img" => $img_name ?? $datas['#img'],
-            // ":user" => $datas['user_id'],
             ":id" => $datas['#id']
             ])) {
                 

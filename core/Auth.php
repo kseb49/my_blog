@@ -20,6 +20,7 @@ final class Auth
         }
         return false;
     }
+    
     /**
      * Confirmed a role
      *

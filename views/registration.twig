@@ -81,9 +81,9 @@
                         <!---->
                         <!-- This is what your users will see when there is-->
                         <!-- an error submitting the form-->
-                        {% for key in errors|keys %}
-                        <div><div class="text-center text-danger mb-3">{{key}}</div></div>
-                        {% endfor %}
+                        {# {% for errors in session.flash %}
+                        <div><div class="text-center text-danger mb-3">{{errors}}</div></div>
+                        {% endfor %} #}
                         <!-- Submit Button-->
                         <button class="btn btn-primary btn-xl mb-5" id="submitButton" type="submit">S'inscrire</button>
                     </form>

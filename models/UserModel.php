@@ -25,6 +25,12 @@ class UserModel extends Model{
         return false;
     }
 
+    /**
+     * Get a single user
+     *
+     * @param string $id
+     * @return boolean
+     */
     public function user(string $id) :bool {
         $request = $this->connect()->prepare('SELECT * from users where id = ?');
         $request->execute([$id]);

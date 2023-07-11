@@ -1,0 +1,32 @@
+{% extends 'templates/base.twig' %}
+{% block title %}
+   Liste des commentaires publiés
+{% endblock %}
+{%  block header %}
+        <header class="masthead bg-primary text-white text-center">
+            <div class="container d-flex align-items-center flex-column">
+                <div class="divider-custom divider-light">
+                    <div class="divider-custom-icon"><i class="fa-solid fa-book fa-2xl"></i></div>
+                </div>
+                <h1 class="masthead-heading text-uppercase mb-0">
+              Liste des commentaires
+                </h1>
+            </div>
+        </header>
+{% endblock %}
+{% block content %}
+<div class="container mt-5">
+{{include('templates/errors.twig')}}
+   {% for comment in comments %}  <form id="contactForm" method="post" action="/edit-comment">
+        <div class="form-floating mb-3">
+            <textarea class="form-control" id="content" type="text" name ="comment">
+            {{comment.comment}} 
+            </textarea>
+        </div>
+        <input type ="hidden" name="#token" value= "{{session.user.token}}"/>
+        <input type ="hidden" name="#id" value= "{{comment.id}}"/>
+        <input type ="hidden" name="post_id" value= "{{comment.posts_id}}"/>
+        <button class="btn btn-primary btn-xl mb-5" id="submitButton" type="submit">Modifier</button>
+    </form>{% endfor %}
+</div>
+{% endblock %}

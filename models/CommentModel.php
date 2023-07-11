@@ -7,17 +7,32 @@ use core\ValidateModel;
 class CommentModel extends ValidateModel
 {
     /**
-     * A bunch of comments
+     * All the accepted comments
      *
      * @var array
      */
     public array $comments;
+
     /**
-     * A comment
+     * The pending comments
+     *
+     * @var array
+     */
+    public array $pending_comments;
+
+    /**
+     * A comment content
      *
      * @var string
      */
     public string $comment;
+
+    /**
+     * One comment
+     *
+     * @var array
+     */
+    public array $single_comment;
 
     /**
      * The comment Id
@@ -59,6 +74,14 @@ class CommentModel extends ValidateModel
         return false;
     }
 
+    public function editComment(string $datas){
+        $request = $this->connect()->prepare("UPDATE comments set comment = :comment WHERE id = :id");
+        if($request->execute(["comment" => $this->comment,"id"=>$datas])) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Get all the comments linked to a posts
      *
@@ -67,7 +90,7 @@ class CommentModel extends ValidateModel
      */
     public function fetch (string $id) :bool {
         $request = $this->connect()->prepare(
-        'SELECT * FROM comments left join users on users.id = comments.users_id where comments.posts_id = ? order by comments._date desc');
+        'SELECT * ,c.id as cid FROM comments c left join users on users.id = c.users_id where c.posts_id = ? order by c._date desc');
         $request->execute([$id]);
         if($this->comments = $request->fetchAll()){
             return true;
@@ -92,10 +115,36 @@ class CommentModel extends ValidateModel
         return false;
     }
 
+    /**
+     * Get a single comment
+     *
+     * @param string $id
+     * @return void
+     */
+    public function oneCommment(string $id){
+        $request = $this->connect()->prepare('SELECT * FROM comments where id = ?');
+        $request->execute([$id]);
+        if($response = $request->fetchAll()) {
+            $this->single_comment = $response;
+            return true;
+        }
+        return false;
+    }
+
+
+    public function all () :bool {
+        $request = $this->connect()->query(
+        'SELECT * FROM comments where status = 1');
+        if($this->comments = $request->fetchAll()) {
+            return true;
+        }
+        return false;
+    }
+
     public function pendingComments () :bool{
         $request = $this->connect()->query(
         'SELECT *,c.id as idcom FROM comments c join users u on u.id = c.users_id where c.status = 0  order by c._date desc');
-        if($this->comments = $request->fetchAll()) {
+        if($this->pending_comments = $request->fetchAll()) {
             return true;
         }
         return false;
