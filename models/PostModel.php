@@ -68,8 +68,8 @@ class PostModel extends ValidateModel {
     }
 
 
-   public function allPosts() :bool {
-    $request = $this->connect()->query('SELECT * FROM posts right join users on users.id = posts.users_id');
+    public function allPosts() :bool {
+    $request = $this->connect()->query('SELECT * FROM posts ');
     if($this->post = $request->fetchAll()){
         return true;
     }

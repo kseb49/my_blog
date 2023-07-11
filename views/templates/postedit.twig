@@ -1,6 +1,21 @@
 {% for post in post %}
 <div class="container">
     <form id="contactForm" method="post" action="/post-edit" enctype="multipart/form-data">
+
+        {% if session.user.role == 1 %}
+            <div class="container">
+        <form id="contactForm" method="post" action="/creation" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Example select</label>
+            <select class="form-control" id="exampleFormControlSelect1">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+        </div>
+        {% endif %}
         {# <div class="form-floating mb-3">
             <input class="form-control" id="pseudo" type="text" placeholder="Enter your name..." name ="pseudo" value = "{{ session.user.pseudo}}" />
             <label for="pseudo">@pseudo</label>

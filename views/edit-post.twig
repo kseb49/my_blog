@@ -26,18 +26,18 @@
 {% if action == "edit" %}
 {% include 'templates/postedit.twig' %}
 {% else %}
-<div class="container">
-    <form id="contactForm" method="post" action="/creation" enctype="multipart/form-data">
+{% if session.user.role == 1 %}
+    <div class="container">
+        <form id="contactForm" method="post" action="/creation" enctype="multipart/form-data">
         <div class="form-group">
-    <label for="exampleFormControlSelect1">Example select</label>
-    <select class="form-control" id="exampleFormControlSelect1">
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
-    </select>
-  </div>
+            <label for="exampleFormControlSelect1">Example select</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="author">
+            {% for %}
+            <option>1</option>
+            {% endfor %}
+        </select>
+        </div>
+{% endif %}
         <div class="form-floating mb-3">
             <input class="form-control" id="pseudo" type="text" placeholder="Titre de l'article" name ="title"/>
             <label for="title">Titre</label>
