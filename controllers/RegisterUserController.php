@@ -3,6 +3,7 @@
 namespace controllers;
 
 use DateTime;
+use core\Auth;
 use Exception;
 use utils\Mail;
 use core\Controller;
@@ -14,7 +15,7 @@ class RegisterUserController extends Controller
 
     public function form()
     {
-        if(isset($_SESSION['user'])  && !empty($_SESSION['user'])) {
+        if(Auth::isConnect()) {
            $this->redirect();
         }
         return $this->twig->display('registration.twig');
@@ -58,7 +59,7 @@ class RegisterUserController extends Controller
                 $diff = $limit->diff($now);
                 if($diff->format("%H") <= 24) {
                     if($register->updateUser()) {
-                        $_SESSION['user'] = $register->user;
+                        $_SESSION['user'] = $register->user;//connect the user
                         $_SESSION['user']['token'] = hash('md5',uniqid(true));
                         $this->redirect('dashboard');
                     }
