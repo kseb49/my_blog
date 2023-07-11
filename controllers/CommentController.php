@@ -19,7 +19,7 @@ class CommentController extends Controller
      */
     public function create(array $datas) {
         try{
-            if($this->isUser()) {
+            // if($this->isUser()) {
                 if($datas['#token'] !== $_SESSION['user']['token']) {
                     throw new Exception("Vous ne pouvez pas commenter");
                  }
@@ -36,7 +36,7 @@ class CommentController extends Controller
                     // Flash::flash('danger','Commentaire non pris en compte');
                     // $this->redirect('referer');
                  }
-            }
+            // }
 
         }catch (Exception $e ){
             Flash::flash('danger',$e);

@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use core\Auth;
 use utils\Flash;
 use core\Controller;
 use models\PostModel;
@@ -12,22 +13,25 @@ class UserController extends Controller{
     
 
     public function logIn(array $input) {
-        $user = new UserModel();
-        if($user->check($input)){
-            if ($user->user['confirmation_date'] === null){
-                $_SESSION['flash']  = ['danger' => "le compte n'est pas confirmé"];
-                return $this->twig->display('registration.twig');
+        if(!Auth::isConnect()) {
+            $user = new UserModel();
+            if($user->check($input)){
+                if ($user->user['confirmation_date'] === null){
+                    Flash::flash('danger',"le compte n'est pas confirmé");
+                    return $this->twig->display('registration.twig');
+                }
+                if(password_verify($input['password'],$user->user['password'])) {
+                    $_SESSION['user'] = $user->user;
+                    $_SESSION['user']['token'] = hash('md5',uniqid(true));
+                    $this->redirect('dashboard');
+                }
+                Flash::flash('danger','pseudo ou mot de passe incorrects');
+                $this->redirect(REF);
             }
-            if(password_verify($input['password'],$user->user['password'])) {
-                $_SESSION['user'] = $user->user;
-                $_SESSION['user']['token'] = hash('md5',uniqid(true));
-                $this->redirect('dashboard');
-            }
-            $_SESSION['flash']  = ['danger' => 'pseudo ou mot de passe incorrects'];
-            $this->redirect('referer');
+            Flash::flash('danger','pseudo ou mot de passe incorrects');
+            $this->redirect(REF);
         }
-        $_SESSION['flash']  = ['danger' => 'pseudo ou mot de passe incorrects'];
-        $this->redirect('referer');
+        $this->redirect('dashboard');
     }
     
 
@@ -39,8 +43,13 @@ class UserController extends Controller{
 
     public function dashboard() {
         $user = new PostModel();
-        if($this->isUser()) {
-            if($this->isUser(ADMIN)) {
+             if(!Auth::getRole(ADMIN)) {
+                 if(!$user->fetch() && empty($user->post)) {
+                     return $this->twig->display('dashboard.html.twig');
+                 }
+                 $post = $user->post;
+                 return $this->twig->display('dashboard.html.twig',['posts'=>$post]);
+             }
                 if($user->allPosts()) {
                     $all = $user->post;
                     $comment = new CommentModel();
@@ -50,15 +59,6 @@ class UserController extends Controller{
                     return $this->twig->display('dashboard.html.twig',["posts"=>$all]);
                 }
                 return $this->twig->display('dashboard.html.twig');
-            }
-            if(!$user->fetch() && empty($user->post)) {
-                return $this->twig->display('dashboard.html.twig');
-            }
-            $post = $user->post;
-            return $this->twig->display('dashboard.html.twig',['posts'=>$post]);
-        }
-        Flash::flash('danger','Connectez vous');
-        $this->redirect('inscription');
     }
 }
 

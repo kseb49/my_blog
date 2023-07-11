@@ -66,14 +66,14 @@ abstract class Controller
         die();
     }
 
-    public function isUser(int $role = 0) :bool {
-        if(isset($_SESSION['user'])) {
-            if(!$role) {
-                return true;
-            }
-            return $_SESSION['user']['role'] == $role;
-        }
-        return false;
+    // public function isUser(int $role = 0) :bool {
+    //     if(isset($_SESSION['user'])) {
+    //         if(!$role) {
+    //             return true;
+    //         }
+    //         return $_SESSION['user']['role'] == $role;
+    //     }
+    //     return false;
                
-    }
+    // }
 }
