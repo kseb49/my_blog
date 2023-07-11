@@ -18,8 +18,11 @@ try{
    $router->get('/blog',['BlogController','index']);
    $router->get('/blog/:{id}',['BlogController','single']);
   //  $router->get('/blog/:{cat}/:{id}',['BlogController','group']);
+
    $router->post('/commentaire',['CommentController','create',"role"=>USER]);
+
    $router->get('/to-moderate',['CommentController','commentsLists',"role"=>ADMIN]);
+   $router->get('/allcomments',['CommentController','allComments',"role"=>ADMIN]);
    $router->get('/accept/:{id}/:{token}/:{id}',['CommentController','accept',"role"=>ADMIN]);
    $router->get('/reject/:{id}/:{token}/:{id}',['CommentController','reject',"role"=>ADMIN]);
 
