@@ -13,10 +13,8 @@ class PostController extends Controller
     protected array $datas;
 
     public function createPostForm(){
-        if($this->isUser()) {
             return $this->twig->display('edit-post.twig');
         }
-    }
 
     /**
      * Create a new Post
@@ -25,7 +23,7 @@ class PostController extends Controller
      * @return void
      */
     public function createPost(array $datas){
-        if($this->isUser()) {
+        
             if($datas['#token'] !== $_SESSION['user']['token']){
                Flash::flash('danger','Vous ne pouvez pas créer d\'article');
                 $this->redirect('dashboard');
@@ -47,7 +45,7 @@ class PostController extends Controller
                     }
                 }
                 $image->uploadErrors($_FILES['image']['error']);
-            }
+            
         }
     }
     
@@ -59,16 +57,12 @@ class PostController extends Controller
      * @return void
      */
     public function postToEdit(string $id){
-        if($this->isUser()){
             $post = new PostModel();
             if($post->postToEdit($id)){
                 return $this->twig->display('edit-post.twig',["post"=>$post->post,"action"=>"edit"]);
             }
             Flash::flash('danger',"Impossible de modifier cet  article");
             $this->redirect('dashboard');
-        }
-        Flash::flash('danger',"Connectez vous pour accéder à cette fonction");
-        $this->redirect('inscription');
     }
 
     /**
@@ -78,7 +72,6 @@ class PostController extends Controller
      * @return void
      */
      public function postEdit(array $datas){
-        if($this->isUser()) {
             if($datas['#token'] !== $_SESSION['user']['token']){
                 Flash::flash('danger','Vous ne pouvez pas modifier cet article');
                 $this->redirect('dashboard');
@@ -118,13 +111,11 @@ class PostController extends Controller
             }
             Flash::flash('danger','aucun fichier image reçu');
             $this->redirect('dashboard');
-        }
-        $this->redirect('inscription');
     }
 
     
     public function deletePost(array $id){
-        if($this->isUser()){
+        
             if($id[1] !== $_SESSION['user']['token']){
                 Flash::flash('danger','impossible de supprimer cet article');
                 $this->redirect('dashboard');
@@ -134,8 +125,7 @@ class PostController extends Controller
                 Flash::flash('success','Votre article est supprimé');
                 $this->redirect('dashboard');
             }
-        }
-        $this->redirect('inscription');
+       
     }
 
 }

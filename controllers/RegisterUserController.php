@@ -6,6 +6,7 @@ use DateTime;
 use core\Auth;
 use Exception;
 use utils\Mail;
+use utils\Flash;
 use core\Controller;
 use models\RegisterUserModel;
 
@@ -34,9 +35,6 @@ class RegisterUserController extends Controller
                                 $_SESSION['flash'] = ['success' => 'Vous avez reçu un mail pour confirmer votre compte'];
                                 $this->redirect();
                         }
-                        // if($register->mail()){
-                        //     $this->twig->display('registration.twig');
-                        // }
                    }
                    $this->redirect();
                 }
@@ -63,16 +61,16 @@ class RegisterUserController extends Controller
                         $_SESSION['user']['token'] = hash('md5',uniqid(true));
                         $this->redirect('dashboard');
                     }
-                    $_SESSION['flash'] = ['danger' => 'Update failed'];
+                    Flash::flash('danger','update failed');
                     $this->redirect('inscription');
                 }
-                $_SESSION['flash'] = ['danger' => 'Lien expiré'];
+                Flash::flash('danger','Lien expiré');
                 $this->redirect('dashboard');
             }
-            $_SESSION['flash'] = ['danger' => 'Lien non valide'];
+            Flash::flash('danger','Lien non valide');
             $this->redirect('inscription');
         }
-        $_SESSION['flash'] = ['danger' => 'Lien non valide - USER'];
+        Flash::flash('danger','Lien non valide - USER');
         $this->redirect('inscription');
     }
 }
