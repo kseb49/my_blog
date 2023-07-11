@@ -6,23 +6,32 @@
   class RegisterUserModel extends ValidateModel
   {
     public string $f_name;
+
     public string $l_name;
+
     public string $pseudo;
+
     public string $email;
+
     public string $password;
+
     public string $confirm_password;
+
     public array $user;
+
     public string $link;
+
     public string $message;
+    
     
     public function rules() :array {
       return[
-        'f_name'=>[self::REQUEST_REQUIRED,[self::REQUEST_MIN,2],[self::REQUEST_MAX,50]],
-        'l_name'=>[self::REQUEST_REQUIRED,[self::REQUEST_MIN,2],[self::REQUEST_MAX,50]],
-        'pseudo'=>[self::REQUEST_REQUIRED,self::REQUEST_UNIQUE,[self::REQUEST_MIN,3],[self::REQUEST_MAX,50]],
-        'email'=>[self::REQUEST_EMAIL,self::REQUEST_REQUIRED,self::REQUEST_UNIQUE,[self::REQUEST_MIN,10],[self::REQUEST_MAX,100]],
-        'password'=>[self::REQUEST_REQUIRED,[self::REQUEST_MIN,3],[self::REQUEST_MAX,100]],
-        'confirm_password'=>[self::REQUEST_REQUIRED,[self::REQUEST_MATCHING,"password"]]
+        'f_name' => [self::REQUEST_REQUIRED, [self::REQUEST_MIN, 2], [self::REQUEST_MAX, 50]],
+        'l_name' => [self::REQUEST_REQUIRED, [self::REQUEST_MIN, 2], [self::REQUEST_MAX, 50]],
+        'pseudo' => [self::REQUEST_REQUIRED, self::REQUEST_UNIQUE, [self::REQUEST_MIN, 3], [self::REQUEST_MAX, 50]],
+        'email' => [self::REQUEST_EMAIL, self::REQUEST_REQUIRED, self::REQUEST_UNIQUE, [self::REQUEST_MIN, 10], [self::REQUEST_MAX, 100]],
+        'password' => [self::REQUEST_REQUIRED, [self::REQUEST_MIN, 3], [self::REQUEST_MAX, 100]],
+        'confirm_password' => [self::REQUEST_REQUIRED, [self::REQUEST_MATCHING, "password"]]
       ];
     }
     
