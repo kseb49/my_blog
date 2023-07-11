@@ -4,6 +4,8 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 }
 !defined('ROOT') ? define('ROOT',dirname(__DIR__)) : null;
 !defined('PARAMS') ? define('PARAMS',preg_replace("#/#",DIRECTORY_SEPARATOR,dirname(__DIR__).'/env.dev.json')) : null;
+!defined('USER') ? define('USER', 0) : null;
+!defined('ADMIN') ? define('ADMIN', 1) : null;
 require(ROOT.'/vendor/autoload.php');
 
 use \core\Router;
@@ -16,24 +18,24 @@ try{
    $router->get('/blog',['BlogController','index']);
    $router->get('/blog/:{id}',['BlogController','single']);
   //  $router->get('/blog/:{cat}/:{id}',['BlogController','group']);
-   $router->post('/commentaire',['CommentController','create']);
-   $router->get('/to-moderate',['CommentController','commentsLists']);
-   $router->get('/accept/:{id}/:{token}/:{id}',['CommentController','accept']);
-   $router->get('/reject/:{id}/:{token}/:{id}',['CommentController','reject']);
+   $router->post('/commentaire',['CommentController','create',"role"=>USER]);
+   $router->get('/to-moderate',['CommentController','commentsLists',"role"=>ADMIN]);
+   $router->get('/accept/:{id}/:{token}/:{id}',['CommentController','accept',"role"=>ADMIN]);
+   $router->get('/reject/:{id}/:{token}/:{id}',['CommentController','reject',"role"=>ADMIN]);
 
    $router->get('/inscription',['RegisterUserController','form']);
    $router->post('/inscription',['RegisterUserController','register']);
    $router->get('/validation-mail',['RegisterUserController','validateFromMail']);
 
    $router->post('/connexion',['UserController','logIn']);
-   $router->get('/deconnexion',['UserController','logOut']);
+   $router->get('/deconnexion',['UserController','logOut',"role"=>USER]);
 
-   $router->get('/dashboard',['UserController','dashboard']);
-   $router->get('/creation',['PostController','createPostForm']);
-   $router->post('/creation',['PostController','createPost']);
-   $router->get('/edition/:{id}',['PostController','postToEdit']);
-   $router->post('/post-edit',['PostController','postEdit']);
-   $router->get('/delete/:{id}/:{token}',['PostController','deletePost']);
+   $router->get('/dashboard',['UserController','dashboard',"role"=>USER]);
+   $router->get('/creation',['PostController','createPostForm',"role"=>USER]);
+   $router->post('/creation',['PostController','createPost',"role"=>USER]);
+   $router->get('/edition/:{id}',['PostController','postToEdit',"role"=>USER]);
+   $router->post('/post-edit',['PostController','postEdit',"role"=>USER]);
+   $router->get('/delete/:{id}/:{token}',['PostController','deletePost',"role"=>USER]);
 
    $router->find();
 
