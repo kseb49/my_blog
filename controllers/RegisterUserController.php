@@ -36,7 +36,7 @@ class RegisterUserController extends Controller
                             Flash::flash('success', 'Vous avez reçu un mail pour confirmer votre compte');
                             $this->redirect(REF);
                         }
-                    }
+                }
                     throw new Exception("Merci de réessayer");
                 }
                 throw new Exception("Erreur interne");
@@ -58,14 +58,14 @@ class RegisterUserController extends Controller
         try{
             $this->datas = $datas;
             $register = new RegisterUserModel();
-            if ($register->confirmMail($this->datas) === true) { // retrieve the user
+            if ($register->confirmMail($this->datas) === true) { // Retrieve the user
                 if ($this->datas['token'] == $register->user['token']) {
                     $limit = new DateTime($register->user['send_link']);
                     $now = new DateTime(date('Y-m-d H:i:s'));
                     $diff = $limit->diff($now);
-                    if ($diff->format("%H") <= 24) { // the link must be less than 24hrs 
-                        if ($register->updateUser()) {
-                            $_SESSION['user'] = $register->user; // connect the user
+                    if ($diff->format("%H") <= 24) { // The link must be less than 24hrs
+                        if ($register->updateUser() === true) {
+                            $_SESSION['user'] = $register->user; // Connect the user
                             $_SESSION['user']['token'] = hash('md5',uniqid(true));
                             Flash::flash('success',"Votre compte est confirmé");
                             $this->redirect('dashboard');

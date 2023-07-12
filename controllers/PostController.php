@@ -39,10 +39,10 @@ class PostController extends Controller
             $this->datas = $_POST;
             if(isset($_FILES['image'])) {
                 $image = new Pik($_FILES);
-                if ($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+                if (isset($_FILES['image']['error']) && $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
                     throw new Exception($image->uploadErrors($_FILES['image']['error']));
                 }
-                if(is_int($image->check())) {// an integer return, means an error
+                if(is_int($image->check())) {// An integer return, means an error
                     throw new Exception($image->uploadErrors($image->check()));
                 }
                 $newPost = new PostModel();
@@ -110,7 +110,7 @@ class PostController extends Controller
                 if($post->loadDatas($this->datas)->validate()) {    
                     $image = new Pik($_FILES);
                     if($_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                        if(is_int($image->check())) {// an integer return, means an error
+                        if(is_int($image->check())) {// An integer return, means an error
                             throw new Exception($image->uploadErrors($image->check()));
                         }
                         if($post->postEdit($this->datas,$image->_name)) {

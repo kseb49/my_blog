@@ -13,7 +13,7 @@ class Route extends Router
     public array $route = [];
 
     /**
-     * The URL parameters 
+     * The URL parameters
      *
      * @var array
      */

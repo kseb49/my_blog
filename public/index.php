@@ -6,7 +6,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 !defined('PARAMS') ? define('PARAMS',preg_replace("#/#",DIRECTORY_SEPARATOR,dirname(__DIR__).'/env.dev.json')) : null;
 !defined('USER') ? define('USER', 0) : null;
 !defined('ADMIN') ? define('ADMIN', 1) : null;
-require ROOT.'/vendor/autoload.php';
+require 'C:/laragon/www/blog/vendor/autoload.php';
 
 use \core\Router;
 use utils\Flash;
@@ -18,8 +18,8 @@ try{
    $router->get('/blog',['BlogController','index']);
    $router->get('/blog/:{id}',['BlogController','single']);
    $router->get('/blog/edit-comment/:{id}',['CommentController','getComment',"role" => USER]);
-   $router->post('/edit-comment',['CommentController','editComment',"role" => USER]);
-   $router->get('/blog/delete-comment/:{id}/:{token}',['CommentController','deleteComment',"role" => USER]);
+   $router->post('/edit-comment',['CommentController', 'editComment', "role" => USER]);
+   $router->get('/blog/delete-comment/:{id}/:{token}', ['CommentController', 'deleteComment', "role" => USER]);
   //  $router->get('/blog/:{cat}/:{id}',['BlogController','group']);
 
    $router->post('/commentaire',['CommentController', 'create', "role" => USER]);
