@@ -3,6 +3,7 @@
 namespace utils;
 
 use Exception;
+use utils\Flash;
 use core\Controller;
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -35,7 +36,8 @@ class Mail extends Controller
             return true;
         }
         catch(Exception $e) {
-            echo $e->getMessage();
+            Flash::flash('danger',$e->getMessage());
+            $this->redirect(REF);
         }
     }
 }

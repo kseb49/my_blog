@@ -6,7 +6,7 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 !defined('PARAMS') ? define('PARAMS',preg_replace("#/#",DIRECTORY_SEPARATOR,dirname(__DIR__).'/env.dev.json')) : null;
 !defined('USER') ? define('USER', 0) : null;
 !defined('ADMIN') ? define('ADMIN', 1) : null;
-require(ROOT.'/vendor/autoload.php');
+require ROOT.'/vendor/autoload.php';
 
 use \core\Router;
 use utils\Flash;
