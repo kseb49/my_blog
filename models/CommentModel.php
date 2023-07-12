@@ -63,7 +63,7 @@ class CommentModel extends ValidateModel
             "post_id"=> $this->post_id,
             "user"=> $_SESSION['user']['id']
         ])) {
-            //recover the last comment Id for the post, from the user and only one in the event that there are similar comments.
+            // Recover the last comment Id for the post, from the user and only one in the event that there are similar comments.
             $request = $this->connect()->prepare('SELECT id from comments where comment = ? and posts_id = ? and users_id = ? and status = 0 ORDER BY _date DESC LIMIT 0,1');
             $request->execute([$this->comment,$this->post_id,$_SESSION['user']['id']]);
             if($response = $request->fetch()) {
@@ -131,10 +131,14 @@ class CommentModel extends ValidateModel
         return false;
     }
 
-
+    /**
+     * Get all the validated comments
+     *
+     * @return boolean
+     */
     public function all() :bool {
         $request = $this->connect()->query(
-        'SELECT * FROM comments where status = 1');
+        'SELECT * FROM comments where status = 1 order by _date desc');
         if($this->comments = $request->fetchAll()) {
             return true;
         }

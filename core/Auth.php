@@ -27,7 +27,7 @@ final class Auth
      * @param integer $role
      * @return boolean
      */
-    public static function getRole(int $role) :bool{
+    public static function getRole(int $role) :bool {
         return $_SESSION['user']['role'] == $role;
     }
 
@@ -39,6 +39,26 @@ final class Auth
     public static function isConnect() :bool{
         $connect = isset($_SESSION['user']) ?? false;
         return $connect;
+    }
+
+   /**
+    * Create the user session
+    *
+    * @param array $user
+    * @return void
+    */
+    public static function createUser(array $user) {
+        $_SESSION['user'] = $user;
+        $_SESSION['user']['token'] = hash('md5',uniqid(true));
+    }
+
+    /**
+     * Destroy the user session
+     *
+     * @return void
+     */
+    public static function destroy() {
+       unset($_SESSION['user']);
     }
 
 }

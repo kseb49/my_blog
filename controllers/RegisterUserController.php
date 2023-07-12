@@ -22,25 +22,28 @@ class RegisterUserController extends Controller
         return $this->twig->display('registration.twig');
     }
 
-    public function register()
+    /**
+     * Register a new user
+     *
+     * @param array $datas $_POST
+     * @return void
+     */
+    public function register(array $datas)
     {
         try{
-            if (isset($_POST) && !empty($_POST)){
-                $this->datas = $_POST;
+                $this->datas = $datas;
                 $register = new RegisterUserModel();
-                if($register->loadDatas($this->datas)->validate()){
-                   if($register->registerUser()){
+                if ($register->loadDatas($this->datas)->validate()) {
+                   if ($register->registerUser()) {
                         $mail = new Mail();
                         $message = $this->twig->render("templates/mail/validation-mail.twig",["link" => $register->link,]);
                         if ($mail->mail($register->email,$message,"Confirmez votre compte",$register->f_name." ".$register->l_name,'Recopier ce lien pour valider votre compte : '.$register->link) === true) {
                             Flash::flash('success', 'Vous avez reçu un mail pour confirmer votre compte');
                             $this->redirect(REF);
                         }
-                }
+                    }
                     throw new Exception("Merci de réessayer");
                 }
-                throw new Exception("Erreur interne");
-            }
             throw new Exception("Tous les champs doivent être remplis");
         }catch(Exception $e){
             Flash::flash('danger',$e->getMessage());
@@ -65,12 +68,11 @@ class RegisterUserController extends Controller
                     $diff = $limit->diff($now);
                     if ($diff->format("%H") <= 24) { // The link must be less than 24hrs
                         if ($register->updateUser() === true) {
-                            $_SESSION['user'] = $register->user; // Connect the user
-                            $_SESSION['user']['token'] = hash('md5',uniqid(true));
+                            Auth::createUser($register->user); // Connect the user
                             Flash::flash('success',"Votre compte est confirmé");
                             $this->redirect('dashboard');
                         }
-                        throw new Exception('Votre compte n\'a pas étatit validé');
+                        throw new Exception('Votre compte n\'a pas était validé');
                     }
                     throw new Exception('Lien expiré');
                 }

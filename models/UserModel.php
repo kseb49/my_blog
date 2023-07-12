@@ -18,7 +18,7 @@ class UserModel extends Model{
     public function check(array $datas) : bool {
         $request = $this->connect()->prepare('SELECT * from users where pseudo = ?');
         $request->execute([$datas['pseudo']]);
-        if($user = $request->fetch()) {
+        if ($user = $request->fetch()) {
             $this->user = $user;
             return true;
         }
@@ -34,7 +34,7 @@ class UserModel extends Model{
     public function user(string $id) :bool {
         $request = $this->connect()->prepare('SELECT * from users where id = ?');
         $request->execute([$id]);
-        if($this->user = $request->fetch()){
+        if ($this->user = $request->fetch()) {
             return true;
         }
         return false;
@@ -42,7 +42,7 @@ class UserModel extends Model{
 
     public function users() :bool {
         $request = $this->connect()->query('SELECT * from users');
-        if($this->user = $request->fetchAll()){
+        if ($this->user = $request->fetchAll()) {
             return true;
         }
         return false;

@@ -63,8 +63,7 @@ class PostModel extends ValidateModel {
      */
     public function fetch() :bool {
         $request = $this->connect()->query('SELECT * from posts where users_id = '.$_SESSION['user']['id'].'');
-        if($post = $request->fetchAll()){
-            $this->post = $post;
+            if ($this->post = $request->fetchAll()) {
             return true;
         }
         return false;
@@ -73,7 +72,7 @@ class PostModel extends ValidateModel {
 
     public function allPosts() :bool {
     $request = $this->connect()->query('SELECT * FROM posts');
-    if($this->post = $request->fetchAll()){
+    if ($this->post = $request->fetchAll()) {
         return true;
     }
         return false;

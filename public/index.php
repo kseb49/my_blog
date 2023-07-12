@@ -12,8 +12,9 @@ use \core\Router;
 use utils\Flash;
 
 try{
-   $router = new Router($_SERVER['REQUEST_URI']);
-
+  if(isset($_SERVER['REQUEST_URI'])) {
+    $router = new Router($_SERVER['REQUEST_URI']);
+  }
    $router->get('/',['HomeController','index']);
    $router->get('/blog',['BlogController','index']);
    $router->get('/blog/:{id}',['BlogController','single']);
@@ -22,15 +23,15 @@ try{
    $router->get('/blog/delete-comment/:{id}/:{token}', ['CommentController', 'deleteComment', "role" => USER]);
   //  $router->get('/blog/:{cat}/:{id}',['BlogController','group']);
 
-   $router->post('/commentaire',['CommentController', 'create', "role" => USER]);
+   $router->post('/commentaire', ['CommentController', 'create', "role" => USER]);
 
-   $router->get('/to-moderate',['CommentController','commentsLists',"role" => ADMIN]);
-   $router->get('/allcomments',['CommentController','allComments',"role" => ADMIN]);
+   $router->get('/to-moderate', ['CommentController','commentsLists',"role" => ADMIN]);
+   $router->get('/allcomments', ['CommentController', 'allComments', "role" => ADMIN]);
    $router->get('/accept/:{id}/:{token}/:{id}',['CommentController','accept',"role" => ADMIN]);
    $router->get('/reject/:{id}/:{token}/:{id}',['CommentController','reject',"role" => ADMIN]);
 
-   $router->get('/inscription',['RegisterUserController','form']);
-   $router->post('/inscription',['RegisterUserController','register']);
+   $router->get('/inscription', ['RegisterUserController','form']);
+   $router->post('/inscription', ['RegisterUserController','register']);
    $router->get('/validation-mail',['RegisterUserController','validateFromMail']);
 
    $router->post('/connexion',['UserController','logIn']);

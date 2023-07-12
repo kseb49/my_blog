@@ -20,11 +20,11 @@ class BlogController extends Controller{
      * @param string $id
      * @return void
      */
-    public function single(string $id){
+    public function single(string $post_id){
       $datas = new BlogModel();
-      $datas = $datas->single($id);
+      $datas = $datas->single($post_id);
       $comments = new Commentmodel();
-      $comments->fetch($id);
+      $comments->fetch($post_id);
       return $this->twig->display('post.twig',['datas' => $datas,'comments'=> $comments->comments]);
   }
 }
