@@ -67,7 +67,7 @@ class CommentController extends Controller
              }
         }
         throw new Exception("Le commentaire n'a pas été trouvé");
-   }
+    }
     /**
      * Get the comment to edit
      *
@@ -81,47 +81,51 @@ class CommentController extends Controller
         }
         Flash::flash("danger","Le commentaire n'a pas était trouvé");
         $this->redirect(REF);
-   }
-        /**
-         * list of the pending comments
-         *
-         * @return void
-         */
-        public function commentsLists (){
+    }
+    /**
+     * list of the pending comments
+     *
+     * @return void
+     */
+    public function commentsLists () {
+        try {
             $comments = new CommentModel();
-            if($comments->pendingComments()) {
-                return $this->twig->display("templates/comments-to-moderate.twig",["pend_comments" => $comments->pending_comments]);
-            }
-            Flash::flash('danger',"Il n' ya pas de commentaires en attente");
+        if ($comments->pendingComments()) {
+            return $this->twig->display("templates/comments-to-moderate.twig",["pend_comments" => $comments->pending_comments]);
+        }
+        throw new Exception("Il n'y a pas de commentaires en  attente");
+        }catch (Exception $e) {
+            Flash::flash('danger',$e->getMessage());
             $this->redirect('dashboard');
         }
-        /**
-         * All the comments
-         *
-         * @return void
-         */
-        public function allComments (){
-            $comments = new CommentModel();
-            if($comments->all()){
-                return $this->twig->display("templates/comments.twig",["comments" => $comments->comments]);
-            }
-            Flash::flash('danger',"Les commentaires sont introuvables");
-            $this->redirect(REF);
+    }
+    /**
+     * All the comments
+     *
+     * @return void
+     */
+    public function allComments (){
+        $comments = new CommentModel();
+        if($comments->all()){
+            return $this->twig->display("templates/comments.twig",["comments" => $comments->comments]);
         }
+        Flash::flash('danger',"Les commentaires sont introuvables");
+        $this->redirect(REF);
+    }
 
-        /**
-         * Accept a comment
-         *
-         * @param array $comment [string comment id,string token, string writer id]
-         * @return void
-         */
-        public function accept (array $comment) {
-            if($comment[1] !== $_SESSION['user']['token']) {
-                throw new Exception("Vous ne pouvez pas modérer");
-             }
-             $accept = new CommentModel();
-             if($accept->acceptComment($comment[0])){
-                if($accept->single($comment[0])) {
+    /**
+     * Accept a comment
+     *
+     * @param array $comment [string comment id,string token, string writer id]
+     * @return void
+     */
+    public function accept(array $comment) {
+        if ($comment[1] !== $_SESSION['user']['token']) {
+            throw new Exception("Vous ne pouvez pas modérer");
+            }
+            $accept = new CommentModel();
+            if ($accept->acceptComment($comment[0]) === true) {
+                if ($accept->single($comment[0]) === true) {
                     $mail = new Mail();
                     $user = new UserModel();
                     $user->user($comment[2]);
@@ -133,9 +137,9 @@ class CommentController extends Controller
                 Flash::flash('danger',"Le mail d'information n'a pas était envoyé");
                 $this->redirect('dashboard');
             }
-            Flash::flash('danger',"Une erreur est survenue");
-            $this->redirect('dashboard');
-        }
+        Flash::flash('danger',"Une erreur est survenue");
+        $this->redirect('dashboard');
+    }
 
         public function deleteComment(array $params) {
             if($params[1] !== $_SESSION['user']['token']) {

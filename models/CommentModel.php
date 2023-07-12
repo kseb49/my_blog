@@ -74,9 +74,9 @@ class CommentModel extends ValidateModel
         return false;
     }
 
-    public function editComment(string $id){
+    public function editComment(string $com_id) {
         $request = $this->connect()->prepare("UPDATE comments set comment = :comment, _date = NOW(), status = 0 WHERE id = :id");
-        if($request->execute(["comment" => $this->comment,"id"=>$id])) {
+        if($request->execute(["comment" => $this->comment,"id"=>$com_id])) {
             return true;
         }
         return false;
@@ -88,7 +88,7 @@ class CommentModel extends ValidateModel
      * @param string $id post id
      * @return bool
      */
-    public function fetch (string $id) :bool {
+    public function fetch(string $id) :bool {
         $request = $this->connect()->prepare(
         'SELECT * ,c.id as cid FROM comments c left join users on users.id = c.users_id where c.posts_id = ? order by c._date desc');
         $request->execute([$id]);
@@ -104,7 +104,7 @@ class CommentModel extends ValidateModel
      * @param string $id
      * @return boolean
      */
-    public function single (string $id) :bool {
+    public function single(string $id) :bool {
         $request = $this->connect()->prepare(
         'SELECT * FROM comments where id =?');
         $request->execute([$id]);
@@ -132,7 +132,7 @@ class CommentModel extends ValidateModel
     }
 
 
-    public function all () :bool {
+    public function all() :bool {
         $request = $this->connect()->query(
         'SELECT * FROM comments where status = 1');
         if($this->comments = $request->fetchAll()) {
@@ -141,7 +141,7 @@ class CommentModel extends ValidateModel
         return false;
     }
 
-    public function pendingComments () :bool{
+    public function pendingComments() :bool{
         $request = $this->connect()->query(
         'SELECT *,c.id as idcom FROM comments c join users u on u.id = c.users_id where c.status = 0  order by c._date desc');
         if($this->pending_comments = $request->fetchAll()) {

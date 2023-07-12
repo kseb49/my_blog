@@ -49,10 +49,10 @@ class Db {
      */
     public function connect():PDO {
            
-        $db = new PDO($this->dsn, $this->user, $this->password, 
+        $db = new PDO($this->dsn, $this->user, $this->password,
         [
-            PDO::ATTR_DEFAULT_FETCH_MODE =>PDO::FETCH_ASSOC, 
-            PDO::ATTR_ERRMODE =>PDO::ERRMODE_EXCEPTION
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ]
         );
             return $db;

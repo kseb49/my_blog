@@ -17,31 +17,31 @@ try{
    $router->get('/',['HomeController','index']);
    $router->get('/blog',['BlogController','index']);
    $router->get('/blog/:{id}',['BlogController','single']);
-   $router->get('/blog/edit-comment/:{id}',['CommentController','getComment',"role"=>USER]);
-   $router->post('/edit-comment',['CommentController','editComment',"role"=>USER]);
-   $router->get('/blog/delete-comment/:{id}/:{token}',['CommentController','deleteComment',"role"=>USER]);
+   $router->get('/blog/edit-comment/:{id}',['CommentController','getComment',"role" => USER]);
+   $router->post('/edit-comment',['CommentController','editComment',"role" => USER]);
+   $router->get('/blog/delete-comment/:{id}/:{token}',['CommentController','deleteComment',"role" => USER]);
   //  $router->get('/blog/:{cat}/:{id}',['BlogController','group']);
 
-   $router->post('/commentaire',['CommentController','create',"role"=>USER]);
+   $router->post('/commentaire',['CommentController', 'create', "role" => USER]);
 
-   $router->get('/to-moderate',['CommentController','commentsLists',"role"=>ADMIN]);
-   $router->get('/allcomments',['CommentController','allComments',"role"=>ADMIN]);
-   $router->get('/accept/:{id}/:{token}/:{id}',['CommentController','accept',"role"=>ADMIN]);
-   $router->get('/reject/:{id}/:{token}/:{id}',['CommentController','reject',"role"=>ADMIN]);
+   $router->get('/to-moderate',['CommentController','commentsLists',"role" => ADMIN]);
+   $router->get('/allcomments',['CommentController','allComments',"role" => ADMIN]);
+   $router->get('/accept/:{id}/:{token}/:{id}',['CommentController','accept',"role" => ADMIN]);
+   $router->get('/reject/:{id}/:{token}/:{id}',['CommentController','reject',"role" => ADMIN]);
 
    $router->get('/inscription',['RegisterUserController','form']);
    $router->post('/inscription',['RegisterUserController','register']);
    $router->get('/validation-mail',['RegisterUserController','validateFromMail']);
 
    $router->post('/connexion',['UserController','logIn']);
-   $router->get('/deconnexion',['UserController','logOut',"role"=>USER]);
+   $router->get('/deconnexion',['UserController','logOut',"role" => USER]);
 
-   $router->get('/dashboard',['UserController','dashboard',"role"=>USER]);
-   $router->get('/creation',['PostController','createPostForm',"role"=>USER]);
-   $router->post('/creation',['PostController','createPost',"role"=>USER]);
-   $router->get('/edition/:{id}',['PostController','postToEdit',"role"=>USER]);
-   $router->post('/post-edit',['PostController','postEdit',"role"=>USER]);
-   $router->get('/delete/:{id}/:{token}',['PostController','deletePost',"role"=>USER]);
+   $router->get('/dashboard',['UserController','dashboard',"role" => USER]);
+   $router->get('/creation',['PostController','createPostForm',"role" => USER]);
+   $router->post('/creation',['PostController','createPost',"role" => USER]);
+   $router->get('/edition/:{id}',['PostController','postToEdit',"role" => USER]);
+   $router->post('/post-edit',['PostController','postEdit',"role" => USER]);
+   $router->get('/delete/:{id}/:{token}',['PostController','deletePost',"role" => USER]);
 
    $router->find();
 

@@ -31,13 +31,13 @@ class RegisterUserController extends Controller
                 if($register->loadDatas($this->datas)->validate()){
                    if($register->registerUser()){
                         $mail = new Mail();
-                        $message = $this->twig->render("templates/mail/validation-mail.twig",["link"=>$register->link,]);
-                        if($mail->mail($register->email,$message,"Confirmez votre compte",$register->f_name." ".$register->l_name,'Recopier ce lien pour valider votre compte : '.$register->link)) {
+                        $message = $this->twig->render("templates/mail/validation-mail.twig",["link" => $register->link,]);
+                        if ($mail->mail($register->email,$message,"Confirmez votre compte",$register->f_name." ".$register->l_name,'Recopier ce lien pour valider votre compte : '.$register->link) === true) {
                             Flash::flash('success', 'Vous avez reçu un mail pour confirmer votre compte');
                             $this->redirect(REF);
                         }
-                   }
-                   throw new Exception("Merci de réessayer");
+                    }
+                    throw new Exception("Merci de réessayer");
                 }
                 throw new Exception("Erreur interne");
             }
@@ -58,14 +58,14 @@ class RegisterUserController extends Controller
         try{
             $this->datas = $datas;
             $register = new RegisterUserModel();
-            if($register->confirmMail($this->datas)) { //retrieve the user 
-                if($this->datas['token'] == $register->user['token']) {
+            if ($register->confirmMail($this->datas) === true) { // retrieve the user
+                if ($this->datas['token'] == $register->user['token']) {
                     $limit = new DateTime($register->user['send_link']);
                     $now = new DateTime(date('Y-m-d H:i:s'));
                     $diff = $limit->diff($now);
-                    if($diff->format("%H") <= 24) { // the link must be less than 24hrs 
-                        if($register->updateUser()) {
-                            $_SESSION['user'] = $register->user; //connect the user
+                    if ($diff->format("%H") <= 24) { // the link must be less than 24hrs 
+                        if ($register->updateUser()) {
+                            $_SESSION['user'] = $register->user; // connect the user
                             $_SESSION['user']['token'] = hash('md5',uniqid(true));
                             Flash::flash('success',"Votre compte est confirmé");
                             $this->redirect('dashboard');

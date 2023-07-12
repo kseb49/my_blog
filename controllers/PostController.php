@@ -39,7 +39,7 @@ class PostController extends Controller
             $this->datas = $_POST;
             if(isset($_FILES['image'])) {
                 $image = new Pik($_FILES);
-                if($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+                if ($_FILES['image']['error'] !== UPLOAD_ERR_OK) {
                     throw new Exception($image->uploadErrors($_FILES['image']['error']));
                 }
                 if(is_int($image->check())) {// an integer return, means an error
