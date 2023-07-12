@@ -70,8 +70,8 @@ abstract class ValidateModel extends Model
                 if($rule === self::REQUEST_UNIQUE) {
                     $request = $this->connect()->prepare('SELECT * from users where '.$input_name.' = ?');
                     $request->execute([$value]);
-                    if($resp = $request->fetch()) {
-                        throw new Exception("Il existe deja un utilisateur avec ces identifiants");
+                    if($request->fetch()) {
+                        throw new Exception("Il existe deja un utilisateur avec ces identifiants : ".$input_name);
                     }
                     $request->closeCursor();
                 }
