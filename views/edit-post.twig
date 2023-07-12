@@ -23,6 +23,7 @@
         </header>
 {% endblock %}
 {% block content %}
+ {{include('templates/errors.twig')}}
 {% if action == "edit" %}
 {% include 'templates/postedit.twig' %}
 {% else %}

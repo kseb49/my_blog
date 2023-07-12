@@ -31,46 +31,56 @@ class RegisterUserController extends Controller
                 if($register->loadDatas($this->datas)->validate()){
                    if($register->registerUser()){
                         $mail = new Mail();
-                        if($mail->mail($register->email,$register->message,"Confirmez votre compte",$register->f_name." ".$register->l_name,'Recopier ce lien pour valider votre compte : '.$register->link)){
-                                $_SESSION['flash'] = ['success' => 'Vous avez reçu un mail pour confirmer votre compte'];
-                                $this->redirect();
+                        $message = $this->twig->render("templates/mail/validation-mail.twig",["link"=>$register->link,]);
+                        if($mail->mail($register->email,$message,"Confirmez votre compte",$register->f_name." ".$register->l_name,'Recopier ce lien pour valider votre compte : '.$register->link)) {
+                            Flash::flash('success', 'Vous avez reçu un mail pour confirmer votre compte');
+                            $this->redirect(REF);
                         }
                    }
-                   $this->redirect();
+                   throw new Exception("Merci de réessayer");
                 }
-                Flash::flash('danger','Erreur interne');
-                $this->redirect();
+                throw new Exception("Erreur interne");
             }
             throw new Exception("Tous les champs doivent être remplis");
         }catch(Exception $e){
-            echo $e->getMessage();
+            Flash::flash('danger',$e->getMessage());
+            $this->redirect(REF);
         }
     }
 
-    public function validateFromMail(array $datas){
-        $this->datas = $datas;
-        $register = new RegisterUserModel();
-        if($register->confirmMail($this->datas)) {
-            if($this->datas['token'] == $register->user['token']) {
-                $limit = new DateTime($register->user['send_link']);
-                $now = new DateTime(date('Y-m-d H:i:s'));
-                $diff = $limit->diff($now);
-                if($diff->format("%H") <= 24) {
-                    if($register->updateUser()) {
-                        $_SESSION['user'] = $register->user;//connect the user
-                        $_SESSION['user']['token'] = hash('md5',uniqid(true));
-                        $this->redirect('dashboard');
+    /**
+     * Validate an user account from the mail
+     *
+     * @param array $datas $_GET [$id,$token]
+     * @return void
+     */
+    public function validateFromMail(array $datas) {
+        try{
+            $this->datas = $datas;
+            $register = new RegisterUserModel();
+            if($register->confirmMail($this->datas)) { //retrieve the user 
+                if($this->datas['token'] == $register->user['token']) {
+                    $limit = new DateTime($register->user['send_link']);
+                    $now = new DateTime(date('Y-m-d H:i:s'));
+                    $diff = $limit->diff($now);
+                    if($diff->format("%H") <= 24) { // the link must be less than 24hrs 
+                        if($register->updateUser()) {
+                            $_SESSION['user'] = $register->user; //connect the user
+                            $_SESSION['user']['token'] = hash('md5',uniqid(true));
+                            Flash::flash('success',"Votre compte est confirmé");
+                            $this->redirect('dashboard');
+                        }
+                        throw new Exception('Votre compte n\'a pas étatit validé');
                     }
-                    Flash::flash('danger','update failed');
-                    $this->redirect('inscription');
+                    throw new Exception('Lien expiré');
                 }
-                Flash::flash('danger','Lien expiré');
-                $this->redirect('dashboard');
+                throw new Exception('Lien non valide');
             }
-            Flash::flash('danger','Lien non valide');
+            throw new Exception('Lien non valide - User');
+
+        }catch(Exception $e) {
+            Flash::flash('danger',$e->getMessage());
             $this->redirect('inscription');
         }
-        Flash::flash('danger','Lien non valide - USER');
-        $this->redirect('inscription');
     }
 }

@@ -74,9 +74,9 @@ class CommentModel extends ValidateModel
         return false;
     }
 
-    public function editComment(string $datas){
-        $request = $this->connect()->prepare("UPDATE comments set comment = :comment WHERE id = :id");
-        if($request->execute(["comment" => $this->comment,"id"=>$datas])) {
+    public function editComment(string $id){
+        $request = $this->connect()->prepare("UPDATE comments set comment = :comment, _date = NOW(), status = 0 WHERE id = :id");
+        if($request->execute(["comment" => $this->comment,"id"=>$id])) {
             return true;
         }
         return false;

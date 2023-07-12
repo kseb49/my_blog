@@ -24,7 +24,7 @@ use core\Controller;
  	 * Check type is authorized
  	 *
  	 */
- 	public function check() :int|bool{
+ 	public function check() :int|bool {
         $type  = strtolower(basename($this->_image['type']));
  		if(in_array($type,$this->type_auth)) {
 			 if($this->_image['size'] > $this->size){
@@ -42,7 +42,7 @@ use core\Controller;
  	 * move file from php tmp directory
  	 * 
  	 */
- 	public function parker(){
+ 	public function parker() {
 				return move_uploaded_file($this->_image['tmp_name'],IMAGE.$this->_name);
 		}
  	

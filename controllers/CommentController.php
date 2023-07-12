@@ -58,12 +58,15 @@ class CommentController extends Controller
         $comment = new CommentModel();
         if($comment->loadDatas($datas)->validate()) {
             if($comment->editComment($datas['#id'])) {
-            Flash::flash("success","Vous avez bien modifié votre commentaire");
+                $comment->single($datas['#id']);
+            $mail = new Mail();
+            $message = $this->twig->render("templates/mail/moderation-mail.twig",["comment"=>$comment->comment,"url"=>BASE."dashboard"]);
+            $mail->mail(adress: $this->admin, subject : "Demande de modération", message :$message);
+            Flash::flash("success","Vous avez bien modifié votre commentaire, il est en attende de modération");
             $this->redirect('dashboard');
              }
         }
-        Flash::flash("danger","Le commentaire n'a pas était trouvé");
-        $this->redirect(REF);
+        throw new Exception("Le commentaire n'a pas été trouvé");
    }
     /**
      * Get the comment to edit
@@ -86,11 +89,11 @@ class CommentController extends Controller
          */
         public function commentsLists (){
             $comments = new CommentModel();
-            if($comments->pendingComments()){
+            if($comments->pendingComments()) {
                 return $this->twig->display("templates/comments-to-moderate.twig",["pend_comments" => $comments->pending_comments]);
             }
-            Flash::flash('danger',"Les commentaires sont introuvables");
-            $this->redirect(REF);
+            Flash::flash('danger',"Il n' ya pas de commentaires en attente");
+            $this->redirect('dashboard');
         }
         /**
          * All the comments
@@ -134,9 +137,12 @@ class CommentController extends Controller
             $this->redirect('dashboard');
         }
 
-        public function deleteComment(string $id) {
+        public function deleteComment(array $params) {
+            if($params[1] !== $_SESSION['user']['token']) {
+                throw new Exception("Vous ne pouvez pas effacer ce commentaire");
+             }
              $comment = new CommentModel();
-             if($comment->deleteComment($id)) {
+             if($comment->deleteComment($params[0])) {
                 Flash::flash('success',"Commentaire supprimé");
                 $this->redirect(REF);
              }

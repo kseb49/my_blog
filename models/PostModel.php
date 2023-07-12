@@ -53,6 +53,7 @@ class PostModel extends ValidateModel {
         }
              return false;
         }
+        return false;
     }
 
     /**
@@ -78,6 +79,13 @@ class PostModel extends ValidateModel {
         return false;
     }
 
+    /**
+     * Edit a post
+     *
+     * @param array $datas
+     * @param string|null $img_name (is null if the image of the post is not changed)
+     * @return boolean
+     */
     public function postEdit(array $datas,?string $img_name = null) :bool {
         $request = $this->connect()->prepare('UPDATE posts set title = :title, chapo = :chapo,content = :content ,users_id = :users_id,last_updated = NOW(),img = :img where id = :id');
         if($request->execute([

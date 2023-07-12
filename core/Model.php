@@ -26,7 +26,7 @@ abstract class Model
      *
      * @return PDO
      */
-    protected function connect():PDO {
+    protected function connect() :PDO {
         return $this->connection = $this->db->connect();
     }
 

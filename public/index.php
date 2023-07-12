@@ -19,7 +19,7 @@ try{
    $router->get('/blog/:{id}',['BlogController','single']);
    $router->get('/blog/edit-comment/:{id}',['CommentController','getComment',"role"=>USER]);
    $router->post('/edit-comment',['CommentController','editComment',"role"=>USER]);
-   $router->get('/blog/delete-comment/:{id}',['CommentController','deleteComment',"role"=>USER]);
+   $router->get('/blog/delete-comment/:{id}/:{token}',['CommentController','deleteComment',"role"=>USER]);
   //  $router->get('/blog/:{cat}/:{id}',['BlogController','group']);
 
    $router->post('/commentaire',['CommentController','create',"role"=>USER]);
@@ -47,7 +47,7 @@ try{
 
 }
 catch(Exception $e){
-  Flash::flash('danger',$e);
+  Flash::flash('danger',$e->getMessage());
   header("Location: http://blog.test/");
 }
 

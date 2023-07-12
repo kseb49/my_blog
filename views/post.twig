@@ -60,7 +60,7 @@
                                  </p>
                                 {% if session.user.id == comment.users_id and comment.status == 1 %}
                                 <a href="edit-comment/{{comment.cid}}" class="btn btn-link btn-sm comment_link">Modifier</a>
-                                <a href="delete-comment/{{comment.cid}}" class="btn btn-danger btn-sm">Supprimer</a>
+                                <a href="delete-comment/{{comment.cid}}/{{session.user.token}}" class="btn btn-danger btn-sm">Supprimer</a>
                                 {% endif %}
                             </div>
                             <div class="card-footer text-muted">
