@@ -76,7 +76,7 @@ abstract class Controller
             header("Location:".BASE);
         }
         else {
-            if(isset($_SERVER['HTTP_REFERER']) && $location === REF) {
+            if (isset($_SERVER['HTTP_REFERER']) && $location === REF) {
                 header("Location:".$_SERVER['HTTP_REFERER']);
             }
             else{
