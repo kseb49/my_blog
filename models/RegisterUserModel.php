@@ -23,9 +23,10 @@ class RegisterUserModel extends ValidateModel
   public string $link;
 
   public string $message;
-  
-  
-  public function rules() :array {
+
+
+  public function rules() :array
+  {
     return[
       'f_name' => [self::REQUEST_REQUIRED, [self::REQUEST_MIN, 2], [self::REQUEST_MAX, 50]],
       'l_name' => [self::REQUEST_REQUIRED, [self::REQUEST_MIN, 2], [self::REQUEST_MAX, 50]],
@@ -35,13 +36,15 @@ class RegisterUserModel extends ValidateModel
       'confirm_password' => [self::REQUEST_REQUIRED, [self::REQUEST_MATCHING, "password"]]
     ];
   }
-  
+
+
   /**
    * Insert a user in a the db waiting for validation
    *
    * @return boolean
    */
-  public function registerUser() : bool {
+  public function registerUser() : bool
+  {
     $link = hash('md5',uniqid(true));
     $request = $this->connect()->prepare('INSERT INTO users (f_name,l_name,email,password,pseudo,role,send_link,token)
     VALUES (:prenom,:nom,:email,:password,:pseudo,:role,:link,:token)');
@@ -58,24 +61,27 @@ class RegisterUserModel extends ValidateModel
     $request->closeCursor();
     $request = $this->connect()->prepare('SELECT * from users where pseudo = ?');
     $request->execute([$this->pseudo]);
-    if($resp = $request->fetch()) {
+    if ($resp = $request->fetch()) {
       $this->link = "http://blog.test/validation-mail?id={$resp['id']}&token={$link}";
       return true;
     }
     return false;
+
   }
-  
+
+
   /**
    * retrieve an user by his id
    *
    * @param array $datas
    * @return boolean
    */
-  public function confirmMail(array $datas) : bool {
+  public function confirmMail(array $datas) : bool
+  {
     $request = $this->connect()->prepare('SELECT * from users where id = ?');
     $request->execute([$datas['id']]);
     $response = $request->fetch() ?? null;
-    if(!$response) {
+    if (!$response) {
       return false;
     }
     $this->user = $response;

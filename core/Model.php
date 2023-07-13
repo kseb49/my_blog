@@ -4,12 +4,12 @@ namespace core;
 
 use PDO;
 use core\Db;
-use Exception;
 
 abstract class Model
 {
 
-    protected Db $db;
+    protected Db $d_b;
+
     protected PDO $connection;
 
     public const TIMEZONE = "Europe/Paris";
@@ -17,8 +17,9 @@ abstract class Model
 
     public function __construct()
     {
-        $this->db = Db::requestDb();
+        $this->d_b = Db::requestDb();
         date_default_timezone_set(self::TIMEZONE);
+
     }
 
     /**
@@ -26,8 +27,10 @@ abstract class Model
      *
      * @return PDO
      */
-    protected function connect() :PDO {
-        return $this->connection = $this->db->connect();
+    protected function connect() :PDO
+    {
+        return $this->connection = $this->d_b->connect();
+
     }
 
 }

@@ -12,12 +12,18 @@ use models\RegisterUserModel;
 
 class RegisterUserController extends Controller
 {
+
     protected array $datas;
 
+    /**
+     * Display the register/log-in page
+     *
+     * @return void
+     */
     public function form()
     {
-        if(Auth::isConnect()) {
-           $this->redirect();
+        if (Auth::isConnect() === true) {
+           $this->redirect('dashboard');
         }
         return $this->twig->display('registration.twig');
     }
@@ -33,19 +39,16 @@ class RegisterUserController extends Controller
         try{
             $this->datas = $datas;
             $register = new RegisterUserModel();
-            if ($register->loadDatas($this->datas)->validate()) {
-                if ($register->registerUser()) {
+            $register->loadDatas($this->datas)->validate();
+                if ($register->registerUser() === true) {
                     $mail = new Mail();
                     $message = $this->twig->render("templates/mail/validation-mail.twig",["link" => $register->link,]);
-                    if ($mail->mail($register->email,$message,"Confirmez votre compte",$register->f_name." ".$register->l_name,'Recopier ce lien pour valider votre compte : '.$register->link) === true) {
-                        Flash::flash('success', 'Vous avez reçu un mail pour confirmer votre compte');
-                        $this->redirect(REF);
-                    }
+                    $mail->mail($register->email,$message,"Confirmez votre compte",$register->f_name." ".$register->l_name,'Recopier ce lien pour valider votre compte : '.$register->link);
+                    Flash::flash('success', 'Vous avez reçu un mail pour confirmer votre compte');
+                    $this->redirect(REF);
                 }
                 throw new Exception("Merci de réessayer");
-            }
-            throw new Exception("Tous les champs doivent être remplis");
-        }catch(Exception $e){
+        } catch(Exception $e){
             Flash::flash('danger',$e->getMessage());
             $this->redirect(REF);
         }
@@ -57,12 +60,13 @@ class RegisterUserController extends Controller
      * @param array $datas $_GET [$id,$token]
      * @return void
      */
-    public function validateFromMail(array $datas) {
+    public function validateFromMail(array $datas)
+    {
         try{
             $this->datas = $datas;
             $register = new RegisterUserModel();
             if ($register->confirmMail($this->datas) === true) { // Retrieve the user.
-                if ($this->datas['token'] == $register->user['token']) {
+                if ($this->datas['token'] === $register->user['token']) {
                     $limit = new DateTime($register->user['send_link']);
                     $now = new DateTime(date('Y-m-d H:i:s'));
                     $diff = $limit->diff($now);
@@ -79,8 +83,7 @@ class RegisterUserController extends Controller
                 throw new Exception('Lien non valide');
             }
             throw new Exception('Lien non valide - User');
-
-        }catch(Exception $e) {
+        } catch(Exception $e) {
             Flash::flash('danger',$e->getMessage());
             $this->redirect('inscription');
         }

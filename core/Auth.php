@@ -4,6 +4,7 @@ namespace core;
 
 final class Auth
 {
+
     /**
      * Check for an active connexion
      *
@@ -13,36 +14,38 @@ final class Auth
     {
         $connect = isset($_SESSION['user']) ?? false;
         return $connect;
+
     }
-    
+
     /**
      * Check the permission
      *
      * @param integer $role
      * @return boolean
      */
-    public static function isAuthorize(int $role):bool 
+    public static function isAuthorize(int $role):bool
     {
-        if(isset($_SESSION['user'])) {
-            if(!$role) {
+        if (isset($_SESSION['user'])) {
+            if (!$role) {
                 return true;
             }
             return $_SESSION['user']['role'] == $role;
         }
         return false;
+
     }
-    
+
     /**
      * Confirmed a role
      *
      * @param integer $role
      * @return boolean
      */
-    public static function getRole(int $role) :bool 
+    public static function hasRole(int $role) :bool
     {
         return $_SESSION['user']['role'] == $role;
-    }
 
+    }
 
     /**
     * Create the user session
@@ -50,7 +53,7 @@ final class Auth
     * @param array $user
     * @return void
     */
-    public static function createUser(array $user) 
+    public static function createUser(array $user)
     {
         $_SESSION['user'] = $user;
         $_SESSION['user']['token'] = hash('md5',uniqid(true));
@@ -61,9 +64,10 @@ final class Auth
      *
      * @return void
      */
-    public static function destroy() 
+    public static function destroy()
     {
        unset($_SESSION['user']);
+
     }
 
 }

@@ -26,7 +26,7 @@ class Db {
             $this->user = $datas->db->user;
             $this->password = $datas->db->password;
         }
-        
+
     }
 
 
@@ -35,7 +35,8 @@ class Db {
      *
      * @return void
      */
-    public static function requestDb() {
+    public static function requestDb()
+    {
         if (self::$instance === null) {
             self::$instance = new self();
         }
@@ -47,15 +48,17 @@ class Db {
      *
      * @return PDO
      */
-    public function connect():PDO {
+    public function connect():PDO
+    {
            
-        $db = new PDO($this->dsn, $this->user, $this->password,
+        $d_b = new PDO($this->dsn, $this->user, $this->password,
         [
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ]
         );
-            return $db;
+            return $d_b;
+
     }
-    
+
 }

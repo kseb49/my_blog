@@ -17,28 +17,24 @@ class CommentController extends Controller
      * @param array $datas $_POST
      * @return void
      */
-    public function create(array $datas) {
-        try{
-            // if($this->isUser()) {
-                if($datas['#token'] !== $_SESSION['user']['token']) {
-                    throw new Exception("Vous ne pouvez pas commenter");
-                 }
-                 $comment = new CommentModel();
-                 if($comment->loadDatas($datas)->validate()) {
-                    if($comment->createComment()) {
-                        $mail = new Mail();
-                        $message = $this->twig->render("templates/mail/moderation-mail.twig",["comment"=>$comment->comment,"url"=>BASE."dashboard"]);
-                        $mail->mail(adress: $this->admin, subject : "Demande de modération", message :$message);
-                        Flash::flash('success','Votre commentaire a était pris en compte');
-                        $this->redirect(REF);
-                    }
-                    throw new Exception("Commentaire non pris en compte");
-                    // Flash::flash('danger','Commentaire non pris en compte');
-                    // $this->redirect('referer');
-                 }
-            // }
-
-        }catch (Exception $e ){
+    public function create(array $datas)
+    {
+        try {
+            if ($datas['#token'] !== $_SESSION['user']['token']) {
+                throw new Exception("Vous ne pouvez pas commenter");
+                }
+                $comment = new CommentModel();
+            if ($comment->loadDatas($datas)->validate()) {
+                if ($comment->createComment()) {
+                    $mail = new Mail();
+                    $message = $this->twig->render("templates/mail/moderation-mail.twig",["comment" => $comment->comment, "url" => BASE."dashboard"]);
+                    $mail->mail(adress: $this->admin, subject : "Demande de modération", message :$message);
+                    Flash::flash('success','Votre commentaire a était pris en compte');
+                    $this->redirect(REF);
+                }
+                throw new Exception("Commentaire non pris en compte");
+            }
+        }catch (Exception $e){
             Flash::flash('danger',$e);
             $this->redirect(REF);
         }
@@ -51,7 +47,8 @@ class CommentController extends Controller
      * @param array $datas [string $content, string $token, string $commentid]
      * @return void
      */
-    public function editComment(array $datas) {
+    public function editComment(array $datas)
+    {
         if($datas['#token'] !== $_SESSION['user']['token']) {
             throw new Exception("Vous ne pouvez pas commenter");
          }
@@ -59,24 +56,26 @@ class CommentController extends Controller
         if($comment->loadDatas($datas)->validate()) {
             if($comment->editComment($datas['#id'])) {
                 $comment->single($datas['#id']);
-            $mail = new Mail();
-            $message = $this->twig->render("templates/mail/moderation-mail.twig",["comment"=>$comment->comment,"url"=>BASE."dashboard"]);
-            $mail->mail(adress: $this->admin, subject : "Demande de modération", message :$message);
-            Flash::flash("success","Vous avez bien modifié votre commentaire, il est en attende de modération");
-            $this->redirect('dashboard');
-             }
+                $mail = new Mail();
+                $message = $this->twig->render("templates/mail/moderation-mail.twig",["comment" => $comment->comment, "url" => BASE."dashboard"]);
+                $mail->mail(adress: $this->admin, subject : "Demande de modération", message :$message);
+                Flash::flash("success","Vous avez bien modifié votre commentaire, il est en attende de modération");
+                $this->redirect('dashboard');
+            }
         }
         throw new Exception("Le commentaire n'a pas été trouvé");
+
     }
+
     /**
      * Get the comment to edit
      *
-     * @param string $id
+     * @param string $com_id
      * @return void
      */
-    public function getComment(string $id) {
+    public function getComment(string $com_id) {
         $comment = new CommentModel();
-        if($comment->oneCommment($id)) {
+        if($comment->oneCommment($com_id)) {
            return $this->twig->display("templates/edit-comment.twig",["comments" => $comment->single_comment]);
         }
         Flash::flash("danger","Le commentaire n'a pas était trouvé");
@@ -87,13 +86,13 @@ class CommentController extends Controller
      *
      * @return void
      */
-    public function commentsLists () {
+    public function commentsLists() {
         try {
             $comments = new CommentModel();
-        if ($comments->pendingComments()) {
-            return $this->twig->display("templates/comments-to-moderate.twig",["pend_comments" => $comments->pending_comments]);
-        }
-        throw new Exception("Il n'y a pas de commentaires en  attente");
+            if ($comments->pendingComments()) {
+                return $this->twig->display("templates/comments-to-moderate.twig",["pend_comments" => $comments->pending_comments]);
+            }
+            throw new Exception("Il n'y a pas de commentaires en  attente");
         }catch (Exception $e) {
             Flash::flash('danger',$e->getMessage());
             $this->redirect('dashboard');
@@ -129,7 +128,7 @@ class CommentController extends Controller
                     $mail = new Mail();
                     $user = new UserModel();
                     $user->user($comment[2]);
-                    $message = $this->twig->render("templates/mail/response-mail.twig",["comment"=>$accept->comment,"url" => BASE."blog","message"=>"Votre commentaire est en ligne","accept"]);
+                    $message = $this->twig->render("templates/mail/response-mail.twig",["comment" => $accept->comment, "url" => BASE."blog", "message" => "Votre commentaire est en ligne", "accept"]);
                     $mail->mail($user->user['email'],$message,"Votre commentaire est en ligne",$user->user["f_name"]);
                     Flash::flash('success','Ce commentaire est accepté');
                     $this->redirect('dashboard');
@@ -142,11 +141,11 @@ class CommentController extends Controller
     }
 
         public function deleteComment(array $params) {
-            if($params[1] !== $_SESSION['user']['token']) {
+            if ($params[1] !== $_SESSION['user']['token']) {
                 throw new Exception("Vous ne pouvez pas effacer ce commentaire");
              }
              $comment = new CommentModel();
-             if($comment->deleteComment($params[0])) {
+             if ($comment->deleteComment($params[0])) {
                 Flash::flash('success',"Commentaire supprimé");
                 $this->redirect(REF);
              }
@@ -161,26 +160,27 @@ class CommentController extends Controller
          * @param array $comment
          * @return void
          */
-        public function reject (array $comment){
-             if($comment[1] !== $_SESSION['user']['token']) {
-                throw new Exception("Vous ne pouvez pas modérer");
-             }
-             $reject = new CommentModel();
-             if($reject->single($comment[0])) {
-                if($reject->deleteComment($comment[0])){
-                $mail = new Mail();
-                $user = new UserModel();
-                $user->user($comment[2]);
-                $message = $this->twig->render("templates/mail/response-mail.twig",["comment"=>$reject->comment,"url" => BASE."blog","message"=>"Votre commentaire est refusé"]);
-                $mail->mail($user->user['email'],$message,"Votre commentaire a été refusé",$user->user["f_name"]);
-                Flash::flash('success','Ce commentaire a été refusé et supprimé');
+        public function reject (array $comment)
+        {
+            if ($comment[1] !== $_SESSION['user']['token']) {
+            throw new Exception("Vous ne pouvez pas modérer");
+            }
+            $reject = new CommentModel();
+            if ($reject->single($comment[0])) {
+                if ($reject->deleteComment($comment[0])) {
+                    $mail = new Mail();
+                    $user = new UserModel();
+                    $user->user($comment[2]);
+                    $message = $this->twig->render("templates/mail/response-mail.twig",["comment" => $reject->comment, "url" => BASE."blog", "message" => "Votre commentaire est refusé"]);
+                    $mail->mail($user->user['email'],$message,"Votre commentaire a été refusé",$user->user["f_name"]);
+                    Flash::flash('success','Ce commentaire a été refusé et supprimé');
+                    $this->redirect(REF);
+                }
+                Flash::flash('danger',"Le mail d'information n'a pas était envoyé");
                 $this->redirect(REF);
-             }
-             Flash::flash('danger',"Le mail d'information n'a pas était envoyé");
-             $this->redirect(REF);
+            }
+            Flash::flash('danger',"Une erreur est survenue");
+            $this->redirect(REF);
         }
-        Flash::flash('danger',"Une erreur est survenue");
-        $this->redirect(REF);
-    }
 
 }

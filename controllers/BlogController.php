@@ -7,6 +7,12 @@ use models\CommentModel;
 
 class BlogController extends Controller
 {
+
+  /**
+   * Display the blog home page
+   *
+   * @return void
+   */
     public function index()
     {
       $datas = new BlogModel();
@@ -26,6 +32,8 @@ class BlogController extends Controller
       $datas = $datas->single($post_id);
       $comments = new Commentmodel();
       $comments->fetch($post_id);
-      return $this->twig->display('post.twig',['datas' => $datas,'comments'=> $comments->comments]);
+      return $this->twig->display('post.twig',['datas' => $datas, 'comments' => $comments->comments]);
+
     }
+
 }
