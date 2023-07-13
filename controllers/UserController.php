@@ -15,20 +15,20 @@ class UserController extends Controller{
 
     public function logIn(array $input) {
         try {
-            if(!Auth::isConnect()) {
-            $user = new UserModel();
-            if($user->check($input) === true) {
-                if ($user->user['confirmation_date'] === null) {
-                    throw new Exception("le compte n'est pas confirmé");
-                }
-                if (password_verify($input['password'], $user->user['password'])) {
-                    Auth::createUser($user->user); // Connect the user
-                    $this->redirect('dashboard');
+            if (!Auth::isConnect()) {
+                $user = new UserModel();
+                if ($user->check($input) === true) {
+                    if ($user->user['confirmation_date'] === null) {
+                        throw new Exception("le compte n'est pas confirmé");
+                    }
+                    if (password_verify($input['password'], $user->user['password'])) {
+                        Auth::createUser($user->user); // Connect the user.
+                        $this->redirect('dashboard');
+                    }
+                    throw new Exception("pseudo ou mot de passe incorrects");
                 }
                 throw new Exception("pseudo ou mot de passe incorrects");
             }
-            throw new Exception("pseudo ou mot de passe incorrects");
-        }
         } catch (Exception $e) {
             Flash::flash('danger',$e->getMessage());
             $this->redirect(REF);

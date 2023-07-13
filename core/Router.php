@@ -58,38 +58,39 @@ class Router {
      *
      * @return void
      */
-    public function find(){
+    public function find() 
+    {
         $route = new Route($this->request,$this->url);
-        if($route->search()){
-            if(key_exists("role",$route->route)){
-                if(!Auth::isAuthorize($route->route["role"])) {// same as == false
+        if ($route->search()) {
+            if (key_exists("role",$route->route)) {
+                if(!Auth::isAuthorize($route->route["role"])) { // Same as == false.
                     throw new Exception("Vous n'êtes pas autorisé à visiter cette page :".$this->request['path']."");
                     }
                 }
-                    $controller = '\controllers\\'.$route->route[0];
-                    $action = $route->route[1];
-                    $display = new $controller;
-                    if(!empty($route->params)) {
-                        if(count($route->params) === 1) {
-                            $display->$action($route->params[0]);
-                            return;
-                        }
-                        $display->$action($route->params);
-                        return;
-                    }
-                    if(isset($_GET) && !empty($_GET)) {
-                        $display->$action($_GET);
-                        return;
-                    }
-                    if(isset($_POST) && !empty($_POST)) {
-                        $display->$action($_POST);
-                        return;
-                    }
-                    $display->$action();
+            $controller = '\controllers\\'.$route->route[0];
+            $action = $route->route[1];
+            $display = new $controller;
+            if(!empty($route->params)) {
+                if(count($route->params) === 1) {
+                    $display->$action($route->params[0]);
                     return;
-                
+                }
+                $display->$action($route->params);
+                return;
             }
-        
-            throw new Exception('Cette adresse est introuvable');
+            if(isset($_GET) && !empty($_GET)) {
+                $display->$action($_GET);
+                return;
+            }
+            if(isset($_POST) && !empty($_POST)) {
+                $display->$action($_POST);
+                return;
+            }
+            $display->$action();
+            return;
+                
+        }
+        throw new Exception('Cette adresse est introuvable');
     }
+
 }
