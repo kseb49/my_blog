@@ -47,7 +47,7 @@ try{
    $router->find();
 
 }
-catch(Exception $e){
+catch(Exception $e) {
   Flash::flash('danger',$e->getMessage());
   header("Location: http://blog.test/");
 }

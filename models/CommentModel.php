@@ -131,9 +131,9 @@ class CommentModel extends ValidateModel
      * Get a single comment
      *
      * @param string $id
-     * @return void
+     * @return boolean
      */
-    public function oneCommment(string $id)
+    public function oneCommment(string $id):bool
     {
         $request = $this->connect()->prepare('SELECT * FROM comments where id = ?');
         $request->execute([$id]);
