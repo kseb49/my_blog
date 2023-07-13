@@ -7,13 +7,13 @@ use models\BlogModel;
 
 class HomeController extends Controller
 {
+
+
     /**
      * Display the Home page
      *
      * @return void
      */
-
-
     public function index()
     {
         $posts = new BlogModel();

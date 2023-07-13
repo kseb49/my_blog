@@ -80,6 +80,12 @@ class CommentModel extends ValidateModel
     }
 
 
+    /**
+     * Modify a comment
+     *
+     * @param string $com_id
+     * @return void
+     */
     public function editComment(string $com_id)
     {
         $request = $this->connect()->prepare("UPDATE comments set comment = :comment, _date = NOW(), status = 0 WHERE id = :id");

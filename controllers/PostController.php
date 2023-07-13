@@ -15,6 +15,7 @@ class PostController extends Controller
 
     protected array $datas;
 
+
     /**
      * Display the form needed to create a post
      *
@@ -28,7 +29,9 @@ class PostController extends Controller
             return $this->twig->display('edit-post.twig', ['users' => $users->user]);
         }
         return $this->twig->display('edit-post.twig');
+
     }
+
 
     /**
      * Create a new Post
@@ -36,7 +39,8 @@ class PostController extends Controller
      * @param array $datas $_POST
      * @return void
      */
-    public function createPost(array $datas){
+    public function createPost(array $datas)
+    {
         try {
             if ($datas['#token'] !== $_SESSION['user']['token']) {
                 throw new Exception("Vous ne pouvez pas créer d\'article");
@@ -51,7 +55,7 @@ class PostController extends Controller
                 $image->check();
                 $newPost = new PostModel();
                 $newPost->loadDatas($this->datas)->validate(); 
-                if($newPost->createPost($image->_name)) {
+                if ($newPost->createPost($image->_name)) {
                     $image->parker();
                     Flash::flash('success','Votre article est en ligne');
                     $this->redirect('dashboard');
@@ -59,38 +63,40 @@ class PostController extends Controller
                 throw new Exception("Une erreur est survenue, merci de réessayer");
             }
             throw new Exception("Vous devez fournir une image pour l'article");
-        }catch(Exception $e) {
+        } catch(Exception $e) {
             Flash::flash('danger',$e->getMessage());
             $this->redirect(REF);
         }
+
     }
+
 
     /**
      * get the post to edit
      *
-     * @param string $id
+     * @param string $post_id
      * @return void
      */
     public function postToEdit(string $post_id)
     {
         try {
             $post = new PostModel();
-            if ($post->postToEdit($post_id)) {
+            if ($post->postToEdit($post_id) === true) {
                 if (Auth::hasRole(ADMIN) === true) {
                     $users = new UserModel();
-                    if ($users->users()) {
-                        return $this->twig->display('edit-post.twig',["post"=>$post->post,"action"=>"edit","users"=> $users->user]);
+                    if ($users->users() === true) {
+                        return $this->twig->display('edit-post.twig',["post" => $post->post, "action" => "edit", "users" => $users->user]);
                     }
                     throw new Exception("Problème de récupération de données - USERS FAIL");
                 }
-                return $this->twig->display('edit-post.twig',["post"=>$post->post,"action"=>"edit"]);
+                return $this->twig->display('edit-post.twig',["post" => $post->post, "action" => "edit"]);
             }
             throw new Exception("L'article n'a pas été trouvé");
-        }catch(Exception $e) {
+        } catch(Exception $e) {
             Flash::flash('danger',$e->getMessage());
             $this->redirect('dashboard');
         }
-        
+
     }
 
 
@@ -100,7 +106,8 @@ class PostController extends Controller
      * @param array $datas $_POST
      * @return void
      */
-     public function postEdit(array $datas) {
+     public function postEdit(array $datas)
+     {
         try {
              if ($datas['#token'] !== $_SESSION['user']['token']) {
                 throw new Exception('Vous ne pouvez pas modifier cet article');
@@ -110,42 +117,42 @@ class PostController extends Controller
                 $this->datas = $_POST;
                 $post = new PostModel();
                 $post->loadDatas($this->datas)->validate();
-                    $image = new Pik($_FILES);
-                    if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
-                        $image->check();
-                        if ($post->postEdit($this->datas,$image->_name)) {
-                            $image->parker();
-                            Flash::flash('success','Votre article est modifié');
-                            $this->redirect('dashboard');
-                        }
-                        throw new Exception("L'article n'a pas été modifié");
+                $image = new Pik($_FILES);
+                if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                    $image->check();
+                    if ($post->postEdit($this->datas,$image->_name)) {
+                        $image->parker();
+                        Flash::flash('success','Votre article est modifié');
+                        $this->redirect('dashboard');
                     }
-                    if ($_FILES['image']['error'] === UPLOAD_ERR_NO_FILE) {
-                        if($post->postEdit($this->datas)) {
-                            Flash::flash('success','Votre article est modifié');
-                            $this->redirect('dashboard');
-                        }
-                        throw new Exception("L'article n'a pas été modifié");
+                    throw new Exception("L'article n'a pas été modifié");
+                }
+                if ($_FILES['image']['error'] === UPLOAD_ERR_NO_FILE) {
+                    if($post->postEdit($this->datas)) {
+                        Flash::flash('success','Votre article est modifié');
+                        $this->redirect('dashboard');
                     }
-                    throw new Exception($image->uploadErrors($_FILES['image']['error']));
+                    throw new Exception("L'article n'a pas été modifié");
+                }
+                throw new Exception($image->uploadErrors($_FILES['image']['error']));
             }
            throw new Exception("aucun fichier image reçu");
-           
-        }catch(Exception $e) {
+        } catch(Exception $e) {
             Flash::flash('danger',$e->getMessage());
             $this->redirect('dashboard');
         }
-           
+
     }
 
-    
-    public function deletePost(array $post_id){
+
+    public function deletePost(array $post_id)
+    {
         try {
             if ($post_id[1] !== $_SESSION['user']['token']) {
                 throw new Exception("Impossible de supprimer cet article");
             }
             $post = new PostModel();
-            if ($post->delete($post_id[0])) {
+            if ($post->delete($post_id[0]) === true) {
                 Flash::flash('success','Votre article est supprimé');
                 $this->redirect('dashboard');
             }
@@ -154,6 +161,7 @@ class PostController extends Controller
             Flash::flash('danger',$e->getMessage());
             $this->redirect('dashboard');
         }
+
     }
 
 }

@@ -34,7 +34,9 @@ class UserController extends Controller
             Flash::flash('danger',$e->getMessage());
             $this->redirect(REF);
         }
+
     }
+
 
     public function logOut()
     {
@@ -43,7 +45,9 @@ class UserController extends Controller
 
     }
 
-    public function dashboard() {
+
+    public function dashboard()
+    {
         $user = new PostModel();
         if (Auth::hasRole(ADMIN) === false) {
             $user->fetch();
@@ -56,6 +60,8 @@ class UserController extends Controller
         $comment->all();
         $comment->pendingComments();
         return $this->twig->display('dashboard.html.twig',["pend_comments" => $comment->pending_comments, "posts" => $all, "comments" => $comment->comments]);
+
     }
+
 
 }

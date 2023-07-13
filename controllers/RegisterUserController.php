@@ -15,6 +15,7 @@ class RegisterUserController extends Controller
 
     protected array $datas;
 
+
     /**
      * Display the register/log-in page
      *
@@ -26,7 +27,9 @@ class RegisterUserController extends Controller
            $this->redirect('dashboard');
         }
         return $this->twig->display('registration.twig');
+
     }
+
 
     /**
      * Register a new user
@@ -36,7 +39,7 @@ class RegisterUserController extends Controller
      */
     public function register(array $datas)
     {
-        try{
+        try {
             $this->datas = $datas;
             $register = new RegisterUserModel();
             $register->loadDatas($this->datas)->validate();
@@ -48,11 +51,13 @@ class RegisterUserController extends Controller
                     $this->redirect(REF);
                 }
                 throw new Exception("Merci de réessayer");
-        } catch(Exception $e){
+        } catch(Exception $e) {
             Flash::flash('danger',$e->getMessage());
             $this->redirect(REF);
         }
+
     }
+
 
     /**
      * Validate an user account from the mail
@@ -62,7 +67,7 @@ class RegisterUserController extends Controller
      */
     public function validateFromMail(array $datas)
     {
-        try{
+        try {
             $this->datas = $datas;
             $register = new RegisterUserModel();
             if ($register->confirmMail($this->datas) === true) { // Retrieve the user.
@@ -87,5 +92,8 @@ class RegisterUserController extends Controller
             Flash::flash('danger',$e->getMessage());
             $this->redirect('inscription');
         }
+
     }
+
+
 }

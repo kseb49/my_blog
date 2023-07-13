@@ -52,12 +52,13 @@ class CommentController extends Controller
      */
     public function editComment(array $datas)
     {
-        if ($datas['#token'] !== $_SESSION['user']['token']) {
+        try {
+            if ($datas['#token'] !== $_SESSION['user']['token']) {
             throw new Exception("Vous ne pouvez pas commenter");
-         }
-        $comment = new CommentModel();
-        if($comment->loadDatas($datas)->validate() === true) {
-            if($comment->editComment($datas['#id']) === true) {
+            }
+            $comment = new CommentModel();
+            $comment->loadDatas($datas)->validate();
+            if ($comment->editComment($datas['#id']) === true) {
                 $comment->single($datas['#id']);
                 $mail = new Mail();
                 $message = $this->twig->render("templates/mail/moderation-mail.twig",["comment" => $comment->comment, "url" => BASE."dashboard"]);
@@ -65,10 +66,14 @@ class CommentController extends Controller
                 Flash::flash("success","Vous avez bien modifié votre commentaire, il est en attende de modération");
                 $this->redirect('dashboard');
             }
+            throw new Exception("Le commentaire n'a pas été modifié");
+        } catch (Exception $e) {
+            Flash::flash("danger",$e->getMessage());
+            $this->redirect(REF);
         }
-        throw new Exception("Le commentaire n'a pas été trouvé");
 
     }
+
 
     /**
      * Get the comment to edit
@@ -113,7 +118,7 @@ class CommentController extends Controller
      *
      * @return void
      */
-    public function allComments ()
+    public function allComments()
     {
         $comments = new CommentModel();
         if ($comments->all() === true) {
@@ -133,52 +138,61 @@ class CommentController extends Controller
      */
     public function accept(array $comment)
     {
-        if ($comment[1] !== $_SESSION['user']['token']) {
+        try {
+            if ($comment[1] !== $_SESSION['user']['token']) {
             throw new Exception("Vous ne pouvez pas modérer");
-        }
-        $accept = new CommentModel();
-        if ($accept->acceptComment($comment[0]) === true) {
-            if ($accept->single($comment[0]) === true) {
-                $mail = new Mail();
-                $user = new UserModel();
-                $user->user($comment[2]);
-                $message = $this->twig->render("templates/mail/response-mail.twig",["comment" => $accept->comment, "url" => BASE."blog", "message" => "Votre commentaire est en ligne", "accept"]);
-                $mail->mail($user->user['email'],$message,"Votre commentaire est en ligne",$user->user["f_name"]);
-                Flash::flash('success','Ce commentaire est accepté');
-                $this->redirect('dashboard');
             }
-            Flash::flash('danger',"Le mail d'information n'a pas était envoyé");
+            $accept = new CommentModel();
+            if ($accept->acceptComment($comment[0]) === true) {
+                if ($accept->single($comment[0]) === true) {
+                    $mail = new Mail();
+                    $user = new UserModel();
+                    $user->user($comment[2]);
+                    $message = $this->twig->render("templates/mail/response-mail.twig",["comment" => $accept->comment, "url" => BASE."blog", "message" => "Votre commentaire est en ligne", "accept"]);
+                    $mail->mail($user->user['email'],$message,"Votre commentaire est en ligne",$user->user["f_name"]);
+                    Flash::flash('success','Ce commentaire est accepté');
+                    $this->redirect('dashboard');
+                }
+                throw new Exception("Le mail d'information n'a pas était envoyé");
+            }
+           throw new Exception("Une erreur est survenue");
+        } catch (Exception $e) {
+            Flash::flash('danger',$e->getMessage());
             $this->redirect('dashboard');
         }
-        Flash::flash('danger',"Une erreur est survenue");
-        $this->redirect('dashboard');
 
     }
 
 
-        public function deleteComment(array $params) {
+    public function deleteComment(array $params)
+    {
+        try {
             if ($params[1] !== $_SESSION['user']['token']) {
                 throw new Exception("Vous ne pouvez pas effacer ce commentaire");
-             }
-             $comment = new CommentModel();
-             if ($comment->deleteComment($params[0])) {
+            }
+            $comment = new CommentModel();
+            if ($comment->deleteComment($params[0]) === true) {
                 Flash::flash('success',"Commentaire supprimé");
                 $this->redirect(REF);
-             }
-             Flash::flash("danger","Le commentaire n'a pas était trouvé");
-             $this->redirect(REF);
-
+            }
+            throw new Exception("Le commentaire n'a pas était trouvé");
+        } catch (Exception $e) {
+            Flash::flash('danger',$e->getMessage());
+            $this->redirect('dashboard');
         }
 
+    }
 
-        /**
-         * Reject a comment
-         *
-         * @param array $comment
-         * @return void
-         */
-        public function reject (array $comment)
-        {
+
+    /**
+     * Reject a comment
+     *
+     * @param array $comment
+     * @return void
+     */
+    public function reject (array $comment)
+    {
+        try {
             if ($comment[1] !== $_SESSION['user']['token']) {
             throw new Exception("Vous ne pouvez pas modérer");
             }
@@ -193,12 +207,14 @@ class CommentController extends Controller
                     Flash::flash('success','Ce commentaire a été refusé et supprimé');
                     $this->redirect(REF);
                 }
-                Flash::flash('danger',"Le mail d'information n'a pas était envoyé");
-                $this->redirect(REF);
+                throw new Exception("Le mail d'information n'a pas était envoyé");
             }
-            Flash::flash('danger',"Une erreur est survenue");
-            $this->redirect(REF);
-
+            throw new Exception("Une erreur est survenue");
+        } catch (Exception $e) {
+            Flash::flash('danger',$e->getMessage());
+            $this->redirect('dashboard');
         }
+
+    }
 
 }
