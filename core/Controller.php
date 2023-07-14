@@ -9,18 +9,53 @@ use Twig\Extra\Intl\IntlExtension;
 abstract class Controller
 {
 
+    /**
+     * Loader uses y twig to locate templates
+     *
+     * @var [type]
+     */
     private $loader;
 
+    /**
+     * Environment uses by twig to store its configuration
+     *
+     * @var [type]
+     */
     protected $twig;
 
+    /**
+     * SMTP username
+     *
+     * @var string
+     */
     protected string $mail_id;
 
+    /**
+     * SMTP server to send through
+     *
+     * @var string
+     */
     protected string $host;
 
+    /**
+     * SMTP password
+     *
+     * @var string
+     */
     protected string $password;
 
+    /**
+     * Mail sender email
+     *
+     * @var string
+     */
     protected string $from;
 
+    /**
+     * The email adress which will receive the moderation request
+     *
+     * @var string
+     */
     protected string $admin;
 
     /**
@@ -31,7 +66,7 @@ abstract class Controller
     protected array $type_auth;
 
     /**
-     * Max size authorised
+     * Max size authorised for the images
      *
      * @var string
      */
@@ -79,7 +114,7 @@ abstract class Controller
             if (isset($_SERVER['HTTP_REFERER']) && $location === REF) {
                 header("Location:".$_SERVER['HTTP_REFERER']);
             }
-            else{
+            else {
                 header("Location:".BASE.$location);
             }
         }

@@ -60,23 +60,32 @@ class CommentModel extends ValidateModel
     }
 
 
+    /**
+     * Create a comment
+     *
+     * @return boolean
+     */
     public function createComment() :bool
     {
         $request = $this->connect()->prepare('INSERT into comments (comment,_date,status,posts_id,users_id) values(:comment,NOW(),0,:post_id,:user)');
-        if ($request->execute([
-            "comment" => $this->comment,
-            "post_id" => $this->post_id,
-            "user" => $_SESSION['user']['id']
-        ])) {
+        if ($request->execute(
+                [
+                "comment" => $this->comment,
+                "post_id" => $this->post_id,
+                "user" => $_SESSION['user']['id']
+                ]
+            ))
+        {
             // Recover the last comment Id for the post, from the user and only one in the event that there are similar comments.
             $request = $this->connect()->prepare('SELECT id from comments where comment = ? and posts_id = ? and users_id = ? and status = 0 ORDER BY _date DESC LIMIT 0,1');
-            $request->execute([$this->comment,$this->post_id,$_SESSION['user']['id']]);
+            $request->execute([$this->comment, $this->post_id, $_SESSION['user']['id']]);
             if ($response = $request->fetch()) {
-               $this->id_comment = $response['id'];
-               return true;
+                $this->id_comment = $response['id'];
+                return true;
             }
         }
         return false;
+
     }
 
 
@@ -89,24 +98,25 @@ class CommentModel extends ValidateModel
     public function editComment(string $com_id)
     {
         $request = $this->connect()->prepare("UPDATE comments set comment = :comment, _date = NOW(), status = 0 WHERE id = :id");
-        if ($request->execute(["comment" => $this->comment,"id"=>$com_id])) {
+        if ($request->execute(["comment" => $this->comment, "id" => $com_id])) {
             return true;
         }
         return false;
+
     }
 
 
     /**
      * Get all the comments linked to a posts
      *
-     * @param string $id post id
+     * @param string $post_id post id
      * @return bool
      */
-    public function fetch(string $id) :bool
+    public function fetch(string $post_id) :bool
     {
         $request = $this->connect()->prepare(
         'SELECT * ,c.id as cid FROM comments c left join users on users.id = c.users_id where c.posts_id = ? order by c._date desc');
-        $request->execute([$id]);
+        $request->execute([$post_id]);
         if ($this->comments = $request->fetchAll()) {
             return true;
         }
@@ -136,18 +146,19 @@ class CommentModel extends ValidateModel
     /**
      * Get a single comment
      *
-     * @param string $id
+     * @param string $com_id
      * @return boolean
      */
-    public function oneCommment(string $id):bool
+    public function oneCommment(string $com_id):bool
     {
         $request = $this->connect()->prepare('SELECT * FROM comments where id = ?');
-        $request->execute([$id]);
+        $request->execute([$com_id]);
         if ($response = $request->fetchAll()) {
             $this->single_comment = $response;
             return true;
         }
         return false;
+
     }
 
 
@@ -157,16 +168,22 @@ class CommentModel extends ValidateModel
      * @return boolean
      */
     public function all() :bool
-     {
+    {
         $request = $this->connect()->query(
         'SELECT * FROM comments where status = 1 order by _date desc');
         if ($this->comments = $request->fetchAll()) {
             return true;
         }
         return false;
+
     }
 
 
+    /**
+     * Get all the comments awaiting to be moderate
+     *
+     * @return boolean
+     */
     public function pendingComments() :bool
     {
         $request = $this->connect()->query(
@@ -175,19 +192,33 @@ class CommentModel extends ValidateModel
             return true;
         }
         return false;
+
     }
 
 
-    public function acceptComment(string $id) :bool
+    /**
+     * Accept a comment (switch to a 1 status)
+     *
+     * @param string $com_id
+     * @return boolean
+     */
+    public function acceptComment(string $com_id) :bool
     {
         $request = $this->connect()->prepare('UPDATE comments set status = 1 where id = ?');
-        if ($request->execute([$id])) {
+        if ($request->execute([$com_id])) {
             return true;
         }
         return false;
+
     }
 
 
+    /**
+     * Delete a comment
+     *
+     * @param string $com_id
+     * @return void
+     */
     public function deleteComment(string $com_id)
     {
         $request = $this->connect()->prepare('DELETE from comments where id = ?');
@@ -197,5 +228,6 @@ class CommentModel extends ValidateModel
         return false;
 
     }
+
 
 }

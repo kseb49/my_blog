@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace models;
 
@@ -45,7 +45,9 @@ class UserModel extends Model
             return true;
         }
         return false;
+
     }
+
 
     /**
      * Get all the users
@@ -58,5 +60,8 @@ class UserModel extends Model
             return true;
         }
         return false;
+
     }
+
+
 }

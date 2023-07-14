@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace controllers;
 
 use Exception;
@@ -54,7 +55,7 @@ class CommentController extends Controller
     {
         try {
             if ($datas['#token'] !== $_SESSION['user']['token']) {
-            throw new Exception("Vous ne pouvez pas commenter");
+                throw new Exception("Vous ne pouvez pas commenter");
             }
             $comment = new CommentModel();
             $comment->loadDatas($datas)->validate();
@@ -98,7 +99,8 @@ class CommentController extends Controller
      *
      * @return void
      */
-    public function commentsLists() {
+    public function commentsLists()
+    {
         try {
             $comments = new CommentModel();
             if ($comments->pendingComments() === true) {
@@ -140,7 +142,7 @@ class CommentController extends Controller
     {
         try {
             if ($comment[1] !== $_SESSION['user']['token']) {
-            throw new Exception("Vous ne pouvez pas modérer");
+                throw new Exception("Vous ne pouvez pas modérer");
             }
             $accept = new CommentModel();
             if ($accept->acceptComment($comment[0]) === true) {
@@ -155,7 +157,7 @@ class CommentController extends Controller
                 }
                 throw new Exception("Le mail d'information n'a pas était envoyé");
             }
-           throw new Exception("Une erreur est survenue");
+            throw new Exception("Une erreur est survenue");
         } catch (Exception $e) {
             Flash::flash('danger',$e->getMessage());
             $this->redirect('dashboard');
@@ -164,6 +166,12 @@ class CommentController extends Controller
     }
 
 
+    /**
+     * Delete a comment
+     *
+     * @param array $params $params[0] == comment_id
+     * @return void
+     */
     public function deleteComment(array $params)
     {
         try {
@@ -190,7 +198,7 @@ class CommentController extends Controller
      * @param array $comment
      * @return void
      */
-    public function reject (array $comment)
+    public function reject(array $comment)
     {
         try {
             if ($comment[1] !== $_SESSION['user']['token']) {
@@ -216,5 +224,6 @@ class CommentController extends Controller
         }
 
     }
+
 
 }

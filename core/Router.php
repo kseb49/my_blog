@@ -28,6 +28,7 @@ class Router
 
     }
 
+
     /**
      * Register a GET route 
      *
@@ -35,10 +36,10 @@ class Router
      * @param array $path
      * @return void
      */
-    public function get(string $url,array $path)
+    public function get(string $url, array $path)
     {
         if(preg_match('#:{(\w+)}#',$url)){
-            $url= preg_replace("#:{(\w+)}#",'([^/]+)',$url);
+            $url = preg_replace("#:{(\w+)}#",'([^/]+)',$url);
         }
         $this->url['GET'][$url] = $path;
         return $this;
@@ -47,13 +48,13 @@ class Router
 
 
     /**
-    * Register a post route
-    *
-    * @param string $url
-    * @param string $action
-    * @return void
-    */
-    public function post(string $url,array $path)
+     * Register a post route
+     *
+     * @param string $url
+     * @param string $action
+     * @return void
+     */
+    public function post(string $url, array $path)
     {
             $this->url['POST'][$url] = $path;
             return $this;
@@ -66,14 +67,14 @@ class Router
      *
      * @return void
      */
-    public function find() 
+    public function find()
     {
         $route = new Route($this->request,$this->url);
         $route->search();
         if (key_exists("role",$route->route) === true) {
             if (Auth::isAuthorize($route->route["role"]) === false) {
                 throw new Exception("Vous n'êtes pas autorisé à visiter cette page :".$this->request['path']."");
-                }
+            }
         }
         $controller = '\controllers\\'.$route->route[0];
         $action = $route->route[1];

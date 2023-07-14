@@ -22,17 +22,18 @@ abstract class ValidateModel extends Model
      * @return array
      */
     abstract protected function rules() :array;
-    
+
+
     /**
-    * Load the datas incoming from a form
-    *
-    * @param array $datas
-    * @return void
-    */
+     * Load the datas incoming from a form
+     *
+     * @param array $datas
+     * @return void
+     */
     public function loadDatas(array $datas)
     {
         foreach ($datas as $key => $value) {
-            if (str_contains($key,"#") === false) { //input name starting with # are excluded .Those could be hidden input (just needed to security concern) per exemple 
+            if (str_contains($key,"#") === false) { // Input name starting with # are excluded .Those could be hidden input (just needed to security concern) per exemple.
                 if (property_exists($this,$key) === false) {
                     throw new Exception("Le champ {$key} est invalide");
                 }
@@ -55,7 +56,7 @@ abstract class ValidateModel extends Model
             $value = $this->$input_name;
             foreach ($data as $rules) {
                 $rule = $rules;
-                if (is_array($rule) === true) { 
+                if (is_array($rule) === true) {
                     $rule = $rules[0];
                 }
                 if ($rule === self::REQUEST_REQUIRED && !$value) {
@@ -81,10 +82,11 @@ abstract class ValidateModel extends Model
                     }
                     $request->closeCursor();
                 }
-            } //end foreach.
+            }//end foreach.
         }
         return true;
 
     }
+
 
 }

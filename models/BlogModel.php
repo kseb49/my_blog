@@ -2,39 +2,38 @@
 
 namespace models;
 
-
 use Exception;
 use core\Model;
 
-
 class BlogModel extends Model
 {
+
+
     /**
      * Get all the posts and their associated authors
      *
      * @return array
      */
-
-
     public function index():array
     {
         if ($response = $this->connect()->query('SELECT *, p.id FROM posts p inner join users u on u.id = p.users_id')->fetchAll()) {
-           return $response;
+            return $response;
         }
         throw new Exception("Aucun article n'a été trouvé :( ");
+
     }
 
 
     /**
      * get a single post and its associated author
      *
-     * @param string $id
+     * @param string $post_id
      * @return array
      */
-    public function single(string $id) :array
+    public function single(string $post_id) :array
     {
         $request = $this->connect()->prepare('SELECT *,p.id FROM posts p join users u on u.id = p.users_id where p.id = ?');
-        $request->execute([$id]);
+        $request->execute([$post_id]);
         if ($resp = $request->fetchAll()) {
             return $resp;
         }
@@ -55,5 +54,6 @@ class BlogModel extends Model
         throw new Exception('Impossible de récupérer les articles');
 
     }
+
 
 }

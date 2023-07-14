@@ -22,15 +22,21 @@ class PostModel extends ValidateModel
     public function rules() :array
     {
         return[
-            'title'=>[self::REQUEST_REQUIRED, [self::REQUEST_MIN,10], [self::REQUEST_MAX,100]],
-            'chapo'=>[self::REQUEST_REQUIRED, [self::REQUEST_MIN,15], [self::REQUEST_MAX,200]],
-            'content'=>[self::REQUEST_REQUIRED, [self::REQUEST_MIN,150], [self::REQUEST_MAX,5000]],
-            'author'=>[],
-          ];
+            'title' => [self::REQUEST_REQUIRED, [self::REQUEST_MIN,10], [self::REQUEST_MAX,100]],
+            'chapo' => [self::REQUEST_REQUIRED, [self::REQUEST_MIN,15], [self::REQUEST_MAX,200]],
+            'content' => [self::REQUEST_REQUIRED, [self::REQUEST_MIN,150], [self::REQUEST_MAX,5000]],
+            'author' => [],
+            ];
 
     }
 
 
+    /**
+     * Insert a new post
+     *
+     * @param string $img
+     * @return void
+     */
     public function createPost(string $img)
     {
         $request = $this->connect()->prepare('INSERT into posts (title,chapo,content,created_at,users_id,img) VALUES (:title,:chapo,:content,NOW(),:users_id,:img)');
@@ -40,7 +46,8 @@ class PostModel extends ValidateModel
             ":content" => $this->content,
             ":users_id" => $this->author ?? $_SESSION['user']['id'],
             ":img" => $img
-            ])) {
+            ])
+            ) {
                 return true;
             }
             return false;
@@ -51,19 +58,19 @@ class PostModel extends ValidateModel
     /**
      * Fetch the post to edit
      *
-     * @param string $id
+     * @param string $post_id
      * @return boolean
      */
-   public function postToEdit(string $id) :bool
+   public function postToEdit(string $post_id) :bool
    {
-    $request = $this->connect()->prepare('SELECT * FROM posts where id = ?');
-    if ($request->execute([$id])) {
-        if ($this->post = $request->fetchAll()) {
-            return true;
-        }
-             return false;
-        }
-        return false;
+        $request = $this->connect()->prepare('SELECT * FROM posts where id = ?');
+        if ($request->execute([$post_id])) {
+            if ($this->post = $request->fetchAll()) {
+                return true;
+            }
+                return false;
+            }
+            return false;
 
     }
 
@@ -84,13 +91,18 @@ class PostModel extends ValidateModel
     }
 
 
+    /**
+     * Get all the posts
+     *
+     * @return boolean
+     */
     public function allPosts() :bool
     {
-    $request = $this->connect()->query('SELECT * FROM posts');
-    if ($this->post = $request->fetchAll()) {
-        return true;
-    }
-        return false;
+        $request = $this->connect()->query('SELECT * FROM posts');
+        if ($this->post = $request->fetchAll()) {
+            return true;
+        }
+            return false;
 
     }
 
@@ -109,7 +121,7 @@ class PostModel extends ValidateModel
             ":title" => $datas['title'],
             ":chapo" => $datas['chapo'],
             ":content" => $datas['content'],
-            ":users_id" =>$this->author ?? $_SESSION['user']['id'],
+            ":users_id" => $this->author ?? $_SESSION['user']['id'],
             ":img" => $img_name ?? $datas['#img'],
             ":id" => $datas['#id']
             ])) {
@@ -123,21 +135,22 @@ class PostModel extends ValidateModel
    /**
     * Delete a single post
     *
-    * @param string $id
+    * @param string $post_id
     * @return boolean
     */
-   public function delete(string $id) :bool
+   public function delete(string $post_id) :bool
    {
-    $request = $this->connect()->prepare('DELETE FROM posts where id = ?');
-    if ($request->execute([$id])) {
-        $request->closeCursor();
-        $request = $this->connect()->prepare('DELETE FROM posts_has_categories where posts_id = ?');
-        if ($request->execute([$id])) {
-            return true;
+        $request = $this->connect()->prepare('DELETE FROM posts where id = ?');
+        if ($request->execute([$post_id])) {
+            $request->closeCursor();
+            $request = $this->connect()->prepare('DELETE FROM posts_has_categories where posts_id = ?');
+            if ($request->execute([$post_id])) {
+                return true;
+            }
         }
-    }
-    return false;
+        return false;
 
    }
+
 
 }

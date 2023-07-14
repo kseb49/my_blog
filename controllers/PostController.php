@@ -13,6 +13,11 @@ use models\UserModel;
 class PostController extends Controller
 {
 
+    /**
+     * Datas from edit or create form
+     *
+     * @var array
+     */
     protected array $datas;
 
 
@@ -47,15 +52,15 @@ class PostController extends Controller
             }
             unset($_POST['MAX_FILE_SIZE']);
             $this->datas = $_POST;
-            if (isset($_FILES['image'])) {
+            if (isset($_FILES['image']) === true) {
                 $image = new Pik($_FILES);
                 if (isset($_FILES['image']['error']) && $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
                     throw new Exception($image->uploadErrors($_FILES['image']['error']));
                 }
                 $image->check();
                 $newPost = new PostModel();
-                $newPost->loadDatas($this->datas)->validate(); 
-                if ($newPost->createPost($image->_name)) {
+                $newPost->loadDatas($this->datas)->validate();
+                if ($newPost->createPost($image->_name) === true) {
                     $image->parker();
                     Flash::flash('success','Votre article est en ligne');
                     $this->redirect('dashboard');
@@ -109,7 +114,7 @@ class PostController extends Controller
      public function postEdit(array $datas)
      {
         try {
-             if ($datas['#token'] !== $_SESSION['user']['token']) {
+            if ($datas['#token'] !== $_SESSION['user']['token']) {
                 throw new Exception('Vous ne pouvez pas modifier cet article');
             }
             if (isset($_FILES['image'])) {
@@ -136,7 +141,7 @@ class PostController extends Controller
                 }
                 throw new Exception($image->uploadErrors($_FILES['image']['error']));
             }
-           throw new Exception("aucun fichier image reçu");
+            throw new Exception("aucun fichier image reçu");
         } catch(Exception $e) {
             Flash::flash('danger',$e->getMessage());
             $this->redirect('dashboard');
@@ -145,6 +150,12 @@ class PostController extends Controller
     }
 
 
+    /**
+     * Delete a post
+     *
+     * @param array $post_id
+     * @return void
+     */
     public function deletePost(array $post_id)
     {
         try {
@@ -163,5 +174,6 @@ class PostController extends Controller
         }
 
     }
+
 
 }

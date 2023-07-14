@@ -13,6 +13,11 @@ use models\RegisterUserModel;
 class RegisterUserController extends Controller
 {
 
+    /**
+     * datas collect from the mail or the registration form
+     *
+     * @var array
+     */
     protected array $datas;
 
 
@@ -24,7 +29,7 @@ class RegisterUserController extends Controller
     public function form()
     {
         if (Auth::isConnect() === true) {
-           $this->redirect('dashboard');
+            $this->redirect('dashboard');
         }
         return $this->twig->display('registration.twig');
 
@@ -43,14 +48,14 @@ class RegisterUserController extends Controller
             $this->datas = $datas;
             $register = new RegisterUserModel();
             $register->loadDatas($this->datas)->validate();
-                if ($register->registerUser() === true) {
-                    $mail = new Mail();
-                    $message = $this->twig->render("templates/mail/validation-mail.twig",["link" => $register->link,]);
-                    $mail->mail($register->email,$message,"Confirmez votre compte",$register->f_name." ".$register->l_name,'Recopier ce lien pour valider votre compte : '.$register->link);
-                    Flash::flash('success', 'Vous avez reçu un mail pour confirmer votre compte');
-                    $this->redirect(REF);
-                }
-                throw new Exception("Merci de réessayer");
+            if ($register->registerUser() === true) {
+                $mail = new Mail();
+                $message = $this->twig->render("templates/mail/validation-mail.twig", ["link" => $register->link,]);
+                $mail->mail($register->email,$message,"Confirmez votre compte", $register->f_name." ".$register->l_name, 'Recopier ce lien pour valider votre compte : '.$register->link);
+                Flash::flash('success', 'Vous avez reçu un mail pour confirmer votre compte');
+                $this->redirect(REF);
+            }
+            throw new Exception("Merci de réessayer");
         } catch(Exception $e) {
             Flash::flash('danger',$e->getMessage());
             $this->redirect(REF);

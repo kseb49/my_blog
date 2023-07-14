@@ -13,7 +13,15 @@ use models\CommentModel;
 class UserController extends Controller
 {
 
-    public function logIn(array $input) {
+
+    /**
+     * Log a user in
+     *
+     * @param array $input Input from the log in form
+     * @return void
+     */
+    public function logIn(array $input)
+    {
         try {
             if (Auth::isConnect() === false) {
                 $user = new UserModel();
@@ -21,7 +29,7 @@ class UserController extends Controller
                     if ($user->user['confirmation_date'] === null) {
                         throw new Exception("le compte n'est pas confirmé");
                     }
-                    if (password_verify($input['password'], $user->user['password'])) {
+                    if (password_verify($input['password'], $user->user['password']) === true) {
                         Auth::createUser($user->user); // Connect the user.
                         $this->redirect('dashboard');
                     }
@@ -38,6 +46,11 @@ class UserController extends Controller
     }
 
 
+    /**
+     * Log the user out
+     *
+     * @return void
+     */
     public function logOut()
     {
         Auth::destroy();
@@ -46,6 +59,11 @@ class UserController extends Controller
     }
 
 
+    /**
+     * Display the user dashboard
+     *
+     * @return void
+     */
     public function dashboard()
     {
         $user = new PostModel();

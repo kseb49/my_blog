@@ -1,19 +1,41 @@
-<?php 
-namespace core;
+<?php
 
+namespace core;
 
 use PDO;
 
 
-class Db {
+class DbConfig 
+{
 
+    /**
+     * Data source name
+     *
+     * @var [type]
+     */
     protected $dsn;
 
+    /**
+     * Username
+     *
+     * @var [type]
+     */
     protected $user;
 
+    /**
+     * Db password
+     *
+     * @var [type]
+     */
     protected $password;
 
-    private static $instance;
+    /**
+     * Instance of Db
+     *
+     * @var [type]
+     */
+    private static ?DbConfig $instance;
+
 
     /**
      * Get the params from env file
@@ -22,7 +44,7 @@ class Db {
     {
         if (file_exists(PARAMS) === true) {
             $datas = json_decode(file_get_contents(PARAMS));
-            $this->dsn = 'mysql:dbname='.$datas->db->dbname.';host='.$datas->db->host;
+            $this->dsn = $datas->db->prefix.':dbname='.$datas->db->dbname.';host='.$datas->db->host;
             $this->user = $datas->db->user;
             $this->password = $datas->db->password;
         }
@@ -31,7 +53,7 @@ class Db {
 
 
     /**
-     * create a instance of Db - SINGLETON
+     * create a instance of DbConfig - SINGLETON
      *
      * @return void
      */
@@ -41,7 +63,9 @@ class Db {
             self::$instance = new self();
         }
         return self::$instance;
+
     }
+
 
     /**
      * establish the connection
@@ -50,7 +74,6 @@ class Db {
      */
     public function connect():PDO
     {
-           
         $d_b = new PDO($this->dsn, $this->user, $this->password,
         [
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -60,5 +83,6 @@ class Db {
             return $d_b;
 
     }
+
 
 }

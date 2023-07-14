@@ -1,9 +1,10 @@
-<?php 
+<?php
 
 namespace core;
 
 final class Auth
 {
+
 
     /**
      * Check for an active connexion
@@ -16,6 +17,7 @@ final class Auth
         return $connect;
 
     }
+
 
     /**
      * Check the permission
@@ -35,6 +37,7 @@ final class Auth
 
     }
 
+
     /**
      * Confirmed a role
      *
@@ -47,17 +50,20 @@ final class Auth
 
     }
 
+
     /**
-    * Create the user session
-    *
-    * @param array $user
-    * @return void
-    */
+     * Create the user session
+     *
+     * @param array $user
+     * @return void
+     */
     public static function createUser(array $user)
     {
         $_SESSION['user'] = $user;
         $_SESSION['user']['token'] = hash('md5',uniqid(true));
+
     }
+
 
     /**
      * Destroy the user session
@@ -66,8 +72,9 @@ final class Auth
      */
     public static function destroy()
     {
-       unset($_SESSION['user']);
+        unset($_SESSION['user']);
 
     }
+
 
 }

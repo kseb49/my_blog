@@ -3,13 +3,23 @@
 namespace core;
 
 use PDO;
-use core\Db;
+use core\DbConfig;
 
 abstract class Model
 {
 
-    protected Db $d_b;
+    /**
+     * Instance of DbConfig
+     *
+     * @var DbConfig
+     */
+    protected DbConfig $d_b;
 
+    /**
+     * Connection to the db
+     *
+     * @var PDO
+     */
     protected PDO $connection;
 
     public const TIMEZONE = "Europe/Paris";
@@ -17,10 +27,11 @@ abstract class Model
 
     public function __construct()
     {
-        $this->d_b = Db::requestDb();
+        $this->d_b = DbConfig::requestDb();
         date_default_timezone_set(self::TIMEZONE);
 
     }
+
 
     /**
      * retrieve the data base connection
@@ -32,5 +43,6 @@ abstract class Model
         return $this->connection = $this->d_b->connect();
 
     }
+
 
 }
