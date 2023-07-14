@@ -2,6 +2,7 @@
 
 namespace core;
 
+use core\init;
 use Twig\Extension\Session;
 use Twig\Extra\Intl\IntlExtension;
 
@@ -80,20 +81,19 @@ abstract class Controller
         $this->twig->addExtension(new IntlExtension());
         $this->twig->addExtension(new Session());
         $this->twig->addGlobal('session', $_SESSION);
-        if (file_exists(PARAMS) === true) {
-            $datas = json_decode(file_get_contents(PARAMS));
-            !defined('BASE') ? define('BASE', $datas->base_url) : null;
-            !defined('IMAGE') ? define('IMAGE', preg_replace("#/#",DIRECTORY_SEPARATOR,ROOT.$datas->image->location)) : null;
-            !defined('ADMIN') ? define('ADMIN', 1) : null;
-            !defined('REF') ? define('REF', 'referer') : null;
-            $this->mail_id = $datas->mail->user_name;
-            $this->password = $datas->mail->password;
-            $this->host = $datas->mail->host;
-            $this->from = $datas->mail->from;
-            $this->admin = $datas->mail->admin;
-            $this->type_auth = $datas->image->type_auth;
-            $this->size = $datas->image->size;
-        }
+        $init = new init();
+        $init = $init->init();
+        !defined('BASE') ? define('BASE', $init['base_url']) : null;
+        !defined('IMAGE') ? define('IMAGE', preg_replace("#/#",DIRECTORY_SEPARATOR,ROOT.$init['image']['location'])) : null;
+        !defined('ADMIN') ? define('ADMIN', 1) : null;
+        !defined('REF') ? define('REF', 'referer') : null;
+        $this->mail_id = $init["mail"]['user_name'];
+        $this->password = $init["mail"]["password"];
+        $this->host = $init["mail"]['host'];
+        $this->from = $init["mail"]['from'];
+        $this->admin = $init["mail"]['admin'];
+        $this->type_auth = $init["image"]["type_auth"];
+        $this->size = $init["image"]["size"];
 
     }
 
