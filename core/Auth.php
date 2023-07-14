@@ -5,6 +5,19 @@ namespace core;
 final class Auth
 {
 
+    /**
+     * Create the user session
+     *
+     * @param array $user
+     * @return void
+     */
+    public static function createUser(array $user)
+    {
+        $_SESSION['user'] = $user;
+        $_SESSION['user']['token'] = hash('md5',uniqid(true));
+
+    }
+
 
     /**
      * Check for an active connexion
@@ -47,20 +60,6 @@ final class Auth
     public static function hasRole(int $role) :bool
     {
         return $_SESSION['user']['role'] == $role;
-
-    }
-
-
-    /**
-     * Create the user session
-     *
-     * @param array $user
-     * @return void
-     */
-    public static function createUser(array $user)
-    {
-        $_SESSION['user'] = $user;
-        $_SESSION['user']['token'] = hash('md5',uniqid(true));
 
     }
 
