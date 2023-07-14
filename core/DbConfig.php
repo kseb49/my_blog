@@ -42,7 +42,7 @@ class DbConfig
      */
     protected function __construct()
     {
-        $init = new init();
+        $init = new Init();
         $init = $init->init()['db'];
         $this->dsn = $init['prefix'].':dbname='.$init['dbname'].';host='.$init['host'];
         $this->user = $init['user'];

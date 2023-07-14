@@ -2,35 +2,44 @@
 
 namespace core;
 
-final class init
+final class Init
 {
-    public function init(){
+
+    /**
+     * Parameters needed to run the application
+     *
+     * @return array
+     */
+    public function init() :array
+    {
         return [
-        "db"  =>
+        "db" =>
             [
-            "prefix"  =>  "mysql",
-            "host"  =>  "127.0.0.1",
-            "dbname" => "blog",
-            "user"  =>  "root",
-            "password" =>  ""
-            ], 
-        "mail " =>
-        [
-            "host"  =>  "smtp.gmail.com",
-            "user_name"  =>  "kseb49@gmail.com",
-            "password" =>  "oocqluyachbdhdqo",
-            "port " =>  "",
-            "from" =>  "kseb49@gmail.com",
-            "admin" =>  "sseb01@hotmail.fr"
+             "prefix" => "mysql",
+             "host" => "127.0.0.1",
+             "dbname" => "blog",
+             "user" => "root",
+             "password" => ""
             ],
-        "base_url"  =>  "http://blog.test/",
-        "image"  =>
+        "mail" =>
             [
-            "type_auth"  =>  ["jpeg", "png", "webp", "jpg"],
-            "size"  =>  "2000000",
-            "location"  =>  "/public/assets/img/"
+             "host" => "smtp.gmail.com",
+             "user_name" => "kseb49@gmail.com",
+             "password" => "oocqluyachbdhdqo",
+             "port " => "",
+             "from" => "kseb49@gmail.com",
+             "admin" => "sseb01@hotmail.fr"
+            ],
+        "base_url" => "http://blog.test/",
+        "image" =>
+            [
+             "type_auth" => ["jpeg", "png", "webp", "jpg"],
+             "size" => "2000000",
+             "location" => "/public/assets/img/"
             ]
         ];
-    }
-}
 
+    }
+
+
+}

@@ -2,7 +2,7 @@
 
 namespace core;
 
-use core\init;
+use core\Init;
 use Twig\Extension\Session;
 use Twig\Extra\Intl\IntlExtension;
 
@@ -81,7 +81,7 @@ abstract class Controller
         $this->twig->addExtension(new IntlExtension());
         $this->twig->addExtension(new Session());
         $this->twig->addGlobal('session', $_SESSION);
-        $init = new init();
+        $init = new Init();
         $init = $init->init();
         !defined('BASE') ? define('BASE', $init['base_url']) : null;
         !defined('IMAGE') ? define('IMAGE', preg_replace("#/#",DIRECTORY_SEPARATOR,ROOT.$init['image']['location'])) : null;
