@@ -42,13 +42,11 @@ class DbConfig
      */
     protected function __construct()
     {
-        if (file_exists(PARAMS) === true) {
-            $datas = json_decode(file_get_contents(PARAMS));
-            $this->dsn = $datas->db->prefix.':dbname='.$datas->db->dbname.';host='.$datas->db->host;
-            $this->user = $datas->db->user;
-            $this->password = $datas->db->password;
-        }
-
+        $init = new init();
+        $init = $init->init()['db'];
+        $this->dsn = $init['prefix'].':dbname='.$init['dbname'].';host='.$init['host'];
+        $this->user = $init['user'];
+        $this->password = $init['password'];
     }
 
 
