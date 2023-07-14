@@ -66,6 +66,19 @@ final class Auth
 
 
     /**
+     * Undocumented function
+     *
+     * @param string $token
+     * @return boolean
+     */
+    public static function checkToken(string $token) :bool
+    {
+        return $token === $_SESSION['user']['token'];
+
+    }
+
+
+    /**
      * Destroy the user session
      *
      * @return void

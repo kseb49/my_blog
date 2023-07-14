@@ -47,7 +47,7 @@ class PostController extends Controller
     public function createPost(array $datas)
     {
         try {
-            if ($datas['#token'] !== $_SESSION['user']['token']) {
+            if (Auth::checkToken($datas['#token']) === false) {
                 throw new Exception("Vous ne pouvez pas créer d\'article");
             }
             unset($_POST['MAX_FILE_SIZE']);
@@ -114,7 +114,7 @@ class PostController extends Controller
      public function postEdit(array $datas)
      {
         try {
-            if ($datas['#token'] !== $_SESSION['user']['token']) {
+            if (Auth::checkToken($datas['#token']) === false) {
                 throw new Exception('Vous ne pouvez pas modifier cet article');
             }
             if (isset($_FILES['image'])) {
@@ -159,7 +159,7 @@ class PostController extends Controller
     public function deletePost(array $post_id)
     {
         try {
-            if ($post_id[1] !== $_SESSION['user']['token']) {
+            if (Auth::checkToken($post_id[1]) === false) {
                 throw new Exception("Impossible de supprimer cet article");
             }
             $post = new PostModel();

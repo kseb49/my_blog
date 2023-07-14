@@ -34,7 +34,7 @@ class DbConfig
      *
      * @var [type]
      */
-    private static ?DbConfig $instance;
+    private static ?DbConfig $instance = null;
 
 
     /**

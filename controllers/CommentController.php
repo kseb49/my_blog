@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use core\Auth;
 use Exception;
 use utils\Mail;
 use utils\Flash;
@@ -22,7 +23,7 @@ class CommentController extends Controller
     public function create(array $datas)
     {
         try {
-            if ($datas['#token'] !== $_SESSION['user']['token']) {
+            if (Auth::checkToken($datas['#token']) === false) {
                 throw new Exception("Vous ne pouvez pas commenter");
             }
 
@@ -54,7 +55,7 @@ class CommentController extends Controller
     public function editComment(array $datas)
     {
         try {
-            if ($datas['#token'] !== $_SESSION['user']['token']) {
+            if (Auth::checkToken($datas['#token']) === false) {
                 throw new Exception("Vous ne pouvez pas commenter");
             }
             $comment = new CommentModel();
@@ -141,7 +142,7 @@ class CommentController extends Controller
     public function accept(array $comment)
     {
         try {
-            if ($comment[1] !== $_SESSION['user']['token']) {
+            if (Auth::checkToken($comment[1]) === false) {
                 throw new Exception("Vous ne pouvez pas modérer");
             }
             $accept = new CommentModel();
@@ -175,7 +176,7 @@ class CommentController extends Controller
     public function deleteComment(array $params)
     {
         try {
-            if ($params[1] !== $_SESSION['user']['token']) {
+            if (Auth::checkToken($params[1]) === false) {
                 throw new Exception("Vous ne pouvez pas effacer ce commentaire");
             }
             $comment = new CommentModel();
@@ -201,7 +202,7 @@ class CommentController extends Controller
     public function reject(array $comment)
     {
         try {
-            if ($comment[1] !== $_SESSION['user']['token']) {
+            if (Auth::checkToken($comment[1]) === false) {
             throw new Exception("Vous ne pouvez pas modérer");
             }
             $reject = new CommentModel();
